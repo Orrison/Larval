@@ -1,0 +1,12 @@
+.SiteListItem {
+    padding: 10px 0;
+}
+
+.SiteListItem:hover {
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+    -webkit-box-shadow:0px 0px 30px 5px #000000 inset;
+    -moz-box-shadow:0px 0px 30px 5px #000000 inset;
+    box-shadow:0px 0px 30px 5px #000000 inset;
+}
