@@ -94,7 +94,8 @@ class App extends Component {
       <div className="App">
         <SiteList 
         text={this.state.ip}
-        click={this.toggleCreateNew} />
+        click={this.toggleCreateNew}
+        list={this.state.sites} />
 
         {showCreatenew}
       </div>
