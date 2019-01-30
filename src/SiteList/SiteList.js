@@ -6,7 +6,7 @@ const SiteList = ( props ) => {
 
   return (
     <div className={`column is-one-third ${style.wrapper}`}>
-      <p>{props.text}</p>
+      <p onClick={props.click}>{props.text}</p>
     </div>
   );
 }

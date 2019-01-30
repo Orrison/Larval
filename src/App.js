@@ -10,16 +10,27 @@ window.$ = window.jQuery = window.require('jquery');
 const fs = window.require("fs");
 const yaml = require('js-yaml');
 const dialog = remote.dialog;
+const app = electron.app
 
 class App extends Component {
 
   state = yaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8'));
 
+  openCreateNew = () => {
+    this.setState({createNew: true});
+    const currCreateNewShow = this.state.createNewShow;
+    this.setState({createNewShow: !currCreateNewShow});
+  }
+
   render() {
+
+    this.state.createNewShow = false
+
     return (
       <div className="App">
         <SiteList 
-        text={this.state.ip} />
+        text={this.state.ip}
+        click={this.openCreateNew} />
       </div>
     );
   }
