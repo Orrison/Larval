@@ -27,13 +27,50 @@ class App extends Component {
     this.setState({createNewShow: !currCreateNewShow});
   }
 
+  submitCreateNew = (event) => {
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+    var doc = yaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8'));
+
+    let url = data.get('url');
+    let path = data.get('path');
+    let directory = path.substr(path.lastIndexOf('/') + 1);
+
+    let newFolder = {
+        map: path,
+        to: "/home/vagrant/sites/" + directory
+    };
+
+    let newSite = {
+        map: url,
+        to: newFolder.to
+    };
+
+    doc.folders.push(newFolder);
+    doc.sites.push(newSite);
+
+    console.log(doc)
+    fs.writeFile('test.yaml', yaml.safeDump (doc, {
+        'styles': {
+          '!!null': 'canonical' // dump null as ~
+        },
+        'sortKeys': false        // sort object keys
+      }), (err) => {
+        if(err){
+            console.log("An error ocurred creating the file "+ err.message)
+        }
+    });
+  }
+
   render() {
 
     let showCreatenew = null;
     if (this.state.createNewShow) {
       showCreatenew = (
         <CreateNew
-        close={this.toggleCreateNew} />
+        close={this.toggleCreateNew}
+        formSubmit={this.submitCreateNew} />
       )
     }
 

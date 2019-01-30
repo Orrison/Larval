@@ -7,6 +7,8 @@ const CreateNew = ( props ) => {
       <div className="modal-background"></div>
       <div className="modal-content">
         
+      <form onSubmit={props.formSubmit}>
+
         <div className="field">
           <label className="label">URL</label>
           <div className="control">
@@ -21,15 +23,12 @@ const CreateNew = ( props ) => {
           </div>
         </div>
 
-        <div className="field is-grouped">
+        <div className="field">
           <div className="control">
             <button id="create-new-submit" className="button is-link">Submit</button>
           </div>
-          <div className="control">
-            <button id="create-new-cancel" className="button is-text">Cancel</button>
-          </div>
         </div>
-
+      </form>
       </div>
       <button className="modal-close is-large" onClick={props.close} aria-label="close"></button>
     </div>

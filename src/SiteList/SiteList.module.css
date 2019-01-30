@@ -1,4 +1,13 @@
 .wrapper {
     background-color: #000;
     height: 100vh;
+    position: relative;
+}
+
+.createNew {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    text-align: center;
+    width: 100%;
 }

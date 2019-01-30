@@ -6,7 +6,9 @@ const SiteList = ( props ) => {
 
   return (
     <div className={`column is-one-third ${style.wrapper}`}>
-      <p onClick={props.click}>{props.text}</p>
+      <div className={style.createNew}>
+        <p onClick={props.click}>Create New</p>
+      </div>
     </div>
   );
 }
