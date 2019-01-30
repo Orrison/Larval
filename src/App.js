@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import SiteList from './SiteList/index.js'
+import CreateNew from './CreateNew/index.js'
 import '../node_modules/bulma/css/bulma.css'
 import './App.css'
 
@@ -16,21 +17,33 @@ class App extends Component {
 
   state = yaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8'));
 
-  openCreateNew = () => {
-    this.setState({createNew: true});
+  componentDidMount() {
+    this.setState({createNewShow: false});
+    console.log(this.state);
+  }
+
+  toggleCreateNew = () => {
     const currCreateNewShow = this.state.createNewShow;
     this.setState({createNewShow: !currCreateNewShow});
   }
 
   render() {
 
-    this.state.createNewShow = false
+    let showCreatenew = null;
+    if (this.state.createNewShow) {
+      showCreatenew = (
+        <CreateNew
+        close={this.toggleCreateNew} />
+      )
+    }
 
     return (
       <div className="App">
         <SiteList 
         text={this.state.ip}
-        click={this.openCreateNew} />
+        click={this.toggleCreateNew} />
+
+        {showCreatenew}
       </div>
     );
   }
