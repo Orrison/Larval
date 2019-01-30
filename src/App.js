@@ -6,16 +6,20 @@ import './App.css'
 const electron = window.require('electron');
 const remote = electron.remote;
 const BrowserWindow = electron.remote.BrowserWindow;
-window.$ = window.jQuery = require('jquery');
-const fs = require("fs");
+window.$ = window.jQuery = window.require('jquery');
+const fs = window.require("fs");
 const yaml = require('js-yaml');
-const dialog = electron.remote.dialog;
+const dialog = remote.dialog;
 
 class App extends Component {
+
+  state = yaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8'));
+
   render() {
     return (
       <div className="App">
-        <SiteList />
+        <SiteList 
+        text={this.state.ip} />
       </div>
     );
   }
