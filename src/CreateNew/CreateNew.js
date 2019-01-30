@@ -19,7 +19,7 @@ const CreateNew = ( props ) => {
         <div className="field">
           <label className="label">Path</label>
           <div className="control">
-            <input name="path" className="input" type="text" placeholder="/user/joeshmoe/websites/" />
+            <input name="path" className="input" type="text" placeholder="/user/joeshmoe/websites/" onClick={props.pathClick} />
           </div>
         </div>
 

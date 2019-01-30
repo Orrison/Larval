@@ -22,9 +22,22 @@ class App extends Component {
     console.log(this.state);
   }
 
+  // Create New code
+
   toggleCreateNew = () => {
     const currCreateNewShow = this.state.createNewShow;
     this.setState({createNewShow: !currCreateNewShow});
+  }
+
+  fileSelect = (event) => {
+    event.preventDefault();
+
+    if ( !event.target.value ) {
+      var path = dialog.showOpenDialog({
+          properties: ['openDirectory']
+      });
+      event.target.value = path
+  }
   }
 
   submitCreateNew = (event) => {
@@ -63,6 +76,8 @@ class App extends Component {
     });
   }
 
+  // END Create New code
+
   render() {
 
     let showCreatenew = null;
@@ -70,7 +85,8 @@ class App extends Component {
       showCreatenew = (
         <CreateNew
         close={this.toggleCreateNew}
-        formSubmit={this.submitCreateNew} />
+        formSubmit={this.submitCreateNew}
+        pathClick={this.fileSelect} />
       )
     }
 
