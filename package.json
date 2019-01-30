@@ -38,7 +38,8 @@
   ],
   "devDependencies": {
     "create-react-component-folder": "^0.1.26",
-    "electron-builder": "^20.38.5"
+    "electron-builder": "^20.38.5",
+    "electron-packager": "^13.0.1"
   },
   "homepage": "./",
   "main": "src/start.js",
