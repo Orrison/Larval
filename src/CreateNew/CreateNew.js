@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import '../../node_modules/bulma/css/bulma.css'
 import styles from './CreateNew.module.css'
 

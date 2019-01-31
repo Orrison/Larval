@@ -6,7 +6,7 @@ import './App.css'
 
 const electron = window.require('electron')
 const remote = electron.remote
-const BrowserWindow = electron.remote.BrowserWindow;
+// const BrowserWindow = electron.remote.BrowserWindow;
 const fs = window.require("fs");
 const yaml = require('js-yaml');
 const dialog = remote.dialog;
@@ -36,6 +36,8 @@ class App extends Component {
     lr.on('end', function () {
       console.log('done')
     });
+
+    
   }
 
   // Create New code

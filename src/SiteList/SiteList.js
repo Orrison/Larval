@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import '../../node_modules/bulma/css/bulma.css'
 import style from './SiteList.module.css'
 import SiteListItem from './SiteListItem/index.js'
