@@ -11,8 +11,3 @@
     background: linear-gradient(135deg, #f5b976 21%,#af2518 82%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5b976', endColorstr='#af2518',GradientType=1 );
 }
-
-.SiteListItem p {
-    font-size: 20px;
-    font-weight: 800;
-}
