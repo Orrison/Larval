@@ -11,6 +11,7 @@ const fs = window.require("fs");
 const yaml = require('js-yaml');
 const dialog = remote.dialog;
 const app = electron.app
+const hostile = require('hostile')
 
 class App extends Component {
 
