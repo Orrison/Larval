@@ -16,7 +16,8 @@
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-scripts": "2.1.3",
-    "sudo-prompt": "git+https://github.com/Orrison/sudo-prompt-react-electron.git"
+    "sudo-prompt": "git+https://github.com/Orrison/sudo-prompt-react-electron.git",
+    "time-stamp": "^2.2.0"
   },
   "scripts": {
     "start": "nf start -p 3000",
