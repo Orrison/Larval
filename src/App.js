@@ -11,7 +11,7 @@ const fs = window.require("fs");
 const yaml = require('js-yaml');
 const dialog = remote.dialog;
 const app = electron.app
-const linebyline = require('linebyline');
+const linebyline = require('line-by-line');
 
 class App extends Component {
 
