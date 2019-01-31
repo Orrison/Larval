@@ -21,8 +21,8 @@ const SiteList = ( props ) => {
         />
       })}
       </div>
-      <div className={style.createNew}>
-        <p onClick={props.click}>Create New</p>
+      <div className={style.createNew} onClick={props.click}>
+        <p>Create New</p>
       </div>
     </div>
   );
