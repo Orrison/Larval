@@ -12,6 +12,7 @@ const yaml = require('js-yaml');
 const dialog = remote.dialog;
 const app = electron.app
 const linebyline = require('line-by-line');
+const sudo = require('sudo-prompt')
 
 class App extends Component {
 
@@ -36,8 +37,6 @@ class App extends Component {
     lr.on('end', function () {
       console.log('done')
     });
-
-    
   }
 
   // Create New code
@@ -94,6 +93,18 @@ class App extends Component {
             console.log("An error ocurred creating the file "+ err.message)
         }
     });
+
+    var options = {
+      name: 'Larval',
+    };
+    let time = new Date()
+    sudo.exec(`cp /etc/hosts /etc/hosts.${time}.larval.bak && echo "${this.state.yaml.ip}  ${url}" >> /etc/hosts`, options,
+      function(error, stdout, stderr) {
+        if (error) throw error;
+        console.log('stdout: ' + stdout);
+      }
+    );
+
   }
 
   // END Create New code
