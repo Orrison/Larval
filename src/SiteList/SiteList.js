@@ -13,11 +13,13 @@ const SiteList = ( props ) => {
       {props.list.map((item, index) => {
         return <SiteListItem 
           site={item.map}
+          key={index}
         />
       })}
       {props.list.map((item, index) => {
         return <SiteListItem 
           site={item.map}
+          key={index}
         />
       })}
       </div>
