@@ -3,10 +3,16 @@
 }
 
 .SiteListItem:hover {
-    background-color: #fff;
-    color: #000;
+    color: #fff;
     cursor: pointer;
-    -webkit-box-shadow:0px 0px 30px 5px #000000 inset;
-    -moz-box-shadow:0px 0px 30px 5px #000000 inset;
-    box-shadow:0px 0px 30px 5px #000000 inset;
+    background: #f5b976;
+    background: -moz-linear-gradient(-45deg, #f5b976 21%, #af2518 82%);
+    background: -webkit-linear-gradient(-45deg, #f5b976 21%,#af2518 82%);
+    background: linear-gradient(135deg, #f5b976 21%,#af2518 82%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5b976', endColorstr='#af2518',GradientType=1 );
+}
+
+.SiteListItem p {
+    font-size: 20px;
+    font-weight: 800;
 }
