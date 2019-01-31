@@ -10,6 +10,7 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.0",
     "eslint-plugin-react": "^7.12.4",
+    "hostile": "git+https://github.com/Orrison/hostile-electron.git",
     "jquery": "^3.3.1",
     "js-yaml": "^3.12.1",
     "react": "^16.7.0",
