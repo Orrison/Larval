@@ -13,6 +13,7 @@
     "eslint-plugin-react": "^7.12.4",
     "jquery": "^3.3.1",
     "js-yaml": "^3.12.1",
+    "line-by-line": "git+https://github.com/Orrison/line-by-line.git",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-scripts": "2.1.3"

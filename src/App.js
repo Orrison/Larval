@@ -11,7 +11,7 @@ const fs = window.require("fs");
 const yaml = require('js-yaml');
 const dialog = remote.dialog;
 const app = electron.app
-const hostile = require('hostile')
+const linebyline = require('linebyline');
 
 class App extends Component {
 
@@ -22,6 +22,20 @@ class App extends Component {
 
   componentDidMount() {
     console.log(this.state);
+
+    const lr = new linebyline('/etc/hosts');
+
+    lr.on('error', function (err) {
+      console.log('Error: ' + err)
+    });
+    
+    lr.on('line', function (line) {
+      console.log('Line: ' + line)
+    });
+    
+    lr.on('end', function () {
+      console.log('done')
+    });
   }
 
   // Create New code
@@ -78,14 +92,6 @@ class App extends Component {
             console.log("An error ocurred creating the file "+ err.message)
         }
     });
-
-    hostile.set(this.state.yaml.ip, url, function (err) {
-      if (err) {
-        console.error(err)
-      } else {
-        console.log('set /etc/hosts successfully!')
-      }
-    })
   }
 
   // END Create New code
