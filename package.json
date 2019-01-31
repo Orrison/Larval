@@ -26,7 +26,8 @@
     "react-start": "BROWSER=none react-scripts start",
     "pack": "build --dir",
     "dist": "npm run build && build",
-    "postinstall": "install-app-deps"
+    "postinstall": "install-app-deps",
+    "package-mac": "npm run-script build && electron-packager . --overwrite --icon=icons/larva.icns --out=dist"
   },
   "eslintConfig": {
     "extends": "react-app"
