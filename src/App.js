@@ -36,7 +36,9 @@ class App extends Component {
       var path = dialog.showOpenDialog({
           properties: ['openDirectory']
       });
-      event.target.value = path
+      if (path != undefined) {
+        event.target.value = path
+      }
   }
   }
 

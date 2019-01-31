@@ -1,31 +1,33 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import '../../node_modules/bulma/css/bulma.css'
+import styles from './CreateNew.module.css'
 
 const CreateNew = ( props ) => {
 
   return (
-    <div className="modal is-active">
+    <div className="modal is-active has-text-centered">
       <div className="modal-background"></div>
       <div className="modal-content">
         
       <form onSubmit={props.formSubmit}>
 
         <div className="field">
-          <label className="label">URL</label>
+          <label className={`label ${styles.customLabel}`}>URL</label>
           <div className="control">
-            <input name="url" className="input" type="text" placeholder="newsite.test"></input>
+            <input name="url" className="input is-medium" type="text" placeholder="newsite.test"></input>
           </div>
         </div>
         
         <div className="field">
-          <label className="label">Path</label>
+          <label className={`label ${styles.customLabel}`}>Path</label>
           <div className="control">
-            <input name="path" className="input" type="text" placeholder="/user/joeshmoe/websites/" onClick={props.pathClick} />
+            <input name="path" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" onClick={props.pathClick} />
           </div>
         </div>
 
         <div className="field">
           <div className="control">
-            <button id="create-new-submit" className="button is-link">Submit</button>
+            <button id="create-new-submit" className={`button is-link is-large ${styles.customSubmit}`}>Create Site</button>
           </div>
         </div>
       </form>
