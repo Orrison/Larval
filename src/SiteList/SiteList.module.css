@@ -41,16 +41,35 @@
     background: #41a7d2;
 }
 
-.createNew p {
-    align-self: center;
-    margin: 0 auto;
+.createNew {
+  position: relative;
 }
 
 .createNew:hover {
-    background-color: #fff;
-    color: #000;
     cursor: pointer;
-    -webkit-box-shadow:0px 0px 30px 5px #000000 inset;
-    -moz-box-shadow:0px 0px 30px 5px #000000 inset;
-    box-shadow:0px 0px 30px 5px #000000 inset;
+}
+
+.createNew:after {
+  content: '';
+  display: block;
+  border-width: 2px;
+  border-style: solid;
+  border-image: linear-gradient(135deg, #f5b976 21%,#af2518 82%);
+  border-image-slice: 1;
+  width: 0;
+  position: absolute;
+  left: -5px;
+  bottom: 0;
+  -webkit-transition: 1s ease-in-out;
+  transition: 1s ease-in-out;
+}
+
+.createNew:hover:after { 
+  width: 100%;
+  left: 0;
+}
+
+.createNew p {
+    align-self: center;
+    margin: 0 auto;
 }
