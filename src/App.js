@@ -15,7 +15,10 @@ const hostile = require('hostile')
 
 class App extends Component {
 
-  state = yaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8'));
+  state = {
+    yaml: yaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8')),
+    createNewShow: false
+  }
 
   componentDidMount() {
     this.setState({createNewShow: false});
@@ -95,9 +98,9 @@ class App extends Component {
     return (
       <div className="App">
         <SiteList 
-        text={this.state.ip}
+        text={this.state.yaml.ip}
         click={this.toggleCreateNew}
-        list={this.state.sites} />
+        list={this.state.yaml.sites} />
 
         {showCreatenew}
       </div>
