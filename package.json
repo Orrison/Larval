@@ -6,7 +6,6 @@
   "dependencies": {
     "bulma": "^0.7.2",
     "electron": "^4.0.3",
-    "electron-sudo": "^4.0.12",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.0",
