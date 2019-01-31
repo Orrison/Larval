@@ -7,7 +7,6 @@ import './App.css'
 const electron = window.require('electron');
 const remote = electron.remote;
 const BrowserWindow = electron.remote.BrowserWindow;
-window.$ = window.jQuery = window.require('jquery');
 const fs = window.require("fs");
 const yaml = require('js-yaml');
 const dialog = remote.dialog;
