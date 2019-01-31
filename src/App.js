@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import SiteList from './SiteList/index.js'
-import CreateNew from './CreateNew/index.js'
+import SiteList from './SiteList/index'
+import CreateNew from './CreateNew/index'
 import '../node_modules/bulma/css/bulma.css'
 import './App.css'
 
-const electron = window.require('electron');
-const remote = electron.remote;
+const electron = window.require('electron')
+const remote = electron.remote
 const BrowserWindow = electron.remote.BrowserWindow;
 const fs = window.require("fs");
 const yaml = require('js-yaml');
@@ -21,7 +21,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.setState({createNewShow: false});
     console.log(this.state);
   }
 
@@ -35,11 +34,11 @@ class App extends Component {
   fileSelect = (event) => {
     event.preventDefault();
 
-    if ( !event.target.value ) {
-      var path = dialog.showOpenDialog({
-          properties: ['openDirectory']
-      });
-      if (path != undefined) {
+    if (!event.target.value) {
+      const path = dialog.showOpenDialog({
+          properties: ['openDirectory'],
+      })
+      if (path !== undefined) {
         event.target.value = path
       }
   }
@@ -49,27 +48,27 @@ class App extends Component {
     event.preventDefault();
 
     const data = new FormData(event.target);
-    var doc = yaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8'));
+    const doc = yaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8'));
 
-    let url = data.get('url');
-    let path = data.get('path');
-    let directory = path.substr(path.lastIndexOf('/') + 1);
+    const url = data.get('url');
+    const path = data.get('path');
+    const directory = path.substr(path.lastIndexOf('/') + 1);
 
-    let newFolder = {
+    const newFolder = {
         map: path,
-        to: "/home/vagrant/sites/" + directory
+        to: `/home/vagrant/sites/${directory}`,
     };
 
-    let newSite = {
+    const newSite = {
         map: url,
-        to: newFolder.to
-    };
+        to: newFolder.to,
+    }
 
-    doc.folders.push(newFolder);
-    doc.sites.push(newSite);
+    doc.folders.push(newFolder)
+    doc.sites.push(newSite)
 
     console.log(doc)
-    fs.writeFile('test.yaml', yaml.safeDump (doc, {
+    fs.writeFile('test.yaml', yaml.safeDump(doc, {
         'styles': {
           '!!null': 'canonical' // dump null as ~
         },
@@ -79,6 +78,14 @@ class App extends Component {
             console.log("An error ocurred creating the file "+ err.message)
         }
     });
+
+    hostile.set(this.state.yaml.ip, url, function (err) {
+      if (err) {
+        console.error(err)
+      } else {
+        console.log('set /etc/hosts successfully!')
+      }
+    })
   }
 
   // END Create New code
