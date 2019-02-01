@@ -26,13 +26,13 @@ const CreateNew = ( props ) => {
         </div>
 
         <div className="field">
-          <label className="checkbox">
+          <label className={`checkbox ${styles.checkboxLabel}`}>
             <input type="checkbox" className={`${styles.checkboxes}`} />
               Backup my hosts file
           </label>
           </div>
           <div className="field">
-          <label className="checkbox">
+          <label className={`checkbox ${styles.checkboxLabel}`}>
             <input type="checkbox" className={`${styles.checkboxes}`} />
               Backup my Homestead.yaml
           </label>
