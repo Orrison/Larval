@@ -26,6 +26,19 @@ const CreateNew = ( props ) => {
         </div>
 
         <div className="field">
+          <label className="checkbox">
+            <input type="checkbox" className={`${styles.checkboxes}`} />
+              Backup my hosts file
+          </label>
+          </div>
+          <div className="field">
+          <label className="checkbox">
+            <input type="checkbox" className={`${styles.checkboxes}`} />
+              Backup my Homestead.yaml
+          </label>
+        </div>
+
+        <div className="field">
           <div className="control">
             <button id="create-new-submit" className={`button is-link is-large ${styles.customSubmit}`}>Create Site</button>
           </div>
