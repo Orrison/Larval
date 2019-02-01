@@ -9,13 +9,14 @@ import './App.css'
 const electron = window.require('electron')
 const remote = electron.remote
 // const BrowserWindow = electron.remote.BrowserWindow;
-const fs = window.require("fs");
-const yaml = require('js-yaml');
-const dialog = remote.dialog;
+const fs = window.require("fs")
+const yaml = require('js-yaml')
+const dialog = remote.dialog
 const app = electron.app
 const linebyline = require('line-by-line');
 const sudo = require('sudo-prompt')
 const timestamp = require('time-stamp')
+const settings = require('electron-settings')
 
 class App extends Component {
 
@@ -41,6 +42,10 @@ class App extends Component {
     lr.on('end', function () {
       console.log('done')
     });
+
+    settings.set('testing', 'wow')
+
+    settings.get('testing')
   }
 
   selectSite = (id) => {
