@@ -21,7 +21,7 @@ const CreateNew = ( props ) => {
         <div className="field">
           <label className={`label ${styles.customLabel}`}>Path</label>
           <div className="control">
-            <input name="path" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" onClick={props.pathClick} />
+            <input name="path" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" onFocus={props.pathClick} />
           </div>
         </div>
 
