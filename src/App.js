@@ -12,7 +12,7 @@ const remote = electron.remote
 const fs = window.require("fs");
 const yaml = require('js-yaml');
 const dialog = remote.dialog;
-// const app = electron.app
+const app = electron.app
 const linebyline = require('line-by-line');
 const sudo = require('sudo-prompt')
 const timestamp = require('time-stamp')
@@ -75,6 +75,8 @@ class App extends Component {
 
     const url = data.get('url');
     const path = data.get('path');
+    const backupHost = data.get('backupHost');
+    const backupYaml = data.get('backupYaml');
     const directory = path.substr(path.lastIndexOf('/') + 1);
 
     const newFolder = {
@@ -90,7 +92,6 @@ class App extends Component {
     doc.folders.push(newFolder)
     doc.sites.push(newSite)
 
-    console.log(doc)
     fs.writeFile('test.yaml', yaml.safeDump(doc, {
         'styles': {
           '!!null': 'canonical' // dump null as ~
@@ -102,11 +103,19 @@ class App extends Component {
         }
     });
 
+    if (backupHost) {
+      let $command = `cp /etc/hosts ${app.getPath('documents')}hosts.${time}.larval.bak && `
+    } else {
+      let $command = ``
+    }
+
+    let $command = $command + `echo "${this.state.yaml.ip}  ${url}" >> /etc/hosts`
+
     var options = {
       name: 'Larval',
     };
     let time = timestamp('YYYYMMDD')
-    sudo.exec(`cp /etc/hosts /etc/hosts.${time}.larval.bak && echo "${this.state.yaml.ip}  ${url}" >> /etc/hosts`, options,
+    sudo.exec($command, options,
       function(error, stdout, stderr) {
         if (error) throw error;
         console.log('stdout: ' + stdout);
