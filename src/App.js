@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import SiteList from './SiteList/index'
 import CreateNew from './CreateNew/index'
+import SettingsHeader from './SettingsHeader/index'
+
 import '../node_modules/bulma/css/bulma.css'
 import './App.css'
 
@@ -10,7 +12,7 @@ const remote = electron.remote
 const fs = window.require("fs");
 const yaml = require('js-yaml');
 const dialog = remote.dialog;
-const app = electron.app
+// const app = electron.app
 const linebyline = require('line-by-line');
 const sudo = require('sudo-prompt')
 const timestamp = require('time-stamp')
@@ -19,7 +21,8 @@ class App extends Component {
 
   state = {
     yaml: yaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8')),
-    createNewShow: false
+    createNewShow: false,
+    selectedSite: null,
   }
 
   componentDidMount() {
@@ -38,6 +41,10 @@ class App extends Component {
     lr.on('end', function () {
       console.log('done')
     });
+  }
+
+  selectSite = (id) => {
+    this.setState({selectedSite: id})
   }
 
   // Create New code
@@ -124,14 +131,26 @@ class App extends Component {
       )
     }
 
+    let title = 'Welcome Back!'
+    if (this.state.selectedSite !== null) {
+      title = this.state.yaml.sites[this.state.selectedSite].map
+    }
+
     return (
       <div className="App">
-        <SiteList 
-        text={this.state.yaml.ip}
-        click={this.toggleCreateNew}
-        list={this.state.yaml.sites} />
+        <div className='columns'>
+          <SiteList 
+            text={this.state.yaml.ip}
+            click={this.toggleCreateNew}
+            listItemClick={this.selectSite}
+            list={this.state.yaml.sites}
+          />
+          {showCreatenew}
 
-        {showCreatenew}
+          <SettingsHeader
+            title={title}
+          />
+        </div>
       </div>
     );
   }

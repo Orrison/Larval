@@ -7,7 +7,7 @@ const SiteListItem = ( props ) => {
 
 
   return (
-    <div className={`${style.SiteListItem}`}>
+    <div className={`${style.SiteListItem}`} onClick={()=>props.click(props.index)}>
       <p>{props.site}</p>
     </div>
   );

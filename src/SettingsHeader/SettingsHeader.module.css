@@ -1,0 +1,6 @@
+.SettingsHeader {
+    height: 15vh;
+    background: #202020;
+    display: flex;
+    text-align: center;
+}

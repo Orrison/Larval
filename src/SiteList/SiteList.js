@@ -12,14 +12,10 @@ const SiteList = ( props ) => {
       <div className={`${style.list}`}>
       {props.list.map((item, index) => {
         return <SiteListItem 
-          site={item.map}
           key={index}
-        />
-      })}
-      {props.list.map((item, index) => {
-        return <SiteListItem 
           site={item.map}
-          key={index}
+          index={index}
+          click={props.listItemClick}
         />
       })}
       </div>
