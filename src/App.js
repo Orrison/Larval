@@ -106,6 +106,8 @@ class App extends Component {
       }
     );
 
+    this.setState({createNewShow: false});
+
   }
 
   // END Create New code
