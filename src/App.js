@@ -22,6 +22,7 @@ class App extends Component {
 
   state = {
     yaml: yaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8')),
+    homesteadPath: null,
     createNewShow: false,
     selectedSite: null,
   }
@@ -43,9 +44,11 @@ class App extends Component {
       console.log('done')
     });
 
-    settings.set('testing', 'wow')
-
-    settings.get('testing')
+    if (settings.get('homestead_path')) {
+      this.setState({homesteadPath: settings.get('homestead_path')})
+    } else {
+      console.log('Path is not set')
+    }
   }
 
   selectSite = (id) => {
@@ -108,18 +111,19 @@ class App extends Component {
         }
     });
 
+    var $command = ``;
     if (backupHost) {
-      let $command = `cp /etc/hosts ${app.getPath('documents')}hosts.${time}.larval.bak && `
+      let time = timestamp('YYYYMMDD')
+      $command = `cp /etc/hosts ${app.getPath('documents')}hosts.${time}.larval.bak && `
     } else {
-      let $command = ``
+      $command = ``
     }
 
-    let $command = $command + `echo "${this.state.yaml.ip}  ${url}" >> /etc/hosts`
+    $command += `echo "${this.state.yaml.ip}  ${url}" >> /etc/hosts`
 
     var options = {
       name: 'Larval',
     };
-    let time = timestamp('YYYYMMDD')
     sudo.exec($command, options,
       function(error, stdout, stderr) {
         if (error) throw error;
