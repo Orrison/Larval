@@ -13,7 +13,8 @@ const remote = electron.remote
 const fs = window.require("fs")
 const yaml = require('js-yaml')
 const dialog = remote.dialog
-const app = electron.app
+const app = remote.app
+
 const linebyline = require('line-by-line');
 const sudo = require('sudo-prompt')
 const timestamp = require('time-stamp')
