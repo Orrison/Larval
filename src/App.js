@@ -3,6 +3,7 @@ import SiteList from './SiteList/index'
 import CreateNew from './CreateNew/index'
 import SettingsHeader from './SettingsHeader/index'
 import HomesteadPath from './HomesteadPath/index'
+import Vagrant from './Vagrant/index'
 
 import '../node_modules/bulma/css/bulma.css'
 import './App.css'
@@ -169,6 +170,18 @@ class App extends Component {
 
   // END Create New code
 
+  startVagrant = () => {
+    const options = {
+      name: 'Larval',
+    };
+    execute(`cd ${this.state.homesteadPath} && vagrant up`, options,
+      function(error, stdout, stderr) {
+        if (error) throw error;
+        console.log('stdout: ' + stdout);
+      }
+    )
+  }
+
   render() {
 
     let showHomesteadPath = null
@@ -211,10 +224,14 @@ class App extends Component {
             list={this.state.yaml.sites}
           />
 
-          <SettingsHeader
-            title={title}
-          />
           <div className={`column is-two-third`}>
+            <SettingsHeader
+              title={title}
+            />
+
+            <Vagrant
+              startClick={this.startVagrant}
+            />
           </div>
         </div>
       </div>
