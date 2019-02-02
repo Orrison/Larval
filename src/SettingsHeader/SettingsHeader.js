@@ -5,7 +5,7 @@ import styles from './SettingsHeader.module.css'
 const SettingsHeader = ( props ) => {
 
   return (
-    <div className={`column is-two-third ${styles.SettingsHeader}`}>
+    <div className={`${styles.SettingsHeader}`}>
       <h1>{props.title}</h1>
     </div>
   );

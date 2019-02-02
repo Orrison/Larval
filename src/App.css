@@ -7,6 +7,10 @@
   margin: 0;
 }
 
+.column {
+  padding: 0;
+}
+
 h1 {
   font-size: 28px;
   font-weight: 800;

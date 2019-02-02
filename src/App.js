@@ -214,6 +214,8 @@ class App extends Component {
           <SettingsHeader
             title={title}
           />
+          <div className={`column is-two-third`}>
+          </div>
         </div>
       </div>
     );
