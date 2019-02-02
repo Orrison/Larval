@@ -63,15 +63,14 @@ class App extends Component {
 
   submitHomesteadPath = (event) => {
     const data = new FormData(event.target)
-    const path = data.get('path')
-
+    let path = data.get('path')
+    path = path.replace(/\/$/, "")
 
     settings.set('homestead_path', path)
     this.setState({homesteadPath: path})
 
     const currsetHomesteadPathShow = this.state.setHomesteadPathShow;
     this.setState({setHomesteadPathShow: !currsetHomesteadPathShow});
-
   }
 
   // END Set Homestead Path code
@@ -121,7 +120,7 @@ class App extends Component {
     doc.folders.push(newFolder)
     doc.sites.push(newSite)
 
-    fs.writeFile('test.yaml', yaml.safeDump(doc, {
+    fs.writeFile(`${this.state.homesteadPath}/Homestead.yaml`, yaml.safeDump(doc, {
         'styles': {
           '!!null': 'canonical' // dump null as ~
         },
@@ -135,7 +134,7 @@ class App extends Component {
     var $command = ``;
     if (backupHost) {
       let time = timestamp('YYYYMMDD')
-      $command = `cp /etc/hosts ${app.getPath('documents')}hosts.${time}.larval.bak && `
+      $command = `cp /etc/hosts ${app.getPath('documents')}/hosts.${time}.larval.bak && `
     } else {
       $command = ``
     }
