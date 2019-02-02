@@ -30,6 +30,7 @@ class App extends Component {
     setHomesteadPathShow: false,
     createNewShow: false,
     selectedSite: null,
+    vagrantStatus: 'offline',
   }
 
   componentDidMount() {
@@ -170,16 +171,36 @@ class App extends Component {
 
   // END Create New code
 
-  startVagrant = () => {
-    const options = {
+  vagrantToggle = () => {
+    var options = {
       name: 'Larval',
-    };
-    execute(`cd ${this.state.homesteadPath} && vagrant up`, options,
-      function(error, stdout, stderr) {
-        if (error) throw error;
-        console.log('stdout: ' + stdout);
-      }
-    )
+    }
+
+    if (this.state.vagrantStatus === 'offline') {
+      this.setState({vagrantStatus: 'processing'})
+
+      execute(`cd ${this.state.homesteadPath} && vagrant up`, options,
+        function(error, stdout, stderr) {
+          if (error) throw error;
+          console.log('stdout: ' + stdout);
+          if (!error) {
+            this.setState({vagrantStatus: 'online'})
+          }
+        }.bind(this)
+      )
+    } else if (this.state.vagrantStatus === 'online') {
+      this.setState({vagrantStatus: 'processing'})
+
+      execute(`cd ${this.state.homesteadPath} && vagrant halt`, options,
+        function(error, stdout, stderr) {
+          if (error) throw error;
+          console.log('stdout: ' + stdout);
+          if (!error) {
+            this.setState({vagrantStatus: 'offline'})
+          }
+        }.bind(this)
+      )
+    }
   }
 
   render() {
@@ -230,7 +251,9 @@ class App extends Component {
             />
 
             <Vagrant
-              startClick={this.startVagrant}
+              click={this.vagrantToggle}
+              status={this.state.vagrantStatus}
+              this={this}
             />
           </div>
         </div>
