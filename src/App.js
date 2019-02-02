@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import SiteList from './SiteList/index'
 import CreateNew from './CreateNew/index'
 import SettingsHeader from './SettingsHeader/index'
+import HomesteadPath from './HomesteadPath/index'
 
 import '../node_modules/bulma/css/bulma.css'
 import './App.css'
@@ -22,7 +23,8 @@ class App extends Component {
 
   state = {
     yaml: yaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8')),
-    homesteadPath: null,
+    homesteadPath: settings.get('homestead_path'),
+    setHomesteadPathShow: false,
     createNewShow: false,
     selectedSite: null,
   }
@@ -30,30 +32,52 @@ class App extends Component {
   componentDidMount() {
     console.log(this.state);
 
-    const lr = new linebyline('/etc/hosts');
+    // const lr = new linebyline('/etc/hosts');
 
-    lr.on('error', function (err) {
-      console.log('Error: ' + err)
-    });
+    // lr.on('error', function (err) {
+    //   console.log('Error: ' + err)
+    // });
     
-    lr.on('line', function (line) {
-      console.log('Line: ' + line)
-    });
+    // lr.on('line', function (line) {
+    //   console.log('Line: ' + line)
+    // });
     
-    lr.on('end', function () {
-      console.log('done')
-    });
+    // lr.on('end', function () {
+    //   console.log('done')
+    // });
 
-    if (settings.get('homestead_path')) {
-      this.setState({homesteadPath: settings.get('homestead_path')})
-    } else {
+    // settings.delete('homestead_path')
+
+    if (!this.state.homesteadPath) {
+      this.setState({setHomesteadPathShow: true})
       console.log('Path is not set')
     }
+
+    console.log(this.state.homesteadPath)
   }
 
   selectSite = (id) => {
     this.setState({selectedSite: id})
   }
+
+  // Set Homestead Path code
+
+  submitHomesteadPath = (event) => {
+    const data = new FormData(event.target)
+    const path = data.get('path')
+
+    console.log(path)
+
+    settings.set('homestead_path', path)
+    this.setState({homesteadPath: path})
+
+    const currsetHomesteadPathShow = this.state.setHomesteadPathShow;
+    this.setState({setHomesteadPathShow: !currsetHomesteadPathShow});
+
+    console.log(this.state.homesteadPath)
+  }
+
+  // END Set Homestead Path code
 
   // Create New code
 
@@ -139,9 +163,20 @@ class App extends Component {
 
   render() {
 
-    let showCreatenew = null;
+    let showHomesteadPath = null
+    if (this.state.setHomesteadPathShow) {
+      showHomesteadPath = (
+        <HomesteadPath 
+          formSubmit={this.submitHomesteadPath}
+          pathClick={this.fileSelect}
+        />
+      )
+    }
+
+
+    let showCreateNew = null;
     if (this.state.createNewShow) {
-      showCreatenew = (
+      showCreateNew = (
         <CreateNew
         close={this.toggleCreateNew}
         formSubmit={this.submitCreateNew}
@@ -157,13 +192,16 @@ class App extends Component {
     return (
       <div className="App">
         <div className='columns'>
+
+          {showHomesteadPath}
+          {showCreateNew}
+
           <SiteList 
             text={this.state.yaml.ip}
             click={this.toggleCreateNew}
             listItemClick={this.selectSite}
             list={this.state.yaml.sites}
           />
-          {showCreatenew}
 
           <SettingsHeader
             title={title}
