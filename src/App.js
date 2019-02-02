@@ -14,6 +14,7 @@ const fs = window.require("fs")
 const yaml = require('js-yaml')
 const dialog = remote.dialog
 const app = remote.app
+const execute = window.require('child_process').exec;
 
 const linebyline = require('line-by-line');
 const sudo = require('sudo-prompt')
@@ -106,6 +107,10 @@ class App extends Component {
     const backupHost = data.get('backupHost');
     const backupYaml = data.get('backupYaml');
     const directory = path.substr(path.lastIndexOf('/') + 1);
+    const time = timestamp('YYYYMMDDHHmmss')
+    const options = {
+      name: 'Larval',
+    };
 
     const newFolder = {
         map: path,
@@ -120,6 +125,15 @@ class App extends Component {
     doc.folders.push(newFolder)
     doc.sites.push(newSite)
 
+    if (backupYaml) {
+      execute(`cp ${this.state.homesteadPath}/Homestead.yaml ${app.getPath('documents')}/Homestead.yaml.${time}.larval.bak`, options,
+        function(error, stdout, stderr) {
+          if (error) throw error;
+          console.log('stdout: ' + stdout);
+        }
+      )
+    }
+
     fs.writeFile(`${this.state.homesteadPath}/Homestead.yaml`, yaml.safeDump(doc, {
         'styles': {
           '!!null': 'canonical' // dump null as ~
@@ -133,7 +147,6 @@ class App extends Component {
 
     var $command = ``;
     if (backupHost) {
-      let time = timestamp('YYYYMMDD')
       $command = `cp /etc/hosts ${app.getPath('documents')}/hosts.${time}.larval.bak && `
     } else {
       $command = ``
@@ -141,9 +154,6 @@ class App extends Component {
 
     $command += `echo "${this.state.yaml.ip}  ${url}" >> /etc/hosts`
 
-    var options = {
-      name: 'Larval',
-    };
     sudo.exec($command, options,
       function(error, stdout, stderr) {
         if (error) throw error;
@@ -152,6 +162,8 @@ class App extends Component {
     );
 
     this.setState({createNewShow: false});
+
+    this.forceUpdate()
 
   }
 
