@@ -51,10 +51,8 @@ class App extends Component {
 
     if (!this.state.homesteadPath) {
       this.setState({setHomesteadPathShow: true})
-      console.log('Path is not set')
     }
 
-    console.log(this.state.homesteadPath)
   }
 
   selectSite = (id) => {
@@ -67,7 +65,6 @@ class App extends Component {
     const data = new FormData(event.target)
     const path = data.get('path')
 
-    console.log(path)
 
     settings.set('homestead_path', path)
     this.setState({homesteadPath: path})
@@ -75,7 +72,6 @@ class App extends Component {
     const currsetHomesteadPathShow = this.state.setHomesteadPathShow;
     this.setState({setHomesteadPathShow: !currsetHomesteadPathShow});
 
-    console.log(this.state.homesteadPath)
   }
 
   // END Set Homestead Path code
