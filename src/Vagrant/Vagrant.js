@@ -26,7 +26,10 @@ const Vagrant = ( props ) => {
 
   return (
     <div className={`${styles.Vagrant}`}>
-      <a className={`button is-large ${classes}`} onClick={props.click}>{text}</a>
+      <a className={`button is-pulled-left is-large ${classes}`} onClick={props.click}>{text}</a>
+      <div className={`${styles.console}`}>
+        <p>{props.console}</p>
+      </div>
     </div>
   );
 }

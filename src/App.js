@@ -31,6 +31,7 @@ class App extends Component {
     createNewShow: false,
     selectedSite: null,
     vagrantStatus: 'offline',
+    vagrantConsole: null
   }
 
   componentDidMount() {
@@ -95,7 +96,7 @@ class App extends Component {
       if (path !== undefined) {
         event.target.value = path
       }
-  }
+    }
   }
 
   submitCreateNew = (event) => {
@@ -182,7 +183,8 @@ class App extends Component {
       execute(`cd ${this.state.homesteadPath} && vagrant up`, options,
         function(error, stdout, stderr) {
           if (error) throw error;
-          console.log('stdout: ' + stdout);
+          this.setState({vagrantConsole: stdout})
+          // console.log('stdout: ' + stdout);
           if (!error) {
             this.setState({vagrantStatus: 'online'})
           }
@@ -194,7 +196,8 @@ class App extends Component {
       execute(`cd ${this.state.homesteadPath} && vagrant halt`, options,
         function(error, stdout, stderr) {
           if (error) throw error;
-          console.log('stdout: ' + stdout);
+          this.setState({vagrantConsole: stdout})
+          // console.log('stdout: ' + stdout);
           if (!error) {
             this.setState({vagrantStatus: 'offline'})
           }
@@ -253,7 +256,7 @@ class App extends Component {
             <Vagrant
               click={this.vagrantToggle}
               status={this.state.vagrantStatus}
-              this={this}
+              console={this.state.vagrantConsole}
             />
           </div>
         </div>

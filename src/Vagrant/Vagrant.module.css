@@ -1,0 +1,16 @@
+.Vagrant {
+    background: #000;
+}
+.Vagrant a {
+    width: 120px;
+}
+.console {
+    height: 60vh;
+    background: #000;
+    overflow-y: scroll;
+    clear: both;
+}
+
+.console p {
+    color: #fff;
+}
