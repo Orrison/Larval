@@ -183,6 +183,8 @@ class App extends Component {
         let stdout = this.state.vagrantConsole
         stdout.push(data)
         this.setState({vagrantConsole: stdout})
+        let scroll = document.getElementById("vagrantConsole")
+        scroll.scrollTop = scroll.scrollHeight
       })
       
       consoleCommand.stderr.on('data', (data) => {
@@ -203,6 +205,8 @@ class App extends Component {
         let stdout = this.state.vagrantConsole
         stdout.push(data)
         this.setState({vagrantConsole: stdout})
+        let scroll = document.getElementById("vagrantConsole")
+        scroll.scrollTop = scroll.scrollHeight
       })
       
       consoleCommand.stderr.on('data', (data) => {
