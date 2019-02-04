@@ -5,10 +5,14 @@ const BrowserWindow = electron.BrowserWindow
 
 const path = require('path')
 const url = require('url')
+const fixPath = require('fix-path')
 
 let mainWindow
 
 function createWindow() {
+
+  fixPath()
+
   mainWindow = new BrowserWindow({ width: 800, height: 600 })
 
   mainWindow.loadURL(
