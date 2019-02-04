@@ -221,6 +221,10 @@ class App extends Component {
     }
   }
 
+  vagrantClear = () => {
+    this.setState({vagrantConsole: []})
+  }
+
   render() {
 
     let showHomesteadPath = null
@@ -269,7 +273,8 @@ class App extends Component {
             />
 
             <Vagrant
-              click={this.vagrantToggle}
+              clickToggle={this.vagrantToggle}
+              clickClear={this.vagrantClear}
               status={this.state.vagrantStatus}
               console={this.state.vagrantConsole}
             />
