@@ -24,11 +24,15 @@ const Vagrant = ( props ) => {
             // code block
     }
 
+    let consoleContent = props.console.map((item, index) => {
+        return <p key={index}>{item}</p>
+    })
+
   return (
     <div className={`${styles.Vagrant}`}>
       <a className={`button is-pulled-left is-large ${classes}`} onClick={props.click}>{text}</a>
       <div className={`${styles.console}`}>
-        <p>{props.console}</p>
+        {consoleContent}
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ const fs = window.require("fs")
 const yaml = require('js-yaml')
 const dialog = remote.dialog
 const app = remote.app
-const execute = window.require('child_process').exec;
+const execute = window.require('child_process').exec
 
 const linebyline = require('line-by-line');
 const sudo = require('sudo-prompt')
@@ -31,7 +31,7 @@ class App extends Component {
     createNewShow: false,
     selectedSite: null,
     vagrantStatus: 'offline',
-    vagrantConsole: null
+    vagrantConsole: []
   }
 
   componentDidMount() {
@@ -173,36 +173,47 @@ class App extends Component {
   // END Create New code
 
   vagrantToggle = () => {
-    var options = {
-      name: 'Larval',
-    }
 
     if (this.state.vagrantStatus === 'offline') {
       this.setState({vagrantStatus: 'processing'})
 
-      execute(`cd ${this.state.homesteadPath} && vagrant up`, options,
-        function(error, stdout, stderr) {
-          if (error) throw error;
-          this.setState({vagrantConsole: stdout})
-          // console.log('stdout: ' + stdout);
-          if (!error) {
-            this.setState({vagrantStatus: 'online'})
-          }
-        }.bind(this)
-      )
+      var consoleCommand = execute(`cd ${this.state.homesteadPath} && vagrant up`)
+
+      consoleCommand.stdout.on('data', (data) => {
+        let stdout = this.state.vagrantConsole
+        stdout.push(data)
+        this.setState({vagrantConsole: stdout})
+      })
+      
+      consoleCommand.stderr.on('data', (data) => {
+        console.log(`stderr: ${data}`)
+      })
+      
+      consoleCommand.on('close', (code) => {
+        console.log(`Vagrant is up!`)
+        this.setState({vagrantStatus: 'online'})
+      })
+
     } else if (this.state.vagrantStatus === 'online') {
       this.setState({vagrantStatus: 'processing'})
 
-      execute(`cd ${this.state.homesteadPath} && vagrant halt`, options,
-        function(error, stdout, stderr) {
-          if (error) throw error;
-          this.setState({vagrantConsole: stdout})
-          // console.log('stdout: ' + stdout);
-          if (!error) {
-            this.setState({vagrantStatus: 'offline'})
-          }
-        }.bind(this)
-      )
+      var consoleCommand = execute(`cd ${this.state.homesteadPath} && vagrant halt`)
+
+      consoleCommand.stdout.on('data', (data) => {
+        let stdout = this.state.vagrantConsole
+        stdout.push(data)
+        this.setState({vagrantConsole: stdout})
+      })
+      
+      consoleCommand.stderr.on('data', (data) => {
+        console.log(`stderr: ${data}`)
+      })
+      
+      consoleCommand.on('close', (code) => {
+        console.log(`Vagrant is off!`)
+        this.setState({vagrantStatus: 'offline'})
+      })
+
     }
   }
 
