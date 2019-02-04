@@ -21,6 +21,7 @@ const linebyline = require('line-by-line')
 const sudo = require('sudo-prompt')
 const timestamp = require('time-stamp')
 const settings = require('electron-settings')
+const fixPath = require('fix-path')
 
 class App extends Component {
 
@@ -56,6 +57,8 @@ class App extends Component {
     if (!this.state.homesteadPath) {
       this.setState({setHomesteadPathShow: true})
     }
+
+    fixPath()
 
   }
 
