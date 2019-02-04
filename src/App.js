@@ -17,7 +17,7 @@ const dialog = remote.dialog
 const app = remote.app
 const execute = window.require('child_process').exec
 
-const linebyline = require('line-by-line');
+const linebyline = require('line-by-line')
 const sudo = require('sudo-prompt')
 const timestamp = require('time-stamp')
 const settings = require('electron-settings')
