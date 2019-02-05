@@ -1,0 +1,24 @@
+.customLabel {
+    color: #fff;
+    font-size: 26px;
+}
+
+.input {
+    width: 70%;
+    margin: 0 auto;
+    display: block;
+}
+
+.customSubmit {
+    margin: 0 auto;
+    display: block;
+    margin-top: 6%;
+}
+
+.checkboxLabel:hover {
+    color: #fff;
+}
+
+.checkboxes {
+    margin-right: 10px;
+}
