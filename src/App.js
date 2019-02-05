@@ -188,12 +188,21 @@ class App extends Component {
       })
       
       consoleCommand.stderr.on('data', (data) => {
-        console.log(`stderr: ${data}`)
+        // console.log(`stderr: ${data}`)
+        let stdout = this.state.vagrantConsole
+        stdout.push(`stderr: ${data}`)
+        this.setState({vagrantConsole: stdout})
+        let scroll = document.getElementById("vagrantConsole")
+        scroll.scrollTop = scroll.scrollHeight
       })
       
       consoleCommand.on('close', (code) => {
-        console.log(`Vagrant is up!`)
+        let stdout = this.state.vagrantConsole
+        stdout.push(`---- We did it, YAY! ----`)
+        this.setState({vagrantConsole: stdout})
         this.setState({vagrantStatus: 'online'})
+        let scroll = document.getElementById("vagrantConsole")
+        scroll.scrollTop = scroll.scrollHeight
       })
 
     } else if (this.state.vagrantStatus === 'online') {
@@ -210,12 +219,20 @@ class App extends Component {
       })
       
       consoleCommand.stderr.on('data', (data) => {
-        console.log(`stderr: ${data}`)
+        // console.log(`stderr: ${data}`)
+        let stdout = this.state.vagrantConsole
+        stdout.push(`stderr: ${data}`)
+        let scroll = document.getElementById("vagrantConsole")
+        scroll.scrollTop = scroll.scrollHeight
       })
       
       consoleCommand.on('close', (code) => {
-        console.log(`Vagrant is off!`)
+        let stdout = this.state.vagrantConsole
+        stdout.push(`---- We did it, YAY! ----`)
+        this.setState({vagrantConsole: stdout})
         this.setState({vagrantStatus: 'offline'})
+        let scroll = document.getElementById("vagrantConsole")
+        scroll.scrollTop = scroll.scrollHeight
       })
 
     }
