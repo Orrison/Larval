@@ -4,7 +4,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fortawesome/free-solid-svg-icons": "^5.7.1",
     "bulma": "^0.7.2",
     "electron": "^4.0.3",
     "electron-settings": "git+https://github.com/Orrison/electron-settings-react.git",
