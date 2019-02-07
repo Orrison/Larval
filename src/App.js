@@ -19,7 +19,6 @@ const app = remote.app
 const execute = window.require('child_process').exec
 // const spawn = window.require('child_process').spawn
 
-const linebyline = require('line-by-line')
 const sudo = require('sudo-prompt')
 const timestamp = require('time-stamp')
 const settings = require('electron-settings')
@@ -40,25 +39,20 @@ class App extends Component {
   componentDidMount() {
     console.log(this.state);
 
-    // const lr = new linebyline('/etc/hosts');
-
-    // lr.on('error', function (err) {
-    //   console.log('Error: ' + err)
-    // });
-    
-    // lr.on('line', function (line) {
-    //   console.log('Line: ' + line)
-    // });
-    
-    // lr.on('end', function () {
-    //   console.log('done')
-    // });
-
     // settings.delete('homestead_path')
 
     if (!this.state.homesteadPath) {
       this.setState({setHomesteadPathShow: true})
     }
+
+    execute(`cd ${this.state.homesteadPath} && vagrant status`,
+      function(error, stdout, stderr) {
+        if (error) throw error;
+        if (stdout.includes('running')) {
+          console.log('We up')
+        }
+      }
+    )
 
     // let openTerminalAtPath = spawn (`open -a Terminal ${this.state.homesteadPath}`, {shell:true})
     // openTerminalAtPath.on ('error', (err) => { console.log (err); })
