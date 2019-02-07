@@ -16,6 +16,7 @@ const yaml = require('js-yaml')
 const dialog = remote.dialog
 const app = remote.app
 const execute = window.require('child_process').exec
+// const spawn = window.require('child_process').spawn
 
 const linebyline = require('line-by-line')
 const sudo = require('sudo-prompt')
@@ -56,6 +57,9 @@ class App extends Component {
     if (!this.state.homesteadPath) {
       this.setState({setHomesteadPathShow: true})
     }
+
+    // let openTerminalAtPath = spawn (`open -a Terminal ${this.state.homesteadPath}`, {shell:true})
+    // openTerminalAtPath.on ('error', (err) => { console.log (err); })
 
   }
 
