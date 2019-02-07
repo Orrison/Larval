@@ -4,6 +4,7 @@ import CreateNew from './CreateNew/index'
 import SettingsHeader from './SettingsHeader/index'
 import HomesteadPath from './HomesteadPath/index'
 import Vagrant from './Vagrant/index'
+import HomesteadSettings from './HomesteadSettings/index'
 
 import '../node_modules/bulma/css/bulma.css'
 import './App.css'
@@ -29,6 +30,7 @@ class App extends Component {
     yaml: yaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8')),
     homesteadPath: settings.get('homestead_path'),
     setHomesteadPathShow: false,
+    homesteadSettingsShow: false,
     createNewShow: false,
     selectedSite: null,
     vagrantStatus: 'offline',
@@ -176,6 +178,26 @@ class App extends Component {
 
   // END Create New code
 
+  // Start HomesteadSettings
+
+  toggleHomesteadSettings = () => {
+    const currHomesteadSettingsShow = this.state.homesteadSettingsShow;
+    this.setState({homesteadSettingsShow: !currHomesteadSettingsShow});
+  }
+
+  submitHomesteadSettings = (event) => {
+    event.preventDefault()
+
+    const data = new FormData(event.target)
+
+    const ip = data.get('ip');
+    const memory = data.get('memory');
+    const cpus = data.get('cpus');
+
+  }
+
+  // END HomesteadSettings
+
   vagrantToggle = () => {
 
     if (this.state.vagrantStatus === 'offline') {
@@ -269,6 +291,16 @@ class App extends Component {
       )
     }
 
+    let showHomsteadSettings = null;
+    if (this.state.homesteadSettingsShow) {
+      showHomsteadSettings = (
+        <HomesteadSettings
+          close={this.toggleHomesteadSettings}
+          formSubmit={this.submitCreateNew}
+        />
+      )
+    }
+
     let title = 'Welcome Back!'
     if (this.state.selectedSite !== null) {
       title = this.state.yaml.sites[this.state.selectedSite].map
@@ -279,6 +311,7 @@ class App extends Component {
         <div className='columns'>
 
           {showHomesteadPath}
+          {showHomsteadSettings}
           {showCreateNew}
 
           <SiteList 
@@ -291,6 +324,7 @@ class App extends Component {
           <div className={`column is-two-third`}>
             <SettingsHeader
               title={title}
+              settingsClick={this.toggleHomesteadSettings}
             />
 
             <Vagrant
