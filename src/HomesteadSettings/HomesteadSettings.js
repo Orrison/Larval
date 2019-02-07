@@ -13,23 +13,41 @@ const HomesteadSettings = (props) => {
         <form onSubmit={props.formSubmit}>
 
           <div className='field is-grouped'>
-            <div class="field-label is-small">
-              <label class="label">IP</label>
+            <div className="field-label is-small">
+              <label className="label">IP</label>
             </div>
             <div className='control'>
-              <input name='ip' className='input' type='text' placeholder='Your Homestead IP' />
+              <input 
+                name='ip' 
+                className='input' 
+                type='text' 
+                placeholder='192.168.10.10' 
+                defaultValue={props.ip} 
+              />
             </div>
-            <div class="field-label is-small">
-              <label class="label">Memory</label>
+            <div className="field-label is-small">
+              <label className="label">Memory</label>
             </div>
             <div className='control'>
-              <input name='memory' className='input' type='text' placeholder='Text input' />
+              <input 
+                name='memory' 
+                className='input' 
+                type='text' 
+                placeholder='2048' 
+                defaultValue={props.memory} 
+              />
             </div>
-            <div class="field-label is-small">
-              <label class="label">CPUs</label>
+            <div className="field-label is-small">
+              <label className="label">CPUs</label>
             </div>
             <div className='control'>
-              <input name='cpus' className='input' type='text' placeholder='Text input' />
+              <input 
+                name='cpus' 
+                className='input' 
+                type='text' 
+                placeholder='1' 
+                defaultValue={props.cpus} 
+              />
             </div>
           </div>
 

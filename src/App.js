@@ -297,6 +297,9 @@ class App extends Component {
         <HomesteadSettings
           close={this.toggleHomesteadSettings}
           formSubmit={this.submitCreateNew}
+          ip={this.state.yaml.ip}
+          memory={this.state.yaml.memory}
+          cpus={this.state.yaml.cpus}
         />
       )
     }
