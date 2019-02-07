@@ -9,7 +9,7 @@ const SettingsHeader = ( props ) => {
   return (
     <div className={`${styles.SettingsHeader}`}>
       <h1>{props.title}</h1>
-      <FontAwesomeIcon icon={faCog} className={`is-pulled-right ${styles.cog}`} />
+      <FontAwesomeIcon icon={faCog} size="2x" className={`is-pulled-right ${styles.cog}`} />
     </div>
   );
 }

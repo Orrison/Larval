@@ -6,5 +6,7 @@
 }
 
 .cog {
-    
+    align-self: center;
+    right: 3%;
+    position: relative;
 }
