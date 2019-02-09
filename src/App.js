@@ -301,7 +301,7 @@ class App extends Component {
       )
     }
 
-    let title = 'Welcome Back!'
+    let title = 'Vagrant Controls'
     if (this.state.selectedSite !== null) {
       title = this.state.yaml.sites[this.state.selectedSite].map
     }
