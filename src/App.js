@@ -32,7 +32,7 @@ class App extends Component {
     homesteadSettingsShow: false,
     createNewShow: false,
     selectedSite: null,
-    vagrantStatus: 'offline',
+    vagrantStatus: 'processing',
     vagrantConsole: []
   }
 
@@ -50,9 +50,11 @@ class App extends Component {
       function(error, stdout, stderr) {
         if (error) throw error;
         if (stdout.includes('running')) {
-          console.log('We up')
+          this.setState({vagrantStatus: 'online'})
+        } else {
+          this.setState({vagrantStatus: 'offline'})
         }
-      }
+      }.bind(this)
     )
 
     // let openTerminalAtPath = spawn (`open -a Terminal ${this.state.homesteadPath}`, {shell:true})
