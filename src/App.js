@@ -41,6 +41,7 @@ class App extends Component {
 
     // settings.delete('homestead_path')
 
+    // Show the window to set homesteadPath if it is not already set
     if (!this.state.homesteadPath) {
       this.setState({setHomesteadPathShow: true})
     }
