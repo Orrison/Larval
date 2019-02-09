@@ -20,6 +20,7 @@
     "jquery": "^3.3.1",
     "js-yaml": "^3.12.1",
     "line-by-line": "git+https://github.com/Orrison/line-by-line.git",
+    "node-sass": "^4.11.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-scripts": "2.1.3",
