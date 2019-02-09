@@ -1,5 +1,6 @@
 import React from 'react'
 import '../../node_modules/bulma/css/bulma.css'
+import bulmaTooltip from '../../node_modules/bulma-tooltip/dist/css/bulma-tooltip.min.css'
 import styles from './CreateNew.module.css'
 
 const CreateNew = ( props ) => {
@@ -27,20 +28,22 @@ const CreateNew = ( props ) => {
 
         <div className="field">
           <label className={`checkbox ${styles.checkboxLabel}`}>
-            <input type="checkbox" className={`${styles.checkboxes}`} name='backupHost' />
+            <input type="checkbox" className={`tooltip ${styles.checkboxes}`} name='backupHost' data-tooltip='Saves backup to your documents folder' />
               Backup my hosts file
           </label>
           </div>
           <div className="field">
           <label className={`checkbox ${styles.checkboxLabel}`}>
-            <input type="checkbox" className={`${styles.checkboxes}`} name='backupYaml' />
+            <input type="checkbox" className={`tooltip ${styles.checkboxes}`} name='backupYaml' data-tooltip='Saves backup to your documents folder' />
               Backup my Homestead.yaml
           </label>
         </div>
 
         <div className="field">
           <div className="control">
-            <button id="create-new-submit" className={`button is-link is-large ${styles.customSubmit}`}>Create Site</button>
+            <button id="create-new-submit" className={`button is-link is-large ${styles.customSubmit}`}>
+              Create Site
+            </button>
           </div>
         </div>
       </form>
