@@ -1,4 +1,5 @@
 const electron = require('electron')
+const { session } = require('electron')
 
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
@@ -13,7 +14,7 @@ function createWindow() {
 
   fixPath()
 
-  mainWindow = new BrowserWindow({ width: 800, height: 600 })
+  mainWindow = new BrowserWindow({ width: 800, height: 600, webPreferences: { nodeIntegration: true } })
 
   mainWindow.loadURL(
     process.env.ELECTRON_START_URL
@@ -23,6 +24,15 @@ function createWindow() {
         slashes: true,
       }),
   )
+  
+  // session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+  //   callback({
+  //     responseHeaders: {
+  //       ...details.responseHeaders,
+  //       'Content-Security-Policy': ['script-src \'self\'']
+  //     }
+  //   })
+  // })
 
   mainWindow.webContents.openDevTools()
 

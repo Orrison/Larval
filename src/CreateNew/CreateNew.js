@@ -5,6 +5,15 @@ import styles from './CreateNew.module.css'
 
 const CreateNew = ( props ) => {
 
+  let deleteButton = null
+  if (props.deleteButton) {
+    deleteButton = (
+      <button className={`button is-link is-large ${styles.customSubmit}`} onClick={(e) => props.formSubmit(e, true)}>
+        Delete
+      </button>
+    )
+  }
+
   return (
     <div className="modal is-active has-text-centered">
       <div className="modal-background"></div>
@@ -15,14 +24,14 @@ const CreateNew = ( props ) => {
         <div className="field">
           <label className={`label ${styles.customLabel}`}>URL</label>
           <div className="control">
-            <input name="url" className="input is-medium" type="text" placeholder="newsite.test"></input>
+            <input name="url" className="input is-medium" type="text" placeholder="newsite.test" defaultValue={props.url}></input>
           </div>
         </div>
         
         <div className="field">
           <label className={`label ${styles.customLabel}`}>Path</label>
           <div className="control">
-            <input name="path" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" onFocus={props.pathClick} />
+            <input name="path" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" defaultValue={props.path} onFocus={props.pathClick} />
           </div>
         </div>
 
@@ -42,8 +51,13 @@ const CreateNew = ( props ) => {
         <div className="field">
           <div className="control">
             <button id="create-new-submit" className={`button is-link is-large ${styles.customSubmit}`}>
-              Create Site
+              {props.button}
             </button>
+          </div>
+        </div>
+        <div className="field">
+          <div className="control">
+            {deleteButton}
           </div>
         </div>
       </form>

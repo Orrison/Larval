@@ -5,8 +5,6 @@ import SiteListItem from './SiteListItem/index.js'
 
 const SiteList = ( props ) => {
 
-
-
   return (
     <div className={`column is-one-third ${style.wrapper}`}>
       <div className={`${style.list}`}>

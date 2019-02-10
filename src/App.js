@@ -5,6 +5,7 @@ import SettingsHeader from './SettingsHeader/index'
 import HomesteadPath from './HomesteadPath/index'
 import Vagrant from './Vagrant/index'
 import HomesteadSettings from './HomesteadSettings/index'
+import SiteSettings from './SiteSettings/index'
 
 import '../node_modules/bulma/css/bulma.css'
 import './App.css'
@@ -30,7 +31,7 @@ class App extends Component {
     homesteadPath: settings.get('homestead_path'),
     setHomesteadPathShow: false,
     homesteadSettingsShow: false,
-    createNewShow: false,
+    siteEditShow: false,
     selectedSite: null,
     vagrantStatus: 'processing',
     vagrantConsole: []
@@ -64,6 +65,7 @@ class App extends Component {
 
   selectSite = (id) => {
     this.setState({selectedSite: id})
+    this.siteEditOpen()
   }
 
   // Set Homestead Path code
@@ -84,9 +86,15 @@ class App extends Component {
 
   // Create New code
 
-  toggleCreateNew = () => {
-    const currCreateNewShow = this.state.createNewShow;
-    this.setState({createNewShow: !currCreateNewShow});
+  siteEditOpen = () => {
+    this.setState({siteEditShow: true});
+  }
+
+  siteEditOpenNew = () => {
+    this.setState({selectedSite: null, siteEditShow: true});
+  }
+  siteEditClose = () => {
+    this.setState({siteEditShow: false});
   }
 
   fileSelect = (event) => {
@@ -102,7 +110,7 @@ class App extends Component {
     }
   }
 
-  submitCreateNew = (event) => {
+  submitCreateNew = (event, del = null) => {
     event.preventDefault();
 
     const data = new FormData(event.target);
@@ -112,24 +120,40 @@ class App extends Component {
     const path = data.get('path');
     const backupHost = data.get('backupHost');
     const backupYaml = data.get('backupYaml');
-    const directory = path.substr(path.lastIndexOf('/') + 1);
+    var directory = null
     const time = timestamp('YYYYMMDDHHmmss')
     const options = {
       name: 'Larval',
     };
-
-    const newFolder = {
-        map: path,
-        to: `/home/vagrant/sites/${directory}`,
-    };
-
-    const newSite = {
-        map: url,
-        to: newFolder.to,
+    if (path !== null) {
+      directory = path.substr(path.lastIndexOf('/') + 1);
     }
 
-    doc.folders.push(newFolder)
-    doc.sites.push(newSite)
+    if (this.state.selectedSite === null) {
+      const newFolder = {
+          map: path,
+          to: `/home/vagrant/sites/${directory}`,
+      };
+
+      const newSite = {
+          map: url,
+          to: newFolder.to,
+      }
+
+      doc.folders.push(newFolder)
+      doc.sites.push(newSite)
+    } else {
+      if (del === true) {
+        doc.folders.splice(this.state.selectedSite, 1)
+        doc.sites.splice(this.state.selectedSite, 1)
+      } else {
+        doc.folders[this.state.selectedSite].map = url
+        doc.folders[this.state.selectedSite].to = directory
+
+        doc.sites[this.state.selectedSite].map = url
+        doc.sites[this.state.selectedSite].to = doc.folders[this.state.selectedSite].to
+      }
+    }
 
     if (backupYaml) {
       execute(`cp ${this.state.homesteadPath}/Homestead.yaml ${app.getPath('documents')}/Homestead.yaml.${time}.larval.bak`, options,
@@ -167,9 +191,7 @@ class App extends Component {
       }
     );
 
-    this.setState({createNewShow: false});
-
-    this.forceUpdate()
+    this.setState({siteEditShow: false})
 
   }
 
@@ -277,14 +299,28 @@ class App extends Component {
       )
     }
 
-
-    let showCreateNew = null;
-    if (this.state.createNewShow) {
-      showCreateNew = (
+    let url = null
+    let path = null
+    let button = 'Create Site'
+    let deleteButton = false
+    if (this.state.selectedSite !== null) {
+      url = this.state.yaml.sites[this.state.selectedSite].map
+      path = this.state.yaml.sites[this.state.selectedSite].to
+      button = 'Update Site'
+      deleteButton = true
+    }
+    let showSiteEdit = null;
+    if (this.state.siteEditShow) {
+      showSiteEdit = (
         <CreateNew
-        close={this.toggleCreateNew}
-        formSubmit={this.submitCreateNew}
-        pathClick={this.fileSelect} />
+          close={this.siteEditClose}
+          formSubmit={this.submitCreateNew}
+          pathClick={this.fileSelect}
+          url={url}
+          path={path}
+          button={button} 
+          deleteButton={deleteButton}
+        />
       )
     }
 
@@ -312,11 +348,11 @@ class App extends Component {
 
           {showHomesteadPath}
           {showHomsteadSettings}
-          {showCreateNew}
+          {showSiteEdit}
 
           <SiteList 
             text={this.state.yaml.ip}
-            click={this.toggleCreateNew}
+            click={this.siteEditOpenNew}
             listItemClick={this.selectSite}
             list={this.state.yaml.sites}
           />
