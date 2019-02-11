@@ -1,0 +1,10 @@
+import React, { Component } from 'react';
+{{? it.settings.css }}
+import './{{= it.component.name }}.{{= it.settings.cssType || 'css'}}';
+{{?}}
+
+const {{= it.component.name}} = (props) => {
+  return (<div></div>);
+}
+
+export default {{= it.component.name}};
