@@ -8,7 +8,7 @@ const SettingsHeader = ( props ) => {
 
   return (
     <div className={`${styles.SettingsHeader}`}>
-      <h1>{props.title}</h1>
+      <h1>Vagrant Controls</h1>
       <FontAwesomeIcon icon={faCog} size="2x" className={`is-pulled-right ${styles.cog}`} onClick={props.settingsClick} />
     </div>
   );
