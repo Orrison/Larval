@@ -19,6 +19,7 @@ const dialog = remote.dialog
 const app = remote.app
 const execute = window.require('child_process').exec
 // const spawn = window.require('child_process').spawn
+const linebyline = require('line-by-line')
 
 const sudo = require('sudo-prompt')
 const timestamp = require('time-stamp')
@@ -175,21 +176,56 @@ class App extends Component {
         }
     });
 
-    var $command = ``;
-    if (backupHost) {
-      $command = `cp /etc/hosts ${app.getPath('documents')}/hosts.${time}.larval.bak && `
+    if (del === true) {
+      const lr = new linebyline('/etc/hosts');
+
+      lr.on('error', function (err) {
+        console.log('Hosts Delete linebyline Error: ' + err)
+      })
+
+      let site = this.state.yaml.sites[this.state.selectedSite].map
+      let hostsToString = ''
+      let hostsLbl = new Promise(function(resolve, reject) {
+        let i = 1
+        lr.on('line', function (line) {
+          if (!line.includes(' ' + site)) {
+            if (i != 1) {
+              hostsToString += '\n'
+            }
+            hostsToString += line
+          }
+          i++
+        }.bind(this))
+        lr.on('end', function () {
+          resolve(hostsToString)
+        })
+      })
+      hostsLbl.then(function(hosts) {
+        console.log(hosts)
+        sudo.exec(`echo '${hosts}' > /etc/hosts`, options,
+          function(error, stdout, stderr) {
+            if (error) throw error;
+            console.log('stdout: ' + stdout)
+          }
+        )
+      })
     } else {
-      $command = ``
-    }
-
-    $command += `echo "${this.state.yaml.ip}  ${url}" >> /etc/hosts`
-
-    sudo.exec($command, options,
-      function(error, stdout, stderr) {
-        if (error) throw error;
-        console.log('stdout: ' + stdout);
+      var $command = ``
+      if (backupHost) {
+        $command = `cp /etc/hosts ${app.getPath('documents')}/hosts.${time}.larval.bak && `
+      } else {
+        $command = ``
       }
-    );
+
+      $command += `echo "${this.state.yaml.ip}  ${url}" >> /etc/hosts`
+
+      sudo.exec($command, options,
+        function(error, stdout, stderr) {
+          if (error) throw error;
+          console.log('stdout: ' + stdout)
+        }
+      )
+    }
 
     this.setState({siteEditShow: false})
 
