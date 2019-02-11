@@ -337,11 +337,6 @@ class App extends Component {
       )
     }
 
-    let title = 'Vagrant Controls'
-    if (this.state.selectedSite !== null) {
-      title = this.state.yaml.sites[this.state.selectedSite].map
-    }
-
     return (
       <div className="App">
         <div className='columns'>
@@ -359,7 +354,6 @@ class App extends Component {
 
           <div className={`column is-two-third`}>
             <SettingsHeader
-              title={title}
               settingsClick={this.toggleHomesteadSettings}
             />
 

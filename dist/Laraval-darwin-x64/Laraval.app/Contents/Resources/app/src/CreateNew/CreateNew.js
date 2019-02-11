@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../node_modules/bulma/css/bulma.css'
-import bulmaTooltip from '../../node_modules/bulma-tooltip/dist/css/bulma-tooltip.min.css'
+import '../../node_modules/bulma-tooltip/dist/css/bulma-tooltip.min.css'
 import styles from './CreateNew.module.css'
 
 const CreateNew = ( props ) => {
@@ -8,7 +8,7 @@ const CreateNew = ( props ) => {
   let deleteButton = null
   if (props.deleteButton) {
     deleteButton = (
-      <button className={`button is-link is-large ${styles.customSubmit}`} onClick={(e) => props.formSubmit(e, true)}>
+      <button className={`button is-danger is-large ${styles.customSubmit}`} onClick={(e) => props.formSubmit(e, true)}>
         Delete
       </button>
     )

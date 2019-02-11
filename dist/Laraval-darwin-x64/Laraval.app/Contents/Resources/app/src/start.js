@@ -24,15 +24,6 @@ function createWindow() {
         slashes: true,
       }),
   )
-  
-  // session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-  //   callback({
-  //     responseHeaders: {
-  //       ...details.responseHeaders,
-  //       'Content-Security-Policy': ['script-src \'self\'']
-  //     }
-  //   })
-  // })
 
   mainWindow.webContents.openDevTools()
 
