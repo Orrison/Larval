@@ -1,42 +1,59 @@
-import React from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
 import '../../node_modules/bulma/css/bulma.css'
 import styles from './Vagrant.module.css'
 
-const Vagrant = ( props ) => {
+const uuidv1 = require('uuid/v1')
 
-    var classes
-    var text
-    switch (props.status) {
-        case 'offline':
-            classes = `is-success`
-            text = `Start`
-            break;
-        case 'processing':
-            classes = `is-info is-loading`
-            text = ``
-            break;
 
-        case 'online':
-            classes = `is-danger`
-            text = `Stop`
-            break
-        default:
+const Vagrant = (props) => {
+  const {
+    console,
+    clickToggle,
+    clickClear,
+    clickProv,
+    status,
+  } = props
+  let classes
+  let text
+  switch (status) {
+    case 'offline':
+      classes = 'is-success'
+      text = 'Start'
+      break
+    case 'processing':
+      classes = 'is-info is-loading'
+      text = ''
+      break
+
+    case 'online':
+      classes = 'is-danger'
+      text = 'Stop'
+      break
+    default:
             // code block
-    }
+  }
 
-    let consoleContent = props.console.map((item, index) => {
-        return <p key={index}>{item}</p>
-    })
+  const consoleContent = console.map(item => <p key={uuidv1}>{item}</p>)
 
   return (
     <div className={`${styles.Vagrant}`}>
-      <a className={`button is-pulled-left is-large ${classes}`} onClick={props.clickToggle} href='#'>{text}</a>
-      <a className={`button is-pulled-left is-large is-text`} onClick={props.clickClear} href='#'>Clear</a>
+      <button className={`button is-pulled-left is-large ${classes}`} onClick={clickToggle} type="button">{text}</button>
+      <button className="button is-pulled-left is-large is-text" onClick={clickClear} type="button">Clear</button>
+      <button className="button is-pulled-right is-large is-text" onClick={clickProv} type="button">Provison</button>
       <div id="vagrantConsole" className={`${styles.console}`}>
         {consoleContent}
       </div>
     </div>
-  );
+  )
 }
 
-export default Vagrant;
+Vagrant.propTypes = {
+  console: PropTypes.instanceOf(Array),
+  status: PropTypes.string,
+  clickToggle: PropTypes.func,
+  clickClear: PropTypes.func,
+  clickProv: PropTypes.func,
+}
+
+export default Vagrant
