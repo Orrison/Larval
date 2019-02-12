@@ -279,7 +279,7 @@ class App extends Component {
       
       consoleCommand.on('close', (code) => {
         let stdout = this.state.vagrantConsole
-        stdout.push(`---- We did it, YAY! ----`)
+        stdout.push(`---- Vagrant is now up ----`)
         this.setState({vagrantConsole: stdout})
         this.setState({vagrantStatus: 'online'})
         let scroll = document.getElementById("vagrantConsole")
@@ -309,7 +309,7 @@ class App extends Component {
       
       consoleCommand.on('close', (code) => {
         let stdout = this.state.vagrantConsole
-        stdout.push(`---- We did it, YAY! ----`)
+        stdout.push(`---- Vagrant is now down ----`)
         this.setState({vagrantConsole: stdout})
         this.setState({vagrantStatus: 'offline'})
         let scroll = document.getElementById("vagrantConsole")
@@ -321,6 +321,37 @@ class App extends Component {
 
   vagrantClear = () => {
     this.setState({vagrantConsole: []})
+  }
+
+  vagrantProvision = () => {
+    this.setState({vagrantStatus: 'processing'})
+
+    var consoleCommand = execute(`cd ${this.state.homesteadPath} && vagrant reload --provision`)
+
+    consoleCommand.stdout.on('data', (data) => {
+      let stdout = this.state.vagrantConsole
+      stdout.push(data)
+      this.setState({vagrantConsole: stdout})
+      let scroll = document.getElementById("vagrantConsole")
+      scroll.scrollTop = scroll.scrollHeight
+    })
+    
+    consoleCommand.stderr.on('data', (data) => {
+      let stdout = this.state.vagrantConsole
+      stdout.push(`stderr: ${data}`)
+      this.setState({vagrantConsole: stdout})
+      let scroll = document.getElementById("vagrantConsole")
+      scroll.scrollTop = scroll.scrollHeight
+    })
+    
+    consoleCommand.on('close', (code) => {
+      let stdout = this.state.vagrantConsole
+      stdout.push(`---- Provision Process Completed ----`)
+      this.setState({vagrantConsole: stdout})
+      this.setState({vagrantStatus: 'online'})
+      let scroll = document.getElementById("vagrantConsole")
+      scroll.scrollTop = scroll.scrollHeight
+    })
   }
 
   render() {
@@ -396,6 +427,7 @@ class App extends Component {
             <Vagrant
               clickToggle={this.vagrantToggle}
               clickClear={this.vagrantClear}
+              clickProv={this.vagrantProvision}
               status={this.state.vagrantStatus}
               console={this.state.vagrantConsole}
             />
