@@ -27,7 +27,7 @@ const settings = require('electron-settings')
 
 class App extends Component {
   state = {
-    yaml: jsYaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8')),
+    yaml: jsYaml.safeLoad(fs.readFileSync(`${settings.get('homestead_path')}/Homestead.yaml`, 'utf8')),
     homesteadPath: settings.get('homestead_path'),
     setHomesteadPathShow: false,
     homesteadSettingsShow: false,
@@ -118,7 +118,7 @@ class App extends Component {
     const { selectedSite, homesteadPath, yaml } = this.state
 
     const data = new FormData(event.target)
-    const doc = yaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8'))
+    const doc = jsYaml.safeLoad(fs.readFileSync(`${homesteadPath}/Homestead.yaml`, 'utf8'))
 
     const url = data.get('url')
     const path = data.get('path')
