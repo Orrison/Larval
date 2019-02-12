@@ -194,7 +194,7 @@ class App extends Component {
             hostsToString += line
           }
           i++
-        }.bind(this))
+        })
         lr.on('end', function () {
           resolve(hostsToString)
         })
