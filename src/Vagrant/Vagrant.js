@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import '../../node_modules/bulma/css/bulma.css'
 import styles from './Vagrant.module.css'
+
 const uuidv1 = require('uuid/v1')
 
 
