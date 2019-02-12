@@ -201,7 +201,6 @@ class App extends Component {
         })
       }))
       hostsLbl.then((hosts) => {
-        console.log(hosts)
         sudo.exec(`echo '${hosts}' > /etc/hosts`, options,
           (error, stdout, stderr) => {
             if (error) throw error
