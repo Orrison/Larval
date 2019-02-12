@@ -189,7 +189,7 @@ class App extends Component {
         let i = 1
         lr.on('line', function (line) {
           if (!line.includes(' ' + site)) {
-            if (i != 1) {
+            if (i !== 1) {
               hostsToString += '\n'
             }
             hostsToString += line
