@@ -257,9 +257,9 @@ class App extends Component {
     if (this.state.vagrantStatus === 'offline') {
       this.setState({vagrantStatus: 'processing'})
 
-      var consoleCommand = execute(`cd ${this.state.homesteadPath} && vagrant up`)
+      let vagrantUp = execute(`cd ${this.state.homesteadPath} && vagrant up`)
 
-      consoleCommand.stdout.on('data', (data) => {
+      vagrantUp.stdout.on('data', (data) => {
         let stdout = this.state.vagrantConsole
         stdout.push(data)
         this.setState({vagrantConsole: stdout})
@@ -267,7 +267,7 @@ class App extends Component {
         scroll.scrollTop = scroll.scrollHeight
       })
       
-      consoleCommand.stderr.on('data', (data) => {
+      vagrantUp.stderr.on('data', (data) => {
         // console.log(`stderr: ${data}`)
         let stdout = this.state.vagrantConsole
         stdout.push(`stderr: ${data}`)
@@ -276,7 +276,7 @@ class App extends Component {
         scroll.scrollTop = scroll.scrollHeight
       })
       
-      consoleCommand.on('close', (code) => {
+      vagrantUp.on('close', (code) => {
         let stdout = this.state.vagrantConsole
         stdout.push(`---- Vagrant is now up ----`)
         this.setState({vagrantConsole: stdout})
@@ -288,9 +288,9 @@ class App extends Component {
     } else if (this.state.vagrantStatus === 'online') {
       this.setState({vagrantStatus: 'processing'})
 
-      var consoleCommand = execute(`cd ${this.state.homesteadPath} && vagrant halt`)
+      let vagrantHalt = execute(`cd ${this.state.homesteadPath} && vagrant halt`)
 
-      consoleCommand.stdout.on('data', (data) => {
+      vagrantHalt.stdout.on('data', (data) => {
         let stdout = this.state.vagrantConsole
         stdout.push(data)
         this.setState({vagrantConsole: stdout})
@@ -298,7 +298,7 @@ class App extends Component {
         scroll.scrollTop = scroll.scrollHeight
       })
       
-      consoleCommand.stderr.on('data', (data) => {
+      vagrantHalt.stderr.on('data', (data) => {
         // console.log(`stderr: ${data}`)
         let stdout = this.state.vagrantConsole
         stdout.push(`stderr: ${data}`)
@@ -306,7 +306,7 @@ class App extends Component {
         scroll.scrollTop = scroll.scrollHeight
       })
       
-      consoleCommand.on('close', (code) => {
+      vagrantHalt.on('close', (code) => {
         let stdout = this.state.vagrantConsole
         stdout.push(`---- Vagrant is now down ----`)
         this.setState({vagrantConsole: stdout})
