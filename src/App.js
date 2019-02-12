@@ -225,6 +225,16 @@ class App extends Component {
     }
 
     this.setState({ siteEditShow: false })
+    // const newYaml = new Promise(((resolve, reject) => {
+    //   let load = jsYaml.safeLoad(fs.readFileSync(`${homesteadPath}/Homestead.yaml`, 'utf8'))
+    //   resolve(load)
+    // }))
+    // newYaml.then((yamlObj) => {
+    //   this.setState({
+    //     selectedSite: null,
+    //     yaml: yamlObj,
+    //   })
+    // })
   }
 
   // END Create New code
@@ -419,10 +429,10 @@ class App extends Component {
           {showSiteEdit}
 
           <SiteList
-            text={yaml.ip}
+            text={this.state.yaml.ip}
             click={this.siteEditOpenNew}
             listItemClick={this.selectSite}
-            list={yaml.sites}
+            list={this.state.yaml.sites}
           />
 
           <div className="column is-two-third">
