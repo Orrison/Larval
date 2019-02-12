@@ -5,7 +5,6 @@ import SettingsHeader from './SettingsHeader/index'
 import HomesteadPath from './HomesteadPath/index'
 import Vagrant from './Vagrant/index'
 import HomesteadSettings from './HomesteadSettings/index'
-import SiteSettings from './SiteSettings/index'
 
 import '../node_modules/bulma/css/bulma.css'
 import './App.css'
