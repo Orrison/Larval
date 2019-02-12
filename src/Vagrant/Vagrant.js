@@ -30,9 +30,9 @@ const Vagrant = ( props ) => {
 
   return (
     <div className={`${styles.Vagrant}`}>
-      <a className={`button is-pulled-left is-large ${classes}`} onClick={props.clickToggle} href='#'>{text}</a>
-      <a className={`button is-pulled-left is-large is-text`} onClick={props.clickClear} href='#'>Clear</a>
-      <a className={`button is-pulled-right is-large is-text`} onClick={props.clickProv} href='#'>Provison</a>
+      <button className={`button is-pulled-left is-large ${classes}`} onClick={props.clickToggle} href='#'>{text}</button>
+      <button className={`button is-pulled-left is-large is-text`} onClick={props.clickClear} href='#'>Clear</button>
+      <button className={`button is-pulled-right is-large is-text`} onClick={props.clickProv} href='#'>Provison</button>
       <div id="vagrantConsole" className={`${styles.console}`}>
         {consoleContent}
       </div>
