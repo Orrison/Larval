@@ -21,11 +21,13 @@
     "js-yaml": "^3.12.1",
     "line-by-line": "git+https://github.com/Orrison/line-by-line.git",
     "node-sass": "^4.11.0",
+    "prop-types": "^15.7.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-scripts": "2.1.3",
     "sudo-prompt": "git+https://github.com/Orrison/sudo-prompt-react-electron.git",
-    "time-stamp": "^2.2.0"
+    "time-stamp": "^2.2.0",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "nf start -p 3000",
