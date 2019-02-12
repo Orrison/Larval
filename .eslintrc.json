@@ -12,6 +12,7 @@
         "sourceType": "module"
     },
     "rules": {
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "no-const-assign": "warn",
         "no-this-before-super": "warn",
         "no-undef": "warn",
@@ -20,6 +21,7 @@
         "no-unused-vars": "warn",
         "constructor-super": "warn",
         "valid-typeof": "warn",
+        "no-param-reassign": [2, { "props": false }],
         "quotes": [
             2,
             "single"
