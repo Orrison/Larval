@@ -419,6 +419,7 @@ class App extends Component {
           ip={yaml.ip}
           memory={yaml.memory}
           cpus={yaml.cpus}
+          provider={yaml.provider}
         />
       )
     }
