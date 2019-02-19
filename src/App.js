@@ -179,6 +179,8 @@ class App extends Component {
       }
     })
 
+    this.setState({yaml: doc})
+
     if (del === true) {
       const lr = new Linebyline('/etc/hosts')
 
