@@ -20,6 +20,7 @@ const { app } = remote
 const execute = window.require('child_process').exec
 // const spawn = window.require('child_process').spawn
 const Linebyline = require('line-by-line')
+const fixPath = window.require('fix-path')
 
 const sudo = require('sudo-prompt')
 const timestamp = require('time-stamp')
@@ -27,7 +28,7 @@ const settings = require('electron-settings')
 
 class App extends Component {
   state = {
-    yaml: jsYaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8')),
+    yaml: jsYaml.safeLoad(fs.readFileSync(`${settings.get('homestead_path')}/Homestead.yaml`, 'utf8')),
     homesteadPath: settings.get('homestead_path'),
     setHomesteadPathShow: false,
     homesteadSettingsShow: false,
@@ -39,6 +40,8 @@ class App extends Component {
 
   componentDidMount() {
     console.log(this.state)
+
+    fixPath()
 
     const { homesteadPath } = this.state
 
@@ -118,7 +121,7 @@ class App extends Component {
     const { selectedSite, homesteadPath, yaml } = this.state
 
     const data = new FormData(event.target)
-    const doc = yaml.safeLoad(fs.readFileSync('/Users/kevinu/Homestead/Homestead.yaml', 'utf8'))
+    const doc = jsYaml.safeLoad(fs.readFileSync(`${homesteadPath}/Homestead.yaml`, 'utf8'))
 
     const url = data.get('url')
     const path = data.get('path')
@@ -176,6 +179,8 @@ class App extends Component {
       }
     })
 
+    this.setState({yaml: doc})
+
     if (del === true) {
       const lr = new Linebyline('/etc/hosts')
 
@@ -201,7 +206,6 @@ class App extends Component {
         })
       }))
       hostsLbl.then((hosts) => {
-        console.log(hosts)
         sudo.exec(`echo '${hosts}' > /etc/hosts`, options,
           (error, stdout, stderr) => {
             if (error) throw error
@@ -226,6 +230,16 @@ class App extends Component {
     }
 
     this.setState({ siteEditShow: false })
+    // const newYaml = new Promise(((resolve, reject) => {
+    //   let load = jsYaml.safeLoad(fs.readFileSync(`${homesteadPath}/Homestead.yaml`, 'utf8'))
+    //   resolve(load)
+    // }))
+    // newYaml.then((yamlObj) => {
+    //   this.setState({
+    //     selectedSite: null,
+    //     yaml: yamlObj,
+    //   })
+    // })
   }
 
   // END Create New code
@@ -420,10 +434,10 @@ class App extends Component {
           {showSiteEdit}
 
           <SiteList
-            text={yaml.ip}
+            text={this.state.yaml.ip}
             click={this.siteEditOpenNew}
             listItemClick={this.selectSite}
-            list={yaml.sites}
+            list={this.state.yaml.sites}
           />
 
           <div className="column is-two-third">
