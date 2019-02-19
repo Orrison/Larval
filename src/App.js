@@ -20,6 +20,7 @@ const { app } = remote
 const execute = window.require('child_process').exec
 // const spawn = window.require('child_process').spawn
 const Linebyline = require('line-by-line')
+const fixPath = window.require('fix-path')
 
 const sudo = require('sudo-prompt')
 const timestamp = require('time-stamp')
@@ -39,6 +40,8 @@ class App extends Component {
 
   componentDidMount() {
     console.log(this.state)
+
+    fixPath()
 
     const { homesteadPath } = this.state
 
