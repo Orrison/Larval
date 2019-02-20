@@ -3,24 +3,7 @@ import '../../node_modules/bulma/css/bulma.css'
 
 import './HomesteadSettings.module.css';
 
-const HtmlToReactParser = require('html-to-react').Parser
-
-
 const HomesteadSettings = (props) => {
-
-  let posProviders = ['virtualbox', 'vmware_fusion', 'vmware_workstation', 'parallel', 'hyper']
-
-  let provOptions = ''
-  posProviders.forEach( provider => {
-    provOptions += `<option value="${provider}"`
-    if (provider === props.provider) {
-      provOptions += ' selected="selected"'
-    }
-    provOptions += `>${provider}</option>`
-  })
-  const htmlToReactParser = new HtmlToReactParser()
-  const provOptionsJSX = htmlToReactParser.parse(provOptions)
-
   return (
     <div className='modal is-active has-text-centered'>
       <div className='modal-background'></div>
@@ -71,8 +54,12 @@ const HomesteadSettings = (props) => {
               <label className="label">Provider</label>
             </div>
             <div className="select">
-              <select name='provider'>
-                {provOptionsJSX}
+              <select name='provider' defaultValue={props.provider}>
+                <option value='virtualbox'>virtualbox</option>
+                <option value='vmware_fusion'>vmware_fusion</option>
+                <option value='vmware_workstation'>vmware_workstation</option>
+                <option value='parallel'>parallel</option>
+                <option value='hyper'>hyper</option>
               </select>
             </div>
           </div>
