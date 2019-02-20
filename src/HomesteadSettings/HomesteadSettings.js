@@ -12,8 +12,8 @@ const HomesteadSettings = (props) => {
         <form onSubmit={props.formSubmit}>
 
           <div className='field is-grouped'>
-            <div className="field-label is-small">
-              <label className="label">IP</label>
+            <div className="field-label is-medium">
+              <label className="label customLabel">IP</label>
             </div>
             <div className='control'>
               <input 
@@ -24,8 +24,8 @@ const HomesteadSettings = (props) => {
                 defaultValue={props.ip} 
               />
             </div>
-            <div className="field-label is-small">
-              <label className="label">Memory</label>
+            <div className="field-label is-medium">
+              <label className="label customLabel">Memory</label>
             </div>
             <div className='control'>
               <input 
@@ -38,8 +38,8 @@ const HomesteadSettings = (props) => {
             </div>
           </div>
           <div className="field is-grouped">
-            <div className="field-label is-small">
-              <label className="label">CPUs</label>
+            <div className="field-label is-medium">
+              <label className="label customLabel">CPUs</label>
             </div>
             <div className='control'>
               <input 
@@ -50,8 +50,8 @@ const HomesteadSettings = (props) => {
                 defaultValue={props.cpus} 
               />
             </div>
-            <div className="field-label is-small">
-              <label className="label">Provider</label>
+            <div className="field-label is-medium">
+              <label className="label customLabel">Provider</label>
             </div>
             <div className="select">
               <select name='provider' defaultValue={props.provider}>
