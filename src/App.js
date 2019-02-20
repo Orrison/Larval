@@ -10,6 +10,7 @@ import '../node_modules/bulma/css/bulma.css'
 import './App.css'
 
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
+import { vagrantGStatus } from './Util/VagrantHelpers'
 
 const electron = window.require('electron')
 const { remote } = electron
@@ -63,6 +64,10 @@ class App extends Component {
           this.setState({ vagrantStatus: 'offline' })
         }
       })
+
+    vagrantGStatus((id) => {
+      this.setState({vagrantID: id})
+    })
 
     // let openTerminalAtPath = spawn (`open -a Terminal ${this.state.homesteadPath}`, {shell:true})
     // openTerminalAtPath.on ('error', (err) => { console.log (err); })
