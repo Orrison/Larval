@@ -22,14 +22,14 @@ const CreateNew = ( props ) => {
       <form onSubmit={props.formSubmit}>
 
         <div className="field">
-          <label className={`label ${styles.customLabel}`}>URL</label>
+          <label className={`label customLabel`}>URL</label>
           <div className="control">
             <input name="url" className="input is-medium" type="text" placeholder="newsite.test" defaultValue={props.url}></input>
           </div>
         </div>
         
         <div className="field">
-          <label className={`label ${styles.customLabel}`}>Path</label>
+          <label className={`label customLabel`}>Path</label>
           <div className="control">
             <input name="path" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" defaultValue={props.path} onFocus={props.pathClick} />
           </div>

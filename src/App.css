@@ -17,3 +17,12 @@ h1 {
   align-self: center;
   margin: 0 auto;
 }
+
+label.customLabel {
+  color: #fff;
+  font-size: 26px;
+}
+
+.checkboxLabel:hover {
+  color: #fff;
+}
