@@ -230,16 +230,6 @@ class App extends Component {
     }
 
     this.setState({ siteEditShow: false })
-    // const newYaml = new Promise(((resolve, reject) => {
-    //   let load = jsYaml.safeLoad(fs.readFileSync(`${homesteadPath}/Homestead.yaml`, 'utf8'))
-    //   resolve(load)
-    // }))
-    // newYaml.then((yamlObj) => {
-    //   this.setState({
-    //     selectedSite: null,
-    //     yaml: yamlObj,
-    //   })
-    // })
   }
 
   // END Create New code
@@ -254,12 +244,51 @@ class App extends Component {
 
   submitHomesteadSettings = (event) => {
     event.preventDefault()
+    
+    const { homesteadPath } = this.state
 
-    // const data = new FormData(event.target)
+    const data = new FormData(event.target)
+    const doc = jsYaml.safeLoad(fs.readFileSync(`${homesteadPath}/Homestead.yaml`, 'utf8'))
 
-    // const ip = data.get('ip');
-    // const memory = data.get('memory');
-    // const cpus = data.get('cpus');
+    const ip = data.get('ip');
+    const memory = data.get('memory');
+    const cpus = data.get('cpus');
+    const provider = data.get('provider');
+
+    const backupYaml = data.get('backupYaml')
+    const time = timestamp('YYYYMMDDHHmmss')
+    const options = {
+      name: 'Larval',
+    }
+
+    doc.ip = ip
+    doc.memory = memory
+    doc.cpus = cpus
+    doc.provider = provider
+
+    if (backupYaml) {
+      execute(`cp ${homesteadPath}/Homestead.yaml ${app.getPath('documents')}/Homestead.yaml.${time}.larval.bak`, options,
+        (error, stdout, stderr) => {
+          if (error) throw error
+          console.log(`stdout: ${stdout}`)
+        })
+    }
+
+    fs.writeFile(`${homesteadPath}/Homestead.yaml`, jsYaml.safeDump(doc, {
+      styles: {
+        '!!null': 'canonical', // dump null as ~
+      },
+      sortKeys: false, // sort object keys
+    }), (err) => {
+      if (err) {
+        console.log(`An error ocurred creating the file ${err.message}`)
+      }
+    })
+
+    this.setState({yaml: doc})
+
+    this.setState({homesteadSettingsShow: false})
+
   }
 
   // END HomesteadSettings
@@ -417,7 +446,7 @@ class App extends Component {
       showHomsteadSettings = (
         <HomesteadSettings
           close={this.toggleHomesteadSettings}
-          formSubmit={this.submitCreateNew}
+          formSubmit={this.submitHomesteadSettings}
           ip={yaml.ip}
           memory={yaml.memory}
           cpus={yaml.cpus}

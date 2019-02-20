@@ -1,7 +1,8 @@
-/*
- * HomesteadSettings CSS File
-*/
+.customSubmit {
+    margin: 0 auto;
+    display: block;
+}
 
- .HomesteadSettings {
-  /* propertys here */
- }
+.checkboxes {
+    margin-right: 10px;
+}

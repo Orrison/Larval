@@ -1,7 +1,7 @@
 import React from 'react'
 import '../../node_modules/bulma/css/bulma.css'
 
-import './HomesteadSettings.module.css';
+import styles from './HomesteadSettings.module.css';
 
 const HomesteadSettings = (props) => {
   return (
@@ -63,6 +63,17 @@ const HomesteadSettings = (props) => {
               </select>
             </div>
           </div>
+
+          <div className="field">
+            <label className={`checkbox ${styles.checkboxLabel}`}>
+              <input type="checkbox" className={`tooltip ${styles.checkboxes}`} name='backupYaml' data-tooltip='Saves backup to your documents folder' />
+                Backup my Homestead.yaml
+            </label>
+          </div>
+
+          <button id="homestead-settings-submit" className={`button is-link is-large ${styles.customSubmit}`}>
+            Save
+          </button>
 
         </form>
       </div>
