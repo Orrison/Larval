@@ -1,7 +1,7 @@
 const execute = window.require('child_process').exec
 
 export const vagrantGStatus = (callback) => {
-    execute(`vagrant global-status`,
+    execute(`vagrant global-status --prune`,
       (error, stdout, stderr) => {
         if (error) throw error
         // const vGlobalID = stdout.match("/\-\n([\s\S]*?)(?=\s)/g")
