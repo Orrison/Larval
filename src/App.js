@@ -9,6 +9,8 @@ import HomesteadSettings from './HomesteadSettings/index'
 import '../node_modules/bulma/css/bulma.css'
 import './App.css'
 
+import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
+
 const electron = window.require('electron')
 const { remote } = electron
 // const BrowserWindow = electron.remote.BrowserWindow;
@@ -161,11 +163,7 @@ class App extends Component {
     }
 
     if (backupYaml) {
-      execute(`cp ${homesteadPath}/Homestead.yaml ${app.getPath('documents')}/Homestead.yaml.${time}.larval.bak`, options,
-        (error, stdout, stderr) => {
-          if (error) throw error
-          console.log(`stdout: ${stdout}`)
-        })
+      homesteadYamlBackup(homesteadPath)
     }
 
     fs.writeFile(`${homesteadPath}/Homestead.yaml`, jsYaml.safeDump(doc, {
