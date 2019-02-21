@@ -485,7 +485,7 @@ class App extends Component {
               clickClear={this.vagrantClear}
               clickProv={this.vagrantProvision}
               status={vagrantStatus}
-              console={vagrantConsole}
+              vConsole={vagrantConsole}
             />
           </div>
         </div>

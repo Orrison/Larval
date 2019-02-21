@@ -4,11 +4,11 @@ import '../../node_modules/bulma/css/bulma.css'
 import styles from './Vagrant.module.css'
 
 const uuidv1 = require('uuid/v1')
-
+const uuid = require('random-uuid-v4')
 
 const Vagrant = (props) => {
   const {
-    console,
+    vConsole,
     clickToggle,
     clickClear,
     clickProv,
@@ -34,7 +34,7 @@ const Vagrant = (props) => {
             // code block
   }
 
-  const consoleContent = console.map(item => <p key={uuidv1}>{item}</p>)
+  const consoleContent = vConsole.map(item => <p key={uuid()}>{item}</p>)
 
   return (
     <div className={`${styles.Vagrant}`}>
