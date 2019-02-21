@@ -16,8 +16,7 @@ export const homesteadYamlBackup = (homesteadPath) => {
     execute(`cp ${homesteadPath}/Homestead.yaml ${app.getPath('documents')}/Homestead.yaml.${time}.larval.bak`, options,
         (error, stdout, stderr) => {
           if (error) {
-            console.log(`stdout: ${error}`)
-            console.log(`stdout: ${stderr}`)
+            if (error) throw error
           }
     })
 }
