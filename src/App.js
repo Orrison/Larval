@@ -10,7 +10,7 @@ import '../node_modules/bulma/css/bulma.css'
 import './App.css'
 
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
-import { vagrantGStatus } from './Util/VagrantHelpers'
+import { getVagrantID } from './Util/VagrantHelpers'
 
 const electron = window.require('electron')
 const { remote } = electron
@@ -60,14 +60,13 @@ class App extends Component {
         if (error) throw error
         if (stdout.includes('running')) {
           this.setState({ vagrantStatus: 'online' })
+          getVagrantID((id) => {
+            this.setState({vagrantID: id})
+          })
         } else {
           this.setState({ vagrantStatus: 'offline' })
         }
       })
-
-    vagrantGStatus((id) => {
-      this.setState({vagrantID: id})
-    })
 
     // let openTerminalAtPath = spawn (`open -a Terminal ${this.state.homesteadPath}`, {shell:true})
     // openTerminalAtPath.on ('error', (err) => { console.log (err); })
@@ -326,6 +325,9 @@ class App extends Component {
         stdout.push('---- Vagrant is now up ----')
         this.setState({ vagrantConsole: stdout })
         this.setState({ vagrantStatus: 'online' })
+        getVagrantID((id) => {
+          this.setState({vagrantID: id})
+        })
         const scroll = document.getElementById('vagrantConsole')
         scroll.scrollTop = scroll.scrollHeight
       })

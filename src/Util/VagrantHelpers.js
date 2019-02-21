@@ -1,6 +1,6 @@
 const execute = window.require('child_process').exec
 
-export const vagrantGStatus = (callback) => {
+export const getVagrantID = (callback) => {
     execute(`vagrant global-status --prune`,
       (error, stdout, stderr) => {
         if (error) throw error
