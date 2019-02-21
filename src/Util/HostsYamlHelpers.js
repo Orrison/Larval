@@ -12,8 +12,9 @@ export const homesteadYamlBackup = (homesteadPath) => {
     const options = {
         name: 'Larval',
     }
+    const docPath = app.getPath('documents')
 
-    execute(`cp ${homesteadPath}/Homestead.yaml ${app.getPath('documents')}/Homestead.yaml.${time}.larval.bak`, options,
+    execute(`cd ${docPath} && mkdir -p larvalbackup && cp ${homesteadPath}/Homestead.yaml ${docPath}/larvalbackup/Homestead.yaml.${time}.larval.bak`, options,
         (error, stdout, stderr) => {
           if (error) {
             if (error) throw error
