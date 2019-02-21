@@ -14,7 +14,11 @@ function createWindow() {
 
   fixPath()
 
-  mainWindow = new BrowserWindow({ width: 800, height: 600, webPreferences: { nodeIntegration: true }, minHeight: 422, minWidth: 400 })
+  mainWindow = new BrowserWindow({ width: 800, height: 600, webPreferences: { nodeIntegration: true }, minHeight: 422, minWidth: 400, show: false })
+
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
+  })
 
   mainWindow.loadURL(
     process.env.ELECTRON_START_URL
