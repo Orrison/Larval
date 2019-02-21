@@ -20,6 +20,7 @@
     "jquery": "^3.3.1",
     "js-yaml": "^3.12.1",
     "line-by-line": "git+https://github.com/Orrison/line-by-line.git",
+    "logrocket": "^0.6.19",
     "prop-types": "^15.7.2",
     "random-uuid-v4": "0.0.8",
     "react": "^16.8.2",
