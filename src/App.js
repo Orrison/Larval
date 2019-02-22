@@ -4,6 +4,7 @@ import CreateNew from './CreateNew/index'
 import SettingsHeader from './SettingsHeader/index'
 import HomesteadPath from './HomesteadPath/index'
 import Vagrant from './Vagrant/index'
+import Vterminal from './Vterminal/Vterminal'
 import HomesteadSettings from './HomesteadSettings/index'
 
 import '../node_modules/bulma/css/bulma.css'
@@ -24,7 +25,7 @@ const jsYaml = require('js-yaml')
 const { dialog } = remote
 const { app } = remote
 const execute = window.require('child_process').exec
-// const spawn = window.require('child_process').spawn
+const spawn = window.require('child_process').spawn
 const Linebyline = require('line-by-line')
 const fixPath = window.require('fix-path')
 
@@ -42,6 +43,9 @@ class App extends Component {
     selectedSite: null,
     vagrantStatus: 'processing',
     vagrantConsole: [],
+    vagrantSSH: null,
+    vagrantID: null,
+    sshToggle: false
   }
 
   componentDidMount() {
@@ -366,6 +370,22 @@ class App extends Component {
     }
   }
 
+  vagrantConsoleAdd = (line) => {
+    const curConsole = this.state.vagrantConsole
+    curConsole.push(`${line}`)
+    this.setState({ vagrantConsole: curConsole })
+    const scroll = document.getElementById('vagrantConsole')
+    scroll.scrollTop = scroll.scrollHeight
+  }
+
+  vagrantCommand = (cmd) => {
+    this.vagrantConsoleAdd(cmd)
+
+    this.state.vagrantSSH.stdin.setEncoding('utf-8')
+
+    this.state.vagrantSSH.stdin.write(`${cmd}\n`)
+  }
+
   vagrantClear = () => {
     this.setState({ vagrantConsole: [] })
   }
@@ -403,7 +423,31 @@ class App extends Component {
     })
   }
 
+  sshToggle = (id) => {
+    const { vagrantSSH } = this.state
+    if ( vagrantSSH === null ){
+      this.setState({vagrantSSH: spawn(`vagrant ssh ${id}`, {shell:true})})
+    } else {
+      this.setState({vagrantSSH: null})
+    }
+  }
+
   render() {
+
+    if (this.state.vagrantSSH !== null) {
+      this.state.vagrantSSH.stdout.on('data', function (data) {
+        {this.vagrantConsoleAdd(data)}
+      }.bind(this))
+
+      this.state.vagrantSSH.stderr.on('data', function (data) {
+        {this.vagrantConsoleAdd(`stderr: ${data}`)}
+      }.bind(this))
+      
+      // this.state.vagrantSSH.on('exit', function (code) {
+      //   // console.log('child process exited with code ' + code)
+      // }.bind(this))
+    }
+
     const {
       setHomesteadPathShow,
       selectedSite,
@@ -412,6 +456,7 @@ class App extends Component {
       homesteadSettingsShow,
       vagrantConsole,
       vagrantStatus,
+      vagrantID,
     } = this.state
 
     let showHomesteadPath = null
@@ -489,6 +534,9 @@ class App extends Component {
               clickProv={this.vagrantProvision}
               status={vagrantStatus}
               vConsole={vagrantConsole}
+              vagrantId={vagrantID}
+              SshToggle={this.sshToggle}
+              vagrantCommand={this.vagrantCommand}
             />
           </div>
         </div>

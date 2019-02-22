@@ -1,5 +1,5 @@
 .Vagrant {
-    height: 85vh;
+    height: 77vh;
     background: #000;
 }
 .Vagrant button {
@@ -9,7 +9,7 @@
     background: #000;
     overflow-y: scroll;
     clear: both;
-    height: 75vh;
+    height: 67vh;
 }
 
 .console p {

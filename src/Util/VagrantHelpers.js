@@ -1,4 +1,5 @@
 const execute = window.require('child_process').exec
+const spawn = window.require('child_process').spawn
 
 export const getVagrantID = (callback) => {
     execute(`vagrant global-status --prune`,
@@ -18,4 +19,26 @@ export const getVagrantID = (callback) => {
         }
       }
     )
+}
+
+export const vagrantSSH = (id) => {
+  let openTerminalAtPath = spawn(`vagrant ssh ${id}`, {shell:true})
+
+  openTerminalAtPath.stdout.on('data', function (data) {
+    console.log('stdout: ' + data)
+  })
+  
+  openTerminalAtPath.stderr.on('data', function (data) {
+    console.log('stderr: ' + data)
+  })
+  
+  openTerminalAtPath.on('exit', function (code) {
+    console.log('child process exited with code ' + code)
+  })
+
+  openTerminalAtPath.stdin.setEncoding('utf-8')
+
+  openTerminalAtPath.stdin.write("ls\n")
+
+  openTerminalAtPath.stdin.end()
 }
