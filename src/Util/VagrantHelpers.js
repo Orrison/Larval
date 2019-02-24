@@ -22,23 +22,5 @@ export const getVagrantID = (callback) => {
 }
 
 export const vagrantSSH = (id) => {
-  let openTerminalAtPath = spawn(`vagrant ssh ${id}`, {shell:true})
-
-  openTerminalAtPath.stdout.on('data', function (data) {
-    console.log('stdout: ' + data)
-  })
-  
-  openTerminalAtPath.stderr.on('data', function (data) {
-    console.log('stderr: ' + data)
-  })
-  
-  openTerminalAtPath.on('exit', function (code) {
-    console.log('child process exited with code ' + code)
-  })
-
-  openTerminalAtPath.stdin.setEncoding('utf-8')
-
-  openTerminalAtPath.stdin.write("ls\n")
-
-  openTerminalAtPath.stdin.end()
+  execute(`osascript -e 'tell application "Terminal" to activate' -e 'tell application "System Events" to tell process "Terminal" to keystroke "t" using command down' -e 'tell application "System Events" to tell process "Terminal" to keystroke "vagrant ssh ${id}"' -e 'tell application "System Events" to tell process "Terminal" to keystroke return'`)
 }

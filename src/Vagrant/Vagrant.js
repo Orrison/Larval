@@ -4,8 +4,7 @@ import '../../node_modules/bulma/css/bulma.css'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import styles from './Vagrant.module.css'
-// import { vagrantSSH } from '../Util/VagrantHelpers'
-import ConsoleInput from './ConsoleInput/ConsoleInput'
+import { vagrantSSH } from '../Util/VagrantHelpers'
 
 const uuid = require('random-uuid-v4')
 
@@ -44,7 +43,7 @@ const Vagrant = (props) => {
   let sshButton = null
   if (vagrantId != null) {
     sshButton = (
-      <button className="button is-pulled-right is-large is-text" onClick={() => SshToggle(vagrantId)} type="button">SSH</button>
+      <button className="button is-pulled-right is-large is-text" onClick={() => vagrantSSH(vagrantId)} type="button">SSH</button>
     )
   }
 
@@ -61,7 +60,7 @@ const Vagrant = (props) => {
           {consoleContent}
         </pre>
       </div>
-      <ConsoleInput 
+      {/* <ConsoleInput 
         style={{
           width: "100%",
           padding: "0 10px 0 10px",
@@ -73,7 +72,7 @@ const Vagrant = (props) => {
           border: "none",
         }}
         vagrantCommand={props.vagrantCommand}
-      />
+      /> */}
     </div>
   )
 }

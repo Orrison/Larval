@@ -10,7 +10,7 @@ import '../node_modules/bulma/css/bulma.css'
 import './App.css'
 
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
-import { getVagrantID } from './Util/VagrantHelpers'
+import { getVagrantID, vagrantSSH } from './Util/VagrantHelpers'
 
 import LogRocket from 'logrocket';
 LogRocket.init('znliqd/larval')
@@ -73,9 +73,6 @@ class App extends Component {
           this.setState({ vagrantStatus: 'offline' })
         }
       })
-
-    // let openTerminalAtPath = spawn (`open -a Terminal ${this.state.homesteadPath}`, {shell:true})
-    // openTerminalAtPath.on ('error', (err) => { console.log (err); })
   }
 
   selectSite = (id) => {
@@ -377,13 +374,13 @@ class App extends Component {
     scroll.scrollTop = scroll.scrollHeight
   }
 
-  vagrantCommand = (cmd) => {
-    this.vagrantConsoleAdd(cmd)
+  // vagrantCommand = (cmd) => {
+  //   this.vagrantConsoleAdd(cmd)
 
-    this.state.vagrantSSH.stdin.setEncoding('utf-8')
+  //   this.state.vagrantSSH.stdin.setEncoding('utf-8')
 
-    this.state.vagrantSSH.stdin.write(`${cmd}\n`)
-  }
+  //   this.state.vagrantSSH.stdin.write(`${cmd}\n`)
+  // }
 
   vagrantClear = () => {
     this.setState({ vagrantConsole: [] })
@@ -422,37 +419,37 @@ class App extends Component {
     })
   }
 
-  sshToggle = (id) => {
-    const { vagrantSSH } = this.state
-    if ( vagrantSSH === null ){
-      this.setState({vagrantSSH: spawn(`vagrant ssh ${id}`, {shell:true})}, () => {
+  // sshToggle = (id) => {
+  //   const { vagrantSSH } = this.state
+  //   if ( vagrantSSH === null ){
+  //     this.setState({vagrantSSH: spawn(`vagrant ssh ${id}`, {shell:true})}, () => {
 
-        this.state.vagrantSSH.stdout.on('data', function (data) {
+  //       this.state.vagrantSSH.stdout.on('data', function (data) {
 
-          let lineBuffer = data.toString()
+  //         let lineBuffer = data.toString()
 
-          var lines = lineBuffer.split("\n")
+  //         var lines = lineBuffer.split("\n")
 
-          for (var i = 0; i < lines.length - 1; i++) {
+  //         for (var i = 0; i < lines.length - 1; i++) {
 
-              var line = lines[i]
+  //             var line = lines[i]
 
-              this.vagrantConsoleAdd(line)
-          }
-        }.bind(this))
+  //             this.vagrantConsoleAdd(line)
+  //         }
+  //       }.bind(this))
   
-        this.state.vagrantSSH.stderr.on('data', function (data) {
-          this.vagrantConsoleAdd(`stderr: ${data}`)
-        }.bind(this))
+  //       this.state.vagrantSSH.stderr.on('data', function (data) {
+  //         this.vagrantConsoleAdd(`stderr: ${data}`)
+  //       }.bind(this))
         
-        // this.state.vagrantSSH.on('exit', function (code) {
-        //   // console.log('child process exited with code ' + code)
-        // }.bind(this))
-      })
-    } else {
-      this.setState({vagrantSSH: null})
-    }
-  }
+  //       // this.state.vagrantSSH.on('exit', function (code) {
+  //       //   // console.log('child process exited with code ' + code)
+  //       // }.bind(this))
+  //     })
+  //   } else {
+  //     this.setState({vagrantSSH: null})
+  //   }
+  // }
 
   render() {
 
