@@ -10,7 +10,7 @@ import '../node_modules/bulma/css/bulma.css'
 import './App.css'
 
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
-import { getVagrantID, vagrantSSH } from './Util/VagrantHelpers'
+import { getVagrantID } from './Util/VagrantHelpers'
 
 import LogRocket from 'logrocket';
 LogRocket.init('znliqd/larval')
@@ -24,7 +24,7 @@ const jsYaml = require('js-yaml')
 const { dialog } = remote
 const { app } = remote
 const execute = window.require('child_process').exec
-const spawn = window.require('child_process').spawn
+// const spawn = window.require('child_process').spawn
 const Linebyline = require('line-by-line')
 const fixPath = window.require('fix-path')
 
@@ -42,9 +42,7 @@ class App extends Component {
     selectedSite: null,
     vagrantStatus: 'processing',
     vagrantConsole: [],
-    vagrantSSH: null,
     vagrantID: null,
-    sshToggle: false
   }
 
   componentDidMount() {
