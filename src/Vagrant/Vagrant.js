@@ -54,11 +54,7 @@ const Vagrant = (props) => {
       <button className="button is-pulled-right is-large is-text" onClick={clickProv} type="button">Provison</button>
       {sshButton}
       <div id="vagrantConsole" className={`${styles.console}`}>
-        <pre css={css`
-          background-color: #000;
-        `}>
           {consoleContent}
-        </pre>
       </div>
       {/* <ConsoleInput 
         style={{
