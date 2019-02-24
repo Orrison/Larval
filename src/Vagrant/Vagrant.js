@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import '../../node_modules/bulma/css/bulma.css'
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import styles from './Vagrant.module.css'
 // import { vagrantSSH } from '../Util/VagrantHelpers'
 import ConsoleInput from './ConsoleInput/ConsoleInput'
@@ -37,7 +39,7 @@ const Vagrant = (props) => {
             // code block
   }
 
-  const consoleContent = vConsole.map(item => <p key={uuid()}>{`${item}\n`}</p>)
+  const consoleContent = vConsole.map(item => <p key={uuid()}>{`${item}`}</p>)
 
   let sshButton = null
   if (vagrantId != null) {
@@ -53,14 +55,18 @@ const Vagrant = (props) => {
       <button className="button is-pulled-right is-large is-text" onClick={clickProv} type="button">Provison</button>
       {sshButton}
       <div id="vagrantConsole" className={`${styles.console}`}>
-        {consoleContent}
+        <pre css={css`
+          background-color: #000;
+        `}>
+          {consoleContent}
+        </pre>
       </div>
       <ConsoleInput 
         style={{
           width: "100%",
           padding: "0 10px 0 10px",
           margin: "0",
-          height: "8vh",
+          height: "10vh",
           fontSize: "16px",
           backgroundColor: "#000",
           color: "green",
