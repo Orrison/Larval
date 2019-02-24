@@ -15,7 +15,6 @@ const Vagrant = (props) => {
     clickClear,
     clickProv,
     status,
-    SshToggle,
     vagrantId,
   } = props
   let classes
@@ -56,19 +55,6 @@ const Vagrant = (props) => {
       <div id="vagrantConsole" className={`${styles.console}`}>
           {consoleContent}
       </div>
-      {/* <ConsoleInput 
-        style={{
-          width: "100%",
-          padding: "0 10px 0 10px",
-          margin: "0",
-          height: "10vh",
-          fontSize: "16px",
-          backgroundColor: "#000",
-          color: "green",
-          border: "none",
-        }}
-        vagrantCommand={props.vagrantCommand}
-      /> */}
     </div>
   )
 }

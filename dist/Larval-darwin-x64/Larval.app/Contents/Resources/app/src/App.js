@@ -10,7 +10,7 @@ import '../node_modules/bulma/css/bulma.css'
 import './App.css'
 
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
-import { getVagrantID, vagrantSSH } from './Util/VagrantHelpers'
+import { getVagrantID } from './Util/VagrantHelpers'
 
 import LogRocket from 'logrocket';
 LogRocket.init('znliqd/larval')
@@ -24,7 +24,7 @@ const jsYaml = require('js-yaml')
 const { dialog } = remote
 const { app } = remote
 const execute = window.require('child_process').exec
-const spawn = window.require('child_process').spawn
+// const spawn = window.require('child_process').spawn
 const Linebyline = require('line-by-line')
 const fixPath = window.require('fix-path')
 
@@ -42,9 +42,7 @@ class App extends Component {
     selectedSite: null,
     vagrantStatus: 'processing',
     vagrantConsole: [],
-    vagrantSSH: null,
     vagrantID: null,
-    sshToggle: false
   }
 
   componentDidMount() {
@@ -216,7 +214,6 @@ class App extends Component {
         sudo.exec(`echo '${hosts}' > /etc/hosts`, options,
           (error, stdout, stderr) => {
             if (error) throw error
-            console.log(`stdout: ${stdout}`)
           })
       })
     } else {
@@ -234,11 +231,13 @@ class App extends Component {
       sudo.exec($command, options,
         (error, stdout, stderr) => {
           if (error) throw error
-          console.log(`stdout:  ${stdout}`)
         })
     }
 
-    this.setState({ siteEditShow: false })
+    this.setState({
+      siteEditShow: false,
+      selectedSite: null,
+    })
   }
 
   // END Create New code
@@ -279,7 +278,6 @@ class App extends Component {
       execute(`cp ${homesteadPath}/Homestead.yaml ${app.getPath('documents')}/Homestead.yaml.${time}.larval.bak`, options,
         (error, stdout, stderr) => {
           if (error) throw error
-          console.log(`stdout: ${stdout}`)
         })
     }
 
@@ -311,20 +309,23 @@ class App extends Component {
       const vagrantUp = execute(`cd ${homesteadPath} && vagrant up`)
 
       vagrantUp.stdout.on('data', (data) => {
-        const stdout = vagrantConsole
-        stdout.push(data)
-        this.setState({ vagrantConsole: stdout })
-        const scroll = document.getElementById('vagrantConsole')
-        scroll.scrollTop = scroll.scrollHeight
+        let lineBuffer = data.toString()
+
+        let lines = lineBuffer.split("\n")
+        for (let i = 0; i < lines.length - 1; i++) {
+            let line = lines[i]
+            this.vagrantConsoleAdd(line)
+        }
       })
 
       vagrantUp.stderr.on('data', (data) => {
-        // console.log(`stderr: ${data}`)
-        const stdout = vagrantConsole
-        stdout.push(`stderr: ${data}`)
-        this.setState({ vagrantConsole: stdout })
-        const scroll = document.getElementById('vagrantConsole')
-        scroll.scrollTop = scroll.scrollHeight
+        let lineBuffer = data.toString()
+
+        let lines = lineBuffer.split("\n")
+        for (let i = 0; i < lines.length - 1; i++) {
+            let line = lines[i]
+            this.vagrantConsoleAdd(line)
+        }
       })
 
       vagrantUp.on('close', (code) => {
@@ -352,7 +353,6 @@ class App extends Component {
       })
 
       vagrantHalt.stderr.on('data', (data) => {
-        // console.log(`stderr: ${data}`)
         const stdout = vagrantConsole
         stdout.push(`stderr: ${data}`)
         const scroll = document.getElementById('vagrantConsole')
@@ -377,14 +377,6 @@ class App extends Component {
     const scroll = document.getElementById('vagrantConsole')
     scroll.scrollTop = scroll.scrollHeight
   }
-
-  // vagrantCommand = (cmd) => {
-  //   this.vagrantConsoleAdd(cmd)
-
-  //   this.state.vagrantSSH.stdin.setEncoding('utf-8')
-
-  //   this.state.vagrantSSH.stdin.write(`${cmd}\n`)
-  // }
 
   vagrantClear = () => {
     this.setState({ vagrantConsole: [] })
@@ -422,38 +414,6 @@ class App extends Component {
       scroll.scrollTop = scroll.scrollHeight
     })
   }
-
-  // sshToggle = (id) => {
-  //   const { vagrantSSH } = this.state
-  //   if ( vagrantSSH === null ){
-  //     this.setState({vagrantSSH: spawn(`vagrant ssh ${id}`, {shell:true})}, () => {
-
-  //       this.state.vagrantSSH.stdout.on('data', function (data) {
-
-  //         let lineBuffer = data.toString()
-
-  //         var lines = lineBuffer.split("\n")
-
-  //         for (var i = 0; i < lines.length - 1; i++) {
-
-  //             var line = lines[i]
-
-  //             this.vagrantConsoleAdd(line)
-  //         }
-  //       }.bind(this))
-  
-  //       this.state.vagrantSSH.stderr.on('data', function (data) {
-  //         this.vagrantConsoleAdd(`stderr: ${data}`)
-  //       }.bind(this))
-        
-  //       // this.state.vagrantSSH.on('exit', function (code) {
-  //       //   // console.log('child process exited with code ' + code)
-  //       // }.bind(this))
-  //     })
-  //   } else {
-  //     this.setState({vagrantSSH: null})
-  //   }
-  // }
 
   render() {
 
