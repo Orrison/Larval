@@ -39,12 +39,19 @@ const Vagrant = (props) => {
 
   const consoleContent = vConsole.map(item => <p key={uuid()}>{`${item}\n`}</p>)
 
+  let sshButton = null
+  if (vagrantId != null) {
+    sshButton = (
+      <button className="button is-pulled-right is-large is-text" onClick={() => SshToggle(vagrantId)} type="button">SSH</button>
+    )
+  }
+
   return (
     <div className={`${styles.Vagrant}`}>
       <button className={`button is-pulled-left is-large ${classes}`} onClick={clickToggle} type="button">{text}</button>
       <button className="button is-pulled-left is-large is-text" onClick={clickClear} type="button">Clear</button>
-      <button className="button is-pulled-left is-large is-text" onClick={clickProv} type="button">Provison</button>
-      <button className="button is-pulled-left is-large is-text" onClick={() => SshToggle(vagrantId)} type="button">SSH</button>
+      <button className="button is-pulled-right is-large is-text" onClick={clickProv} type="button">Provison</button>
+      {sshButton}
       <div id="vagrantConsole" className={`${styles.console}`}>
         {consoleContent}
       </div>

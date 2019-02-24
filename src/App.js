@@ -4,7 +4,6 @@ import CreateNew from './CreateNew/index'
 import SettingsHeader from './SettingsHeader/index'
 import HomesteadPath from './HomesteadPath/index'
 import Vagrant from './Vagrant/index'
-import Vterminal from './Vterminal/Vterminal'
 import HomesteadSettings from './HomesteadSettings/index'
 
 import '../node_modules/bulma/css/bulma.css'
@@ -426,27 +425,25 @@ class App extends Component {
   sshToggle = (id) => {
     const { vagrantSSH } = this.state
     if ( vagrantSSH === null ){
-      this.setState({vagrantSSH: spawn(`vagrant ssh ${id}`, {shell:true})})
+      this.setState({vagrantSSH: spawn(`vagrant ssh ${id}`, {shell:true})}, () => {
+        this.state.vagrantSSH.stdout.on('data', function (data) {
+          this.vagrantConsoleAdd(data)
+        }.bind(this))
+  
+        this.state.vagrantSSH.stderr.on('data', function (data) {
+          this.vagrantConsoleAdd(`stderr: ${data}`)
+        }.bind(this))
+        
+        // this.state.vagrantSSH.on('exit', function (code) {
+        //   // console.log('child process exited with code ' + code)
+        // }.bind(this))
+      })
     } else {
       this.setState({vagrantSSH: null})
     }
   }
 
   render() {
-
-    if (this.state.vagrantSSH !== null) {
-      this.state.vagrantSSH.stdout.on('data', function (data) {
-        {this.vagrantConsoleAdd(data)}
-      }.bind(this))
-
-      this.state.vagrantSSH.stderr.on('data', function (data) {
-        {this.vagrantConsoleAdd(`stderr: ${data}`)}
-      }.bind(this))
-      
-      // this.state.vagrantSSH.on('exit', function (code) {
-      //   // console.log('child process exited with code ' + code)
-      // }.bind(this))
-    }
 
     const {
       setHomesteadPathShow,
