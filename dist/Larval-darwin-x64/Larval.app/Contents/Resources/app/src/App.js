@@ -34,8 +34,8 @@ const settings = require('electron-settings')
 
 class App extends Component {
   state = {
-    yaml: jsYaml.safeLoad(fs.readFileSync(`${settings.get('homestead_path')}/Homestead.yaml`, 'utf8')),
-    homesteadPath: settings.get('homestead_path'),
+    yaml: null,
+    homesteadPath: null,
     setHomesteadPathShow: false,
     homesteadSettingsShow: false,
     siteEditShow: false,
@@ -48,31 +48,33 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log(this.state)
-
     fixPath()
-
-    const { homesteadPath } = this.state
 
     // settings.delete('homestead_path')
 
-    // Show the window to set homesteadPath if it is not already set
-    if (!homesteadPath) {
+    if (settings.get('homestead_path') === undefined) {
       this.setState({ setHomesteadPathShow: true })
-    }
+    } else {
+      this.setState({
+        yaml: jsYaml.safeLoad(fs.readFileSync(`${settings.get('homestead_path')}/Homestead.yaml`, 'utf8')),
+        homesteadPath: settings.get('homestead_path')
+      }, () => {
+        const { homesteadPath } = this.state
 
-    execute(`cd ${homesteadPath} && vagrant status`,
-      (error, stdout, stderr) => {
-        if (error) throw error
-        if (stdout.includes('running')) {
-          this.setState({ vagrantStatus: 'online' })
-          getVagrantID((id) => {
-            this.setState({vagrantID: id})
+        execute(`cd ${homesteadPath} && vagrant status`,
+          (error, stdout, stderr) => {
+            if (error) throw error
+            if (stdout.includes('running')) {
+              this.setState({ vagrantStatus: 'online' })
+              getVagrantID((id) => {
+                this.setState({vagrantID: id})
+              })
+            } else {
+              this.setState({ vagrantStatus: 'offline' })
+            }
           })
-        } else {
-          this.setState({ vagrantStatus: 'offline' })
-        }
       })
+    }
   }
 
   selectSite = (id) => {
@@ -225,7 +227,9 @@ class App extends Component {
         $command = ''
       }
 
-      $command += `echo "${yaml.ip}  ${url}" >> /etc/hosts`
+      if (yaml != null) {
+        $command += `echo "${yaml.ip}  ${url}" >> /etc/hosts`
+      }
 
       sudo.exec($command, options,
         (error, stdout, stderr) => {
@@ -513,6 +517,18 @@ class App extends Component {
       )
     }
 
+    let siteList = null
+    if (yaml != null) {
+      siteList = (
+        <SiteList
+          text={this.state.yaml.ip}
+          click={this.siteEditOpenNew}
+          listItemClick={this.selectSite}
+          list={this.state.yaml.sites}
+        />
+      )
+    }
+
     return (
       <div className="App">
         <div className="columns">
@@ -521,12 +537,7 @@ class App extends Component {
           {showHomsteadSettings}
           {showSiteEdit}
 
-          <SiteList
-            text={this.state.yaml.ip}
-            click={this.siteEditOpenNew}
-            listItemClick={this.selectSite}
-            list={this.state.yaml.sites}
-          />
+          {siteList}
 
           <div className="column is-two-third">
             <SettingsHeader
