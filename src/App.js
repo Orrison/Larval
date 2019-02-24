@@ -426,8 +426,19 @@ class App extends Component {
     const { vagrantSSH } = this.state
     if ( vagrantSSH === null ){
       this.setState({vagrantSSH: spawn(`vagrant ssh ${id}`, {shell:true})}, () => {
+
         this.state.vagrantSSH.stdout.on('data', function (data) {
-          this.vagrantConsoleAdd(data)
+
+          let lineBuffer = data.toString()
+
+          var lines = lineBuffer.split("\n")
+
+          for (var i = 0; i < lines.length - 1; i++) {
+
+              var line = lines[i]
+
+              this.vagrantConsoleAdd(line)
+          }
         }.bind(this))
   
         this.state.vagrantSSH.stderr.on('data', function (data) {
