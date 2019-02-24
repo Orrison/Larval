@@ -234,7 +234,10 @@ class App extends Component {
         })
     }
 
-    this.setState({ siteEditShow: false })
+    this.setState({
+      siteEditShow: false,
+      selectedSite: null,
+    })
   }
 
   // END Create New code
