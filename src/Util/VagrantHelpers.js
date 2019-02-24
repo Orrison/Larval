@@ -22,5 +22,10 @@ export const getVagrantID = (callback) => {
 }
 
 export const vagrantSSH = (id) => {
-  execute(`osascript -e 'tell application "Terminal" to activate' -e 'tell application "System Events" to tell process "Terminal" to keystroke "t" using command down' -e 'tell application "System Events" to tell process "Terminal" to keystroke "vagrant ssh ${id}"' -e 'tell application "System Events" to tell process "Terminal" to keystroke return'`)
+  if (window.process.platform === 'darwin') {
+    execute(`osascript -e 'tell application "Terminal" to activate' -e 'tell application "System Events" to tell process "Terminal" to keystroke "t" using command down' -e 'tell application "System Events" to tell process "Terminal" to keystroke "vagrant ssh ${id}"' -e 'tell application "System Events" to tell process "Terminal" to keystroke return'`)
+  } else if (window.process.platform === 'win32') {
+
+  }
+  // execute(`osascript -e 'tell application "iTerm" to create window with default profile' -e 'tell application "System Events" to tell process "iTerm" to keystroke "vagrant ssh"' -e 'tell application "System Events" to tell process "iTerm" to keystroke return'`)
 }
