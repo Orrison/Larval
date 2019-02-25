@@ -12,9 +12,6 @@ import './App.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
 import { getVagrantID } from './Util/VagrantHelpers'
 
-import LogRocket from 'logrocket';
-LogRocket.init('znliqd/larval')
-
 const electron = window.require('electron')
 const { remote } = electron
 // const BrowserWindow = electron.remote.BrowserWindow;
@@ -50,12 +47,14 @@ class App extends Component {
 
     // settings.delete('homestead_path')
 
-    if (settings.get('homestead_path') === undefined) {
+    let settingsHomestead = settings.get('homestead_path')
+
+    if (settingsHomestead === undefined) {
       this.setState({ setHomesteadPathShow: true })
     } else {
       this.setState({
-        yaml: jsYaml.safeLoad(fs.readFileSync(`${settings.get('homestead_path')}/Homestead.yaml`, 'utf8')),
-        homesteadPath: settings.get('homestead_path')
+        yaml: jsYaml.safeLoad(fs.readFileSync(`${settingsHomestead}/Homestead.yaml`, 'utf8')),
+        homesteadPath: settingsHomestead
       }, () => {
         const { homesteadPath } = this.state
 
