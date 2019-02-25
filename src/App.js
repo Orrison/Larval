@@ -12,16 +12,16 @@ import './App.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
 import { getVagrantID } from './Util/VagrantHelpers'
 
-const electron = window.require('electron')
+const electron = require('electron')
 const { remote } = electron
-const fs = window.require('fs')
+const fs = require('fs')
 const jsYaml = require('js-yaml')
 
 const { dialog, app } = remote
-const execute = window.require('child_process').exec
+const execute = require('child_process').exec
 const Linebyline = require('line-by-line')
 
-const fixPath = window.require('fix-path')
+const fixPath = require('fix-path')
 
 const sudo = require('sudo-prompt')
 

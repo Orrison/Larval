@@ -124,6 +124,7 @@ module.exports = function(webpackEnv) {
       : isEnvDevelopment && 'eval-source-map',
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
+    target: "electron-renderer",
     entry: [
       // Include an alternative client for WebpackDevServer. A client's job is to
       // connect to WebpackDevServer by a socket and get notified about changes.
