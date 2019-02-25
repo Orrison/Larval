@@ -12,9 +12,6 @@ import './App.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
 import { getVagrantID } from './Util/VagrantHelpers'
 
-import LogRocket from 'logrocket';
-LogRocket.init('znliqd/larval')
-
 const electron = window.require('electron')
 const { remote } = electron
 // const BrowserWindow = electron.remote.BrowserWindow;
