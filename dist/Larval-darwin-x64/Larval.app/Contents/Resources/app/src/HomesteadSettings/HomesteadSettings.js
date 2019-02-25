@@ -9,6 +9,7 @@ const HomesteadSettings = ({
   memory,
   cpus,
   close,
+  provider,
 }) => (
   <div className="modal is-active has-text-centered">
     <div className="modal-background" />
@@ -59,7 +60,7 @@ const HomesteadSettings = ({
             <label className="label customLabel">Provider</label>
           </div>
           <div className="select">
-            <select name="provider" defaultValue={props.provider}>
+            <select name="provider" defaultValue={provider}>
               <option value="virtualbox">virtualbox</option>
               <option value="vmware_fusion">vmware_fusion</option>
               <option value="vmware_workstation">vmware_workstation</option>
