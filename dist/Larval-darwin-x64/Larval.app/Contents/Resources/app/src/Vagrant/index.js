@@ -1,1 +1,1 @@
-export { default } from './Vagrant';
+export { default } from './Vagrant'

@@ -1,1 +1,1 @@
-export { default } from './HomesteadPath';
+export { default } from './HomesteadPath'

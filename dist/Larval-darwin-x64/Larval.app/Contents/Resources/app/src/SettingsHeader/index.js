@@ -1,1 +1,1 @@
-export { default } from './SettingsHeader';
+export { default } from './SettingsHeader'

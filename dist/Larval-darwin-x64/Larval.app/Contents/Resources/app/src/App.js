@@ -12,21 +12,21 @@ import './App.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
 import { getVagrantID } from './Util/VagrantHelpers'
 
-const electron = window.require('electron')
+const electron = require('electron')
 const { remote } = electron
-// const BrowserWindow = electron.remote.BrowserWindow;
-const fs = window.require('fs')
+const fs = require('fs')
 const jsYaml = require('js-yaml')
 
-const { dialog } = remote
-const { app } = remote
-const execute = window.require('child_process').exec
-// const spawn = window.require('child_process').spawn
+const { dialog, app } = remote
+const execute = require('child_process').exec
 const Linebyline = require('line-by-line')
-const fixPath = window.require('fix-path')
+
+const fixPath = require('fix-path')
 
 const sudo = require('sudo-prompt')
+
 const timestamp = require('time-stamp')
+
 const settings = require('electron-settings')
 
 class App extends Component {
