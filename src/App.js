@@ -20,10 +20,13 @@ const jsYaml = require('js-yaml')
 const { dialog, app } = remote
 const execute = window.require('child_process').exec
 const Linebyline = require('line-by-line')
+
 const fixPath = window.require('fix-path')
 
 const sudo = require('sudo-prompt')
+
 const timestamp = require('time-stamp')
+
 const settings = require('electron-settings')
 
 class App extends Component {

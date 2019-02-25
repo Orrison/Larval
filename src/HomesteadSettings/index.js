@@ -1,1 +1,1 @@
-export { default } from './HomesteadSettings.js';
+export { default } from './HomesteadSettings'
