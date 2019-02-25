@@ -14,14 +14,12 @@ import { getVagrantID } from './Util/VagrantHelpers'
 
 const electron = window.require('electron')
 const { remote } = electron
-// const BrowserWindow = electron.remote.BrowserWindow;
 const fs = window.require('fs')
 const jsYaml = require('js-yaml')
 
 const { dialog } = remote
 const { app } = remote
 const execute = window.require('child_process').exec
-// const spawn = window.require('child_process').spawn
 const Linebyline = require('line-by-line')
 const fixPath = window.require('fix-path')
 
