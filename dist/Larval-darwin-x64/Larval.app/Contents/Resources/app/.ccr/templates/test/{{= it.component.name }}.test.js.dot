@@ -1,0 +1,6 @@
+describe('<{{= it.component.name}} />', () => {
+  beforeEach(() => {});
+  afterEach(() => {});
+
+  test('should ...', () => {});
+});

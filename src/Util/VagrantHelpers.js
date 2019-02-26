@@ -1,4 +1,4 @@
-const { exec } = window.require('child_process')
+const { exec } = require('child_process')
 
 export const getVagrantID = (callback) => {
   exec('vagrant global-status --prune',

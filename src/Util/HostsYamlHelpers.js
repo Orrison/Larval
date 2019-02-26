@@ -1,7 +1,7 @@
-const electron = window.require('electron')
+const electron = require('electron')
 const { remote } = electron
 const { app } = remote
-const execute = window.require('child_process').exec
+const execute = require('child_process').exec
 const timestamp = require('time-stamp')
 
 /*
