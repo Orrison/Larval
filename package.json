@@ -79,9 +79,8 @@
     "electron-start": "node src/start-react",
     "react-start": "BROWSER=none node scripts/start.js",
     "pack": "build --dir",
-    "dist": "npm run build && build",
-    "postinstall": "install-app-deps",
-    "package-mac": "npm run-script build && electron-packager . --overwrite --icon=icons/larva.icns --out=dist"
+    "builder-dist": "npm run-script build && electron-builder",
+    "package-mac": "npm run-script build && electron-packager . --platform=darwin --arch=x64 --overwrite --icon=icons/larva.icns --prune=true --out=dist"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -102,9 +101,11 @@
   "homepage": "./",
   "main": "src/start.js",
   "build": {
-    "appId": "com.electron.electron-with-create-react-app",
-    "win": {
-      "iconUrl": "https://cdn2.iconfinder.com/data/icons/designer-skills/128/react-256.png"
+    "appId": "io.larval",
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": "dmg",
+      "icon": "icons/larva.icns"
     },
     "directories": {
       "buildResources": "build"
