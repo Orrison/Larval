@@ -1,8 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import '../../node_modules/bulma/css/bulma.css'
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core'
 import styles from './Vagrant.module.css'
 import { vagrantSSH } from '../Util/VagrantHelpers'
 
