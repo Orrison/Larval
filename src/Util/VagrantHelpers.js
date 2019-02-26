@@ -23,6 +23,6 @@ export const getVagrantID = (callback) => {
 
 export const vagrantSSH = (id) => {
   if (window.process.platform === 'darwin') {
-    exec(`osascript -e 'tell application "Terminal" to activate' -e 'tell application "System Events" to tell process "Terminal" to keystroke "t" using command down' -e 'tell application "System Events" to tell process "Terminal" to keystroke "vagrant ssh ${id}"' -e 'tell application "System Events" to tell process "Terminal" to keystroke return'`)
+    exec(`osascript -e 'tell application "Terminal" to activate' -e 'tell application "Terminal" to do script "vagrant ssh ${id}"'`)
   }
 }
