@@ -14,6 +14,7 @@ const Vagrant = (props) => {
     clickProv,
     status,
     vagrantId,
+    shouldProvision,
   } = props
   let classes
   let text
@@ -35,6 +36,11 @@ const Vagrant = (props) => {
             // code block
   }
 
+  let provButtClass = 'is-text'
+  if (shouldProvision) {
+    provButtClass = 'is-primary'
+  }
+
   const consoleContent = vConsole.map(item => <p key={uuid()}>{`${item}`}</p>)
 
   let sshButton = null
@@ -48,7 +54,7 @@ const Vagrant = (props) => {
     <div className={`${styles.Vagrant}`}>
       <button className={`button is-pulled-left is-large ${classes}`} onClick={clickToggle} type="button">{text}</button>
       <button className="button is-pulled-left is-large is-text" onClick={clickClear} type="button">Clear</button>
-      <button className="button is-pulled-right is-large is-text" onClick={clickProv} type="button">Provison</button>
+      <button className={`button is-pulled-right is-large ${provButtClass}`} onClick={clickProv} type="button">Provison</button>
       {sshButton}
       <div id="vagrantConsole" className={`${styles.console}`}>
           {consoleContent}

@@ -40,6 +40,7 @@ class App extends Component {
     vagrantStatus: 'processing',
     vagrantConsole: [],
     vagrantID: null,
+    shouldProvision: false,
   }
 
   componentDidMount() {
@@ -71,6 +72,10 @@ class App extends Component {
             }
           })
       })
+    }
+
+    if (settings.get('should_provision') ===  true) {
+      this.setState({ shouldProvision: true })
     }
   }
 
@@ -237,7 +242,9 @@ class App extends Component {
     this.setState({
       siteEditShow: false,
       selectedSite: null,
+      shouldProvision: true,
     })
+    settings.set('should_provision', true)
   }
 
   // END Create New code
@@ -292,10 +299,12 @@ class App extends Component {
       }
     })
 
-    this.setState({yaml: doc})
-
-    this.setState({homesteadSettingsShow: false})
-
+    this.setState({ 
+      yaml: doc,
+      homesteadSettingsShow: false,
+      shouldProvision: true,
+    })
+    settings.set('should_provision', true)
   }
 
   // END HomesteadSettings
@@ -306,7 +315,7 @@ class App extends Component {
     if (vagrantStatus === 'offline') {
       this.setState({ vagrantStatus: 'processing' })
 
-      const vagrantUp = execute(`cd ${homesteadPath} && vagrant up`)
+      const vagrantUp = execute(`cd ${homesteadPath} && vagrant up --ansi`)
 
       vagrantUp.stdout.on('data', (data) => {
         let lineBuffer = data.toString()
@@ -412,6 +421,11 @@ class App extends Component {
       this.setState({ vagrantStatus: 'online' })
       const scroll = document.getElementById('vagrantConsole')
       scroll.scrollTop = scroll.scrollHeight
+
+      this.setState({ 
+        shouldProvision: false,
+      })
+      settings.set('should_provision', false)
     })
   }
 
@@ -426,6 +440,7 @@ class App extends Component {
       vagrantConsole,
       vagrantStatus,
       vagrantID,
+      shouldProvision,
     } = this.state
 
     let showHomesteadPath = null
@@ -513,6 +528,7 @@ class App extends Component {
               vagrantId={vagrantID}
               SshToggle={this.sshToggle}
               vagrantCommand={this.vagrantCommand}
+              shouldProvision={shouldProvision}
             />
           </div>
         </div>
