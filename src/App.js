@@ -98,6 +98,7 @@ class App extends Component {
 
   // Create New code
 
+  //TODO: Combine these next 3 functions into 1 with a 'new' argument
   siteEditOpen = () => {
     this.setState({ siteEditShow: true })
   }
