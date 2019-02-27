@@ -309,44 +309,44 @@ class App extends Component {
 
   // END HomesteadSettings
 
+  vagrantConsoleAdd = (line) => {
+    const curConsole = this.state.vagrantConsole
+
+    let lineBuffer = line.toString()
+    let lines = lineBuffer.split("\n")
+    for (let i = 0; i <= lines.length; i++) {
+        let newLine = lines[i]
+        if (newLine != null) {
+          curConsole.push(`${newLine}`)
+        }
+    }
+    this.setState({ vagrantConsole: curConsole })
+    const scroll = document.getElementById('vagrantConsole')
+    scroll.scrollTop = scroll.scrollHeight
+  }
+
   vagrantToggle = () => {
     const { vagrantStatus, homesteadPath, vagrantConsole } = this.state
 
     if (vagrantStatus === 'offline') {
       this.setState({ vagrantStatus: 'processing' })
 
-      const vagrantUp = execute(`cd ${homesteadPath} && vagrant up --ansi`)
+      const vagrantUp = execute(`cd ${homesteadPath} && vagrant up`)
 
       vagrantUp.stdout.on('data', (data) => {
-        let lineBuffer = data.toString()
-
-        let lines = lineBuffer.split("\n")
-        for (let i = 0; i < lines.length - 1; i++) {
-            let line = lines[i]
-            this.vagrantConsoleAdd(line)
-        }
+        this.vagrantConsoleAdd(data)
       })
 
       vagrantUp.stderr.on('data', (data) => {
-        let lineBuffer = data.toString()
-
-        let lines = lineBuffer.split("\n")
-        for (let i = 0; i < lines.length - 1; i++) {
-            let line = lines[i]
-            this.vagrantConsoleAdd(line)
-        }
+        this.vagrantConsoleAdd(`vagrantUp stderr: ${data}`)
       })
 
       vagrantUp.on('close', (code) => {
-        const stdout = vagrantConsole
-        stdout.push('---- Vagrant is now up ----')
-        this.setState({ vagrantConsole: stdout })
+        this.vagrantConsoleAdd('---- Vagrant is now up ----')
         this.setState({ vagrantStatus: 'online' })
         getVagrantID((id) => {
           this.setState({vagrantID: id})
         })
-        const scroll = document.getElementById('vagrantConsole')
-        scroll.scrollTop = scroll.scrollHeight
       })
     } else if (vagrantStatus === 'online') {
       this.setState({ vagrantStatus: 'processing' })
@@ -354,37 +354,18 @@ class App extends Component {
       const vagrantHalt = execute(`cd ${homesteadPath} && vagrant halt`)
 
       vagrantHalt.stdout.on('data', (data) => {
-        const stdout = vagrantConsole
-        stdout.push(data)
-        this.setState({ vagrantConsole: stdout })
-        const scroll = document.getElementById('vagrantConsole')
-        scroll.scrollTop = scroll.scrollHeight
+        this.vagrantConsoleAdd(data)
       })
 
       vagrantHalt.stderr.on('data', (data) => {
-        const stdout = vagrantConsole
-        stdout.push(`stderr: ${data}`)
-        const scroll = document.getElementById('vagrantConsole')
-        scroll.scrollTop = scroll.scrollHeight
+        this.vagrantConsoleAdd(`vagrantHalt stderr: ${data}`)
       })
 
       vagrantHalt.on('close', (code) => {
-        const stdout = vagrantConsole
-        stdout.push('---- Vagrant is now down ----')
-        this.setState({ vagrantConsole: stdout })
+        this.vagrantConsoleAdd('---- Vagrant is now down ----')
         this.setState({ vagrantStatus: 'offline' })
-        const scroll = document.getElementById('vagrantConsole')
-        scroll.scrollTop = scroll.scrollHeight
       })
     }
-  }
-
-  vagrantConsoleAdd = (line) => {
-    const curConsole = this.state.vagrantConsole
-    curConsole.push(`${line}`)
-    this.setState({ vagrantConsole: curConsole })
-    const scroll = document.getElementById('vagrantConsole')
-    scroll.scrollTop = scroll.scrollHeight
   }
 
   vagrantClear = () => {
