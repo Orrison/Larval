@@ -33,7 +33,7 @@
     "react-start": "BROWSER=none node scripts/start.js",
     "pack": "build --dir",
     "builder-dist": "npm run-script build && electron-builder",
-    "package-mac": "npm run-script build && electron-packager . --platform=darwin --arch=x64 --overwrite --icon=icons/larva.icns --prune=true --out=dist"
+    "package-mac": "npm run-script build && electron-packager . --platform=darwin --arch=x64 --overwrite --icon=icons/larva.icns --prune=true --out=dist && electron-installer-dmg ./dist/Larval-darwin-x64/Larval.app Larval --out=./dist/dmg --icon=icons/larva.icns --overwrite=true"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -45,11 +45,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "electron": "^4.0.5",
-    "electron-builder": "^20.38.5",
-    "electron-packager": "^13.1.0",
-    "fsevents": "^1.2.7",
-    "typescript": "^3.3.3333",
     "@babel/core": "7.2.2",
     "@svgr/webpack": "4.1.0",
     "babel-core": "7.0.0-bridge.0",
@@ -63,6 +58,10 @@
     "css-loader": "1.0.0",
     "dotenv": "6.0.0",
     "dotenv-expand": "4.2.0",
+    "electron": "^4.0.5",
+    "electron-builder": "^20.38.5",
+    "electron-installer-dmg": "^2.0.0",
+    "electron-packager": "^13.1.0",
     "eslint": "5.12.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-react-app": "^3.0.7",
@@ -74,6 +73,7 @@
     "file-loader": "2.0.0",
     "fork-ts-checker-webpack-plugin-alt": "0.4.14",
     "fs-extra": "7.0.1",
+    "fsevents": "^1.2.7",
     "html-webpack-plugin": "4.0.0-alpha.2",
     "identity-obj-proxy": "3.0.0",
     "jest": "23.6.0",
@@ -92,6 +92,7 @@
     "spawn-sync": "^2.0.0",
     "style-loader": "0.23.1",
     "terser-webpack-plugin": "1.2.2",
+    "typescript": "^3.3.3333",
     "url-loader": "1.1.2",
     "webpack": "4.28.3",
     "webpack-dev-server": "3.1.14",
