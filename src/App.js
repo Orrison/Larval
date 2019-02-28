@@ -81,7 +81,7 @@ class App extends Component {
 
   selectSite = (id) => {
     this.setState({ selectedSite: id })
-    this.siteEditOpen()
+    this.siteEditToggle()
   }
 
   // Set Homestead Path code
@@ -103,17 +103,13 @@ class App extends Component {
 
   // Create New code
 
-  //TODO: Combine these next 3 functions into 1 with a 'new' argument
-  siteEditOpen = () => {
-    this.setState({ siteEditShow: true })
-  }
-
-  siteEditOpenNew = () => {
-    this.setState({ selectedSite: null, siteEditShow: true })
-  }
-
-  siteEditClose = () => {
-    this.setState({ siteEditShow: false })
+  siteEditToggle = (close = null) => {
+    const { siteEditShow } = this.state
+    let stateChng = { siteEditShow: !siteEditShow }
+    if (close != null) {
+      stateChng.selectedSite = null
+    }
+    this.setState(stateChng)
   }
 
   fileSelect = (event) => {
@@ -436,7 +432,7 @@ class App extends Component {
     if (siteEditShow) {
       showSiteEdit = (
         <CreateNew
-          close={this.siteEditClose}
+          close={this.siteEditToggle}
           formSubmit={this.submitCreateNew}
           pathClick={this.fileSelect}
           url={url}
@@ -466,7 +462,7 @@ class App extends Component {
       siteList = (
         <SiteList
           text={this.state.yaml.ip}
-          click={this.siteEditOpenNew}
+          click={this.siteEditToggle}
           listItemClick={this.selectSite}
           list={this.state.yaml.sites}
         />

@@ -62,7 +62,7 @@ const CreateNew = ( props ) => {
         </div>
       </form>
       </div>
-      <button className="modal-close is-large" onClick={props.close} aria-label="close"></button>
+      <button className="modal-close is-large" onClick={() => props.close(1)} aria-label="close"></button>
     </div>
   );
 }
