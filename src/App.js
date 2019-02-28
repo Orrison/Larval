@@ -58,7 +58,7 @@ class App extends Component {
         const { homesteadPath } = this.state
 
         execute(`cd ${homesteadPath} && vagrant status`,
-          (error, stdout, stderr) => {
+          (error, stdout) => {
             if (error) throw error
             if (stdout.includes('running')) {
               this.setState({ vagrantStatus: 'online' })
@@ -211,7 +211,7 @@ class App extends Component {
       }))
       hostsLbl.then((hosts) => {
         sudo.exec(`echo '${hosts}' > /etc/hosts`, options,
-          (error, stdout, stderr) => {
+          (error) => {
             if (error) throw error
           })
       })
@@ -228,7 +228,7 @@ class App extends Component {
       }
 
       sudo.exec($command, options,
-        (error, stdout, stderr) => {
+        (error) => {
           if (error) throw error
         })
     }
@@ -277,7 +277,7 @@ class App extends Component {
 
     if (backupYaml) {
       execute(`cp ${homesteadPath}/Homestead.yaml ${app.getPath('documents')}/Homestead.yaml.${time}.larval.bak`, options,
-        (error, stdout, stderr) => {
+        (error) => {
           if (error) throw error
         })
     }
@@ -320,7 +320,7 @@ class App extends Component {
   }
 
   vagrantToggle = () => {
-    const { vagrantStatus, homesteadPath, vagrantConsole } = this.state
+    const { vagrantStatus, homesteadPath } = this.state
 
     if (vagrantStatus === 'offline') {
       this.setState({ vagrantStatus: 'processing' })
