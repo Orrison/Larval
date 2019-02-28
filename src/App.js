@@ -46,8 +46,6 @@ class App extends Component {
   componentDidMount() {
     fixPath()
 
-    // settings.delete('homestead_path')
-
     let settingsHomestead = settings.get('homestead_path')
 
     if (settingsHomestead === undefined) {
