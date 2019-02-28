@@ -40,6 +40,7 @@ class App extends Component {
     vagrantStatus: 'processing',
     vagrantConsole: [],
     vagrantID: null,
+    shouldProvision: false,
   }
 
   componentDidMount() {
@@ -72,6 +73,10 @@ class App extends Component {
           })
       })
     }
+
+    if (settings.get('should_provision') ===  true) {
+      this.setState({ shouldProvision: true })
+    }
   }
 
   selectSite = (id) => {
@@ -98,6 +103,7 @@ class App extends Component {
 
   // Create New code
 
+  //TODO: Combine these next 3 functions into 1 with a 'new' argument
   siteEditOpen = () => {
     this.setState({ siteEditShow: true })
   }
@@ -236,7 +242,9 @@ class App extends Component {
     this.setState({
       siteEditShow: false,
       selectedSite: null,
+      shouldProvision: true,
     })
+    settings.set('should_provision', true)
   }
 
   // END Create New code
@@ -291,13 +299,31 @@ class App extends Component {
       }
     })
 
-    this.setState({yaml: doc})
-
-    this.setState({homesteadSettingsShow: false})
-
+    this.setState({ 
+      yaml: doc,
+      homesteadSettingsShow: false,
+      shouldProvision: true,
+    })
+    settings.set('should_provision', true)
   }
 
   // END HomesteadSettings
+
+  vagrantConsoleAdd = (line) => {
+    const curConsole = this.state.vagrantConsole
+
+    let lineBuffer = line.toString()
+    let lines = lineBuffer.split("\n")
+    for (let i = 0; i <= lines.length; i++) {
+        let newLine = lines[i]
+        if (newLine != null) {
+          curConsole.push(`${newLine}`)
+        }
+    }
+    this.setState({ vagrantConsole: curConsole })
+    const scroll = document.getElementById('vagrantConsole')
+    scroll.scrollTop = scroll.scrollHeight
+  }
 
   vagrantToggle = () => {
     const { vagrantStatus, homesteadPath, vagrantConsole } = this.state
@@ -308,35 +334,19 @@ class App extends Component {
       const vagrantUp = execute(`cd ${homesteadPath} && vagrant up`)
 
       vagrantUp.stdout.on('data', (data) => {
-        let lineBuffer = data.toString()
-
-        let lines = lineBuffer.split("\n")
-        for (let i = 0; i < lines.length - 1; i++) {
-            let line = lines[i]
-            this.vagrantConsoleAdd(line)
-        }
+        this.vagrantConsoleAdd(data)
       })
 
       vagrantUp.stderr.on('data', (data) => {
-        let lineBuffer = data.toString()
-
-        let lines = lineBuffer.split("\n")
-        for (let i = 0; i < lines.length - 1; i++) {
-            let line = lines[i]
-            this.vagrantConsoleAdd(line)
-        }
+        this.vagrantConsoleAdd(`vagrantUp stderr: ${data}`)
       })
 
       vagrantUp.on('close', (code) => {
-        const stdout = vagrantConsole
-        stdout.push('---- Vagrant is now up ----')
-        this.setState({ vagrantConsole: stdout })
+        this.vagrantConsoleAdd('---- Vagrant is now up ----')
         this.setState({ vagrantStatus: 'online' })
         getVagrantID((id) => {
           this.setState({vagrantID: id})
         })
-        const scroll = document.getElementById('vagrantConsole')
-        scroll.scrollTop = scroll.scrollHeight
       })
     } else if (vagrantStatus === 'online') {
       this.setState({ vagrantStatus: 'processing' })
@@ -344,37 +354,18 @@ class App extends Component {
       const vagrantHalt = execute(`cd ${homesteadPath} && vagrant halt`)
 
       vagrantHalt.stdout.on('data', (data) => {
-        const stdout = vagrantConsole
-        stdout.push(data)
-        this.setState({ vagrantConsole: stdout })
-        const scroll = document.getElementById('vagrantConsole')
-        scroll.scrollTop = scroll.scrollHeight
+        this.vagrantConsoleAdd(data)
       })
 
       vagrantHalt.stderr.on('data', (data) => {
-        const stdout = vagrantConsole
-        stdout.push(`stderr: ${data}`)
-        const scroll = document.getElementById('vagrantConsole')
-        scroll.scrollTop = scroll.scrollHeight
+        this.vagrantConsoleAdd(`vagrantHalt stderr: ${data}`)
       })
 
       vagrantHalt.on('close', (code) => {
-        const stdout = vagrantConsole
-        stdout.push('---- Vagrant is now down ----')
-        this.setState({ vagrantConsole: stdout })
+        this.vagrantConsoleAdd('---- Vagrant is now down ----')
         this.setState({ vagrantStatus: 'offline' })
-        const scroll = document.getElementById('vagrantConsole')
-        scroll.scrollTop = scroll.scrollHeight
       })
     }
-  }
-
-  vagrantConsoleAdd = (line) => {
-    const curConsole = this.state.vagrantConsole
-    curConsole.push(`${line}`)
-    this.setState({ vagrantConsole: curConsole })
-    const scroll = document.getElementById('vagrantConsole')
-    scroll.scrollTop = scroll.scrollHeight
   }
 
   vagrantClear = () => {
@@ -389,28 +380,21 @@ class App extends Component {
     const consoleCommand = execute(`cd ${homesteadPath} && vagrant reload --provision`)
 
     consoleCommand.stdout.on('data', (data) => {
-      const stdout = vagrantConsole
-      stdout.push(data)
-      this.setState({ vagrantConsole: stdout })
-      const scroll = document.getElementById('vagrantConsole')
-      scroll.scrollTop = scroll.scrollHeight
+      this.vagrantConsoleAdd(data)
     })
 
     consoleCommand.stderr.on('data', (data) => {
-      const stdout = vagrantConsole
-      stdout.push(`stderr: ${data}`)
-      this.setState({ vagrantConsole: stdout })
-      const scroll = document.getElementById('vagrantConsole')
-      scroll.scrollTop = scroll.scrollHeight
+      this.vagrantConsoleAdd(`stderr: ${data}`)
     })
 
     consoleCommand.on('close', (code) => {
-      const stdout = vagrantConsole
-      stdout.push('---- Provision Process Completed ----')
-      this.setState({ vagrantConsole: stdout })
-      this.setState({ vagrantStatus: 'online' })
-      const scroll = document.getElementById('vagrantConsole')
-      scroll.scrollTop = scroll.scrollHeight
+      this.vagrantConsoleAdd('---- Provision Process Completed ----')
+
+      this.setState({ 
+        vagrantStatus: 'online',
+        shouldProvision: false,
+      })
+      settings.set('should_provision', false)
     })
   }
 
@@ -425,6 +409,7 @@ class App extends Component {
       vagrantConsole,
       vagrantStatus,
       vagrantID,
+      shouldProvision,
     } = this.state
 
     let showHomesteadPath = null
@@ -512,6 +497,7 @@ class App extends Component {
               vagrantId={vagrantID}
               SshToggle={this.sshToggle}
               vagrantCommand={this.vagrantCommand}
+              shouldProvision={shouldProvision}
             />
           </div>
         </div>
