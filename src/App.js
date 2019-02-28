@@ -380,30 +380,18 @@ class App extends Component {
     const consoleCommand = execute(`cd ${homesteadPath} && vagrant reload --provision`)
 
     consoleCommand.stdout.on('data', (data) => {
-      const stdout = vagrantConsole
-      stdout.push(data)
-      this.setState({ vagrantConsole: stdout })
-      const scroll = document.getElementById('vagrantConsole')
-      scroll.scrollTop = scroll.scrollHeight
+      this.vagrantConsoleAdd(data)
     })
 
     consoleCommand.stderr.on('data', (data) => {
-      const stdout = vagrantConsole
-      stdout.push(`stderr: ${data}`)
-      this.setState({ vagrantConsole: stdout })
-      const scroll = document.getElementById('vagrantConsole')
-      scroll.scrollTop = scroll.scrollHeight
+      this.vagrantConsoleAdd(`stderr: ${data}`)
     })
 
     consoleCommand.on('close', (code) => {
-      const stdout = vagrantConsole
-      stdout.push('---- Provision Process Completed ----')
-      this.setState({ vagrantConsole: stdout })
-      this.setState({ vagrantStatus: 'online' })
-      const scroll = document.getElementById('vagrantConsole')
-      scroll.scrollTop = scroll.scrollHeight
+      this.vagrantConsoleAdd('---- Provision Process Completed ----')
 
       this.setState({ 
+        vagrantStatus: 'online',
         shouldProvision: false,
       })
       settings.set('should_provision', false)
