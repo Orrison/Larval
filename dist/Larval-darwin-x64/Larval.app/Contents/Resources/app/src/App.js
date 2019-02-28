@@ -46,8 +46,6 @@ class App extends Component {
   componentDidMount() {
     fixPath()
 
-    // settings.delete('homestead_path')
-
     let settingsHomestead = settings.get('homestead_path')
 
     if (settingsHomestead === undefined) {
@@ -60,7 +58,7 @@ class App extends Component {
         const { homesteadPath } = this.state
 
         execute(`cd ${homesteadPath} && vagrant status`,
-          (error, stdout, stderr) => {
+          (error, stdout) => {
             if (error) throw error
             if (stdout.includes('running')) {
               this.setState({ vagrantStatus: 'online' })
@@ -81,7 +79,7 @@ class App extends Component {
 
   selectSite = (id) => {
     this.setState({ selectedSite: id })
-    this.siteEditOpen()
+    this.siteEditToggle()
   }
 
   // Set Homestead Path code
@@ -103,17 +101,13 @@ class App extends Component {
 
   // Create New code
 
-  //TODO: Combine these next 3 functions into 1 with a 'new' argument
-  siteEditOpen = () => {
-    this.setState({ siteEditShow: true })
-  }
-
-  siteEditOpenNew = () => {
-    this.setState({ selectedSite: null, siteEditShow: true })
-  }
-
-  siteEditClose = () => {
-    this.setState({ siteEditShow: false })
+  siteEditToggle = (close = null) => {
+    const { siteEditShow } = this.state
+    let stateChng = { siteEditShow: !siteEditShow }
+    if (close != null) {
+      stateChng.selectedSite = null
+    }
+    this.setState(stateChng)
   }
 
   fileSelect = (event) => {
@@ -217,7 +211,7 @@ class App extends Component {
       }))
       hostsLbl.then((hosts) => {
         sudo.exec(`echo '${hosts}' > /etc/hosts`, options,
-          (error, stdout, stderr) => {
+          (error) => {
             if (error) throw error
           })
       })
@@ -234,7 +228,7 @@ class App extends Component {
       }
 
       sudo.exec($command, options,
-        (error, stdout, stderr) => {
+        (error) => {
           if (error) throw error
         })
     }
@@ -283,7 +277,7 @@ class App extends Component {
 
     if (backupYaml) {
       execute(`cp ${homesteadPath}/Homestead.yaml ${app.getPath('documents')}/Homestead.yaml.${time}.larval.bak`, options,
-        (error, stdout, stderr) => {
+        (error) => {
           if (error) throw error
         })
     }
@@ -326,7 +320,7 @@ class App extends Component {
   }
 
   vagrantToggle = () => {
-    const { vagrantStatus, homesteadPath, vagrantConsole } = this.state
+    const { vagrantStatus, homesteadPath } = this.state
 
     if (vagrantStatus === 'offline') {
       this.setState({ vagrantStatus: 'processing' })
@@ -436,7 +430,7 @@ class App extends Component {
     if (siteEditShow) {
       showSiteEdit = (
         <CreateNew
-          close={this.siteEditClose}
+          close={this.siteEditToggle}
           formSubmit={this.submitCreateNew}
           pathClick={this.fileSelect}
           url={url}
@@ -466,7 +460,7 @@ class App extends Component {
       siteList = (
         <SiteList
           text={this.state.yaml.ip}
-          click={this.siteEditOpenNew}
+          click={this.siteEditToggle}
           listItemClick={this.selectSite}
           list={this.state.yaml.sites}
         />
