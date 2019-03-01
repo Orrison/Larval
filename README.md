@@ -1,3 +1,5 @@
+![Larval Logo](https://raw.githubusercontent.com/Orrison/Larval/master/icons/larva.png)
+
 ## What the heck's a Larval?
 
 Larval is a Graphical User Interface (GUI) for managing sites, settings, and status within Laravel Homestead. With it you can view, create, and delete sites in your Homestead environment. As well as change Homestead settings, bring vagrant up/down, ssh into vagrant, and provision.
