@@ -4,8 +4,17 @@
     display: block;
 }
 
+label.customLabel {
+    color: #fff;
+    font-size: 26px;
+  }
+
 .customSubmit {
     margin: 0 auto;
     display: block;
     margin-top: 6%;
+}
+
+.modalBackground {
+    background: #000;
 }

@@ -48,7 +48,7 @@ class App extends Component {
 
     let settingsHomestead = settings.get('homestead_path')
 
-    if (settingsHomestead === undefined) {
+    if (!settingsHomestead) {
       this.setState({ setHomesteadPathShow: true })
     } else {
       this.setState({
@@ -95,6 +95,7 @@ class App extends Component {
 
     const currsetHomesteadPathShow = setHomesteadPathShow
     this.setState({ setHomesteadPathShow: !currsetHomesteadPathShow })
+    this.componentDidMount()
   }
 
   // END Set Homestead Path code

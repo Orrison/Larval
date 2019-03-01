@@ -6,7 +6,7 @@ const HomesteadPath = ( props ) => {
 
   return (
     <div className="modal is-active has-text-centered">
-      <div className="modal-background"></div>
+      <div className={`modal-background ${styles.modalBackground}`}></div>
       <div className="modal-content">
         
       <form onSubmit={props.formSubmit}>
@@ -14,13 +14,13 @@ const HomesteadPath = ( props ) => {
         <div className="field">
           <label className={`label ${styles.customLabel}`}>Set the path to your Homestead folder</label>
           <div className="control">
-            <input name="path" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" onFocus={props.pathClick} />
+            <input name="path" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" onFocus={props.pathClick} required />
           </div>
         </div>
 
         <div className="field">
           <div className="control">
-            <button id="create-new-submit" className={`button is-link is-large ${styles.customSubmit}`}>Set Path</button>
+            <button id="create-new-submit" className={`button is-link is-large ${styles.customSubmit}`} type="submit">Set Path</button>
           </div>
         </div>
 
