@@ -13,6 +13,7 @@ const HomesteadPath = ( props ) => {
         
         <div className="field">
           <label className={`label ${styles.customLabel}`}>Set the path to your Homestead folder</label>
+          <p>{props.msg}</p>
           <div className="control">
             <input name="path" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" onFocus={props.pathClick} required />
           </div>
