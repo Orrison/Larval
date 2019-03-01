@@ -1,4 +1,4 @@
-![Larval Logo](/icons/larva.png | width=100)
+<img src="/icons/larva.png" width="100px" alt="Larval Logo">
 
 ## What the heck's a Larval?
 
