@@ -1,4 +1,4 @@
-![Larval Logo](https://raw.githubusercontent.com/Orrison/Larval/master/icons/larva.png)
+![Larval Logo](/icons/larva.png)
 
 ## What the heck's a Larval?
 
