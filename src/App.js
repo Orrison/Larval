@@ -34,6 +34,7 @@ class App extends Component {
     yaml: null,
     homesteadPath: null,
     setHomesteadPathShow: false,
+    setHomesteadPathMsg: '',
     homesteadSettingsShow: false,
     siteEditShow: false,
     selectedSite: null,
@@ -51,25 +52,33 @@ class App extends Component {
     if (!settingsHomestead) {
       this.setState({ setHomesteadPathShow: true })
     } else {
-      this.setState({
-        yaml: jsYaml.safeLoad(fs.readFileSync(`${settingsHomestead}/Homestead.yaml`, 'utf8')),
-        homesteadPath: settingsHomestead
-      }, () => {
-        const { homesteadPath } = this.state
 
-        execute(`cd ${homesteadPath} && vagrant status`,
-          (error, stdout) => {
-            if (error) throw error
-            if (stdout.includes('running')) {
-              this.setState({ vagrantStatus: 'online' })
-              getVagrantID((id) => {
-                this.setState({vagrantID: id})
-              })
-            } else {
-              this.setState({ vagrantStatus: 'offline' })
-            }
-          })
-      })
+      if (fs.existsSync(`${settingsHomestead}/Homestead.yaml`)) {
+        this.setState({
+          yaml: jsYaml.safeLoad(fs.readFileSync(`${settingsHomestead}/Homestead.yaml`, 'utf8')),
+          homesteadPath: settingsHomestead
+        }, () => {
+          const { homesteadPath } = this.state
+  
+          execute(`cd ${homesteadPath} && vagrant status`,
+            (error, stdout) => {
+              if (error) throw error
+              if (stdout.includes('running')) {
+                this.setState({ vagrantStatus: 'online' })
+                getVagrantID((id) => {
+                  this.setState({vagrantID: id})
+                })
+              } else {
+                this.setState({ vagrantStatus: 'offline' })
+              }
+            })
+        })
+      } else {
+        this.setState({ 
+          setHomesteadPathShow: true,
+          setHomesteadPathMsg: 'The Homestead path provided is either not the Homestead folder or your Homestead.yaml is missing :('
+        })
+      }
     }
 
     if (settings.get('should_provision') ===  true) {
@@ -413,6 +422,7 @@ class App extends Component {
         <HomesteadPath
           formSubmit={this.submitHomesteadPath}
           pathClick={this.fileSelect}
+          msg={this.state.setHomesteadPathMsg}
         />
       )
     }
