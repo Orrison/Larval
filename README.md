@@ -1,4 +1,4 @@
-![Larval Logo](/icons/larva.png)
+![Larval Logo](/icons/larva.png | width=100)
 
 ## What the heck's a Larval?
 
