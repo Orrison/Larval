@@ -1,7 +1,7 @@
 {
   "name": "larval",
   "productName": "Larval",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.15",
@@ -11,6 +11,7 @@
     "bulma": "^0.7.4",
     "bulma-tooltip": "^2.0.2",
     "electron-settings": "^3.2.0",
+    "electron-updater": "^4.0.6",
     "fix-path": "^2.1.0",
     "jquery": "^3.3.1",
     "js-yaml": "^3.12.2",
@@ -45,6 +46,11 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "files": [
+    "*.js",
+    "build",
+    "node_modules"
+  ],
   "devDependencies": {
     "@babel/core": "7.2.2",
     "@svgr/webpack": "4.1.0",
@@ -63,7 +69,6 @@
     "electron-builder": "^20.38.5",
     "electron-installer-dmg": "^2.0.0",
     "electron-packager": "^13.1.0",
-    "electron-updater": "^4.0.6",
     "eslint": "5.12.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-react-app": "^3.0.7",
