@@ -1,7 +1,7 @@
 const electron = require('electron')
 
-const { app, BrowserWindow, ipcMain } = electron
-const { autoUpdater } = require("electron-updater")
+const app = electron.app
+const BrowserWindow = electron.BrowserWindow
 
 const path = require('path')
 const url = require('url')
@@ -35,14 +35,7 @@ function createWindow() {
   })
 }
 
-app.on('ready', () => {
-  createWindow()
-  autoUpdater.checkForUpdatesAndNotify()
-})
-
-autoUpdater.on('update-downloaded', (info) => {
-  mainWindow.webContents.send('updateReady')
-})
+app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -54,8 +47,4 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
-})
-
-ipcMain.on("quitAndInstall", (event, arg) => {
-  autoUpdater.quitAndInstall()
 })

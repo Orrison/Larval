@@ -1,7 +1,7 @@
 {
   "name": "larval",
   "productName": "Larval",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.15",
@@ -45,11 +45,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "files": [
-    "*.js",
-    "build",
-    "node_modules"
   ],
   "devDependencies": {
     "@babel/core": "7.2.2",
@@ -117,7 +112,8 @@
       "icon": "icons/larva.icns"
     },
     "directories": {
-      "buildResources": "build"
+      "buildResources": "build",
+      "output": "release/"
     }
   },
   "jest": {
