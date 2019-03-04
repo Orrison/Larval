@@ -1,7 +1,0 @@
-/*
- * {{= it.component.name }} CSS File
-*/
-
- .{{= it.component.name }} {
-  /* propertys here */
- }

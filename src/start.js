@@ -37,7 +37,7 @@ function createWindow() {
 
 app.on('ready', () => {
   createWindow()
-  autoUpdater.checkForUpdates()
+  autoUpdater.checkForUpdatesAndNotify()
 })
 
 autoUpdater.on('update-downloaded', (info) => {

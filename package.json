@@ -33,7 +33,7 @@
     "react-start": "BROWSER=none node scripts/start.js",
     "pack": "build --dir",
     "builder-dist": "npm run-script build && electron-builder",
-    "ship": "npm run-script build && electron-builder -p always",
+    "ship": "npm run-script build && electron-builder -p always private",
     "package-mac": "npm run-script build && electron-packager . --platform=darwin --arch=x64 --overwrite --icon=icons/larva.icns --prune=true --out=dist && electron-installer-dmg ./dist/Larval-darwin-x64/Larval.app Larval --out=./dist/dmg --icon=icons/larva.icns --overwrite=true"
   },
   "eslintConfig": {
