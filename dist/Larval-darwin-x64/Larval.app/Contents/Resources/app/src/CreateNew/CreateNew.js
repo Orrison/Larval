@@ -3,6 +3,9 @@ import '../../node_modules/bulma/css/bulma.css'
 import '../../node_modules/bulma-tooltip/dist/css/bulma-tooltip.min.css'
 import styles from './CreateNew.module.css'
 
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core'
+
 const CreateNew = ( props ) => {
 
   let deleteButton = null
@@ -21,17 +24,37 @@ const CreateNew = ( props ) => {
         
       <form onSubmit={props.formSubmit}>
 
+        <h1 css={css`
+          text-align: left;
+        `}>Folder</h1>
         <div className="field">
-          <label className={`label customLabel`}>URL</label>
+          <label className={`label customLabel`}>Map</label>
           <div className="control">
-            <input name="url" className="input is-medium" type="text" placeholder="newsite.test" defaultValue={props.url}></input>
+            <input name="folderMap" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" defaultValue={props.folderMap} onClick={props.pathClick} />
+          </div>
+        </div>
+
+        <div className="field">
+          <label className={`label customLabel`}>To</label>
+          <div className="control">
+            <input name="folderTo" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" defaultValue={!!props.folderTo ? props.folderTo : `/home/vagrant/sites/MAP_FOLDER_NAME_HERE`} onClick={props.pathClick} />
+          </div>
+        </div>
+
+        <h1 css={css`
+          text-align: left;
+        `}>Sites</h1>
+        <div className="field">
+          <label className={`label customLabel`}>Map</label>
+          <div className="control">
+            <input name="siteMap" className="input is-medium" type="text" placeholder="newsite.test" defaultValue={props.siteMap}></input>
           </div>
         </div>
         
         <div className="field">
-          <label className={`label customLabel`}>Path</label>
+          <label className={`label customLabel`}>To</label>
           <div className="control">
-            <input name="path" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" defaultValue={props.path} onFocus={props.pathClick} />
+            <input name="siteTo" className="input is-medium" type="text" placeholder="Generally the same as Folder To (Laravel sites append '/public')" defaultValue={props.siteTo} />
           </div>
         </div>
 
