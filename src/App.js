@@ -141,8 +141,11 @@ class App extends Component {
     const data = new FormData(event.target)
     const doc = jsYaml.safeLoad(fs.readFileSync(`${homesteadPath}/Homestead.yaml`, 'utf8'))
 
-    const url = data.get('url')
-    const path = data.get('path')
+    const folderMap = data.get('folderMap')
+    const folderTo = data.get('folderTo')
+    const siteMap = data.get('siteMap')
+    const siteTo = data.get('siteTo')
+
     const backupHost = data.get('backupHost')
     const backupYaml = data.get('backupYaml')
     let directory = null
@@ -150,19 +153,19 @@ class App extends Component {
     const options = {
       name: 'Larval',
     }
-    if (path !== null) {
-      directory = path.substr(path.lastIndexOf('/') + 1)
-    }
+    // if (path !== null) {
+    //   directory = path.substr(path.lastIndexOf('/') + 1)
+    // }
 
     if (selectedSite === null) {
       const newFolder = {
-        map: path,
-        to: `/home/vagrant/sites/${directory}`,
+        map: folderMap,
+        to: folderTo,
       }
 
       const newSite = {
-        map: url,
-        to: newFolder.to,
+        map: siteMap,
+        to: siteTo,
       }
 
       doc.folders.push(newFolder)
@@ -171,11 +174,11 @@ class App extends Component {
       doc.folders.splice(selectedSite, 1)
       doc.sites.splice(selectedSite, 1)
     } else {
-      doc.folders[selectedSite].map = url
-      doc.folders[selectedSite].to = directory
+      doc.folders[selectedSite].map = folderMap
+      doc.folders[selectedSite].to = folderTo
 
-      doc.sites[selectedSite].map = url
-      doc.sites[selectedSite].to = doc.folders[selectedSite].to
+      doc.sites[selectedSite].map = siteMap
+      doc.sites[selectedSite].to = siteTo
     }
 
     if (backupYaml) {
@@ -234,7 +237,7 @@ class App extends Component {
       }
 
       if (yaml != null) {
-        $command += `echo "${yaml.ip}  ${url}" >> /etc/hosts`
+        $command += `echo "${yaml.ip}  ${siteMap}" >> /etc/hosts`
       }
 
       sudo.exec($command, options,
@@ -427,13 +430,17 @@ class App extends Component {
       )
     }
 
-    let url = null
-    let path = null
+    let folderMap = null
+    let folderTo = null
+    let siteMap = null
+    let siteTo = null
     let button = 'Create Site'
     let deleteButton = false
     if (selectedSite !== null) {
-      url = yaml.sites[selectedSite].map
-      path = yaml.sites[selectedSite].to
+      folderMap = yaml.folders[selectedSite].map
+      folderTo = yaml.folders[selectedSite].to
+      siteMap = yaml.sites[selectedSite].map
+      siteTo = yaml.sites[selectedSite].to
       button = 'Update Site'
       deleteButton = true
     }
@@ -444,8 +451,10 @@ class App extends Component {
           close={this.siteEditToggle}
           formSubmit={this.submitCreateNew}
           pathClick={this.fileSelect}
-          url={url}
-          path={path}
+          folderMap={folderMap}
+          folderTo={folderTo}
+          siteMap={siteMap}
+          siteTo={siteTo}
           button={button}
           deleteButton={deleteButton}
         />
