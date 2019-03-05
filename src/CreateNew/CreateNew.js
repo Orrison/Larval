@@ -30,14 +30,14 @@ const CreateNew = ( props ) => {
         <div className="field">
           <label className={`label customLabel`}>Map</label>
           <div className="control">
-            <input name="folderMap" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" defaultValue={props.folderMap} onFocus={props.pathClick} />
+            <input name="folderMap" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" defaultValue={props.folderMap} onClick={props.pathClick} />
           </div>
         </div>
 
         <div className="field">
           <label className={`label customLabel`}>To</label>
           <div className="control">
-            <input name="folderTo" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" defaultValue={props.folderTo} onFocus={props.pathClick} />
+            <input name="folderTo" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" defaultValue={!!props.folderTo ? props.folderTo : `/home/vagrant/sites/MAP_FOLDER_NAME_HERE`} onClick={props.pathClick} />
           </div>
         </div>
 
@@ -54,7 +54,7 @@ const CreateNew = ( props ) => {
         <div className="field">
           <label className={`label customLabel`}>To</label>
           <div className="control">
-            <input name="siteTo" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" defaultValue={props.siteTo} onFocus={props.pathClick} />
+            <input name="siteTo" className="input is-medium" type="text" placeholder="Generally the same as Folder To (Laravel sites append '/public')" defaultValue={props.siteTo} />
           </div>
         </div>
 

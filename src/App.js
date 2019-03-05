@@ -148,7 +148,6 @@ class App extends Component {
 
     const backupHost = data.get('backupHost')
     const backupYaml = data.get('backupYaml')
-    let directory = null
     const time = timestamp('YYYYMMDDHHmmss')
     const options = {
       name: 'Larval',
