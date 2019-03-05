@@ -133,7 +133,7 @@ class App extends Component {
     }
   }
 
-  submitCreateNew = (event, del = null) => {
+  submitCreateNew = async (event, del = null) => {
     event.preventDefault()
 
     const { selectedSite, homesteadPath, yaml } = this.state
@@ -155,6 +155,11 @@ class App extends Component {
     // if (path !== null) {
     //   directory = path.substr(path.lastIndexOf('/') + 1)
     // }
+
+    let update = null
+    if (selectedSite !== null && del !== true && yaml.sites[selectedSite].map !== siteMap) {
+      update = true
+    }
 
     if (selectedSite === null) {
       const newFolder = {
@@ -195,9 +200,7 @@ class App extends Component {
       }
     })
 
-    this.setState({yaml: doc})
-
-    if (del === true) {
+    const hostDelete = () => {
       const lr = new Linebyline('/etc/hosts')
 
       lr.on('error', (err) => {
@@ -209,7 +212,7 @@ class App extends Component {
       const hostsLbl = new Promise(((resolve, reject) => {
         let i = 1
         lr.on('line', (line) => {
-          if (!line.includes(` ${site}`)) {
+          if (line !== `${yaml.ip} ${site}`) {
             if (i !== 1) {
               hostsToString += '\n'
             }
@@ -227,6 +230,10 @@ class App extends Component {
             if (error) throw error
           })
       })
+    }
+
+    if (del === true) {
+      hostDelete()
     } else {
       let $command = ''
       if (backupHost) {
@@ -236,19 +243,32 @@ class App extends Component {
       }
 
       if (yaml != null) {
-        $command += `echo "${yaml.ip}  ${siteMap}" >> /etc/hosts`
+        $command += `echo "${yaml.ip} ${siteMap}" >> /etc/hosts`
       }
 
-      sudo.exec($command, options,
-        (error) => {
-          if (error) throw error
-        })
+      const hostsAdd = new Promise(((resolve, reject) => {
+        sudo.exec($command, options,
+          (error) => {
+            if (error) {
+              throw error
+            } else {
+              resolve()
+            }
+          }
+        )
+      }))
+      hostsAdd.then( () => {
+        if (update === true) {
+          hostDelete()
+        }
+      })
     }
 
     this.setState({
       siteEditShow: false,
       selectedSite: null,
       shouldProvision: true,
+      yaml: doc,
     })
     settings.set('should_provision', true)
   }
