@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import loadable from '@loadable/component'
-import SiteList from './SiteList/index'
-const CreateNew = loadable(() => import('./CreateNew/index'))
-const HomesteadPath = loadable(() => import('./HomesteadPath/index'))
-const HomesteadSettings = loadable(() => import('./HomesteadSettings/index'))
-import SettingsHeader from './SettingsHeader/index'
-import Vagrant from './Vagrant/index'
+import SiteList from './SiteList'
+const CreateNew = loadable(() => import('./CreateNew'))
+const HomesteadPath = loadable(() => import('./HomesteadPath'))
+const HomesteadSettings = loadable(() => import('./HomesteadSettings'))
+import SettingsHeader from './SettingsHeader'
+import Vagrant from './Vagrant'
 
 import '../node_modules/bulma/css/bulma.css'
 import './App.css'
