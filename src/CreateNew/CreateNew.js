@@ -61,13 +61,7 @@ Folder
             </div>
           </div>
 
-          <h1 css={css`
-          text-align: left;
-        `}
-          >
-Sites
-
-          </h1>
+          <h1 css={css`text-align: left;`}>Sites</h1>
           <div className="field">
             <label className="label customLabel">Map</label>
             <div className="control">
@@ -100,7 +94,7 @@ Sites
           <div className="field">
             <div className="control">
               <button
-                type="button"
+                type="submit"
                 id="create-new-submit"
                 className="button is-link is-large"
                 css={css`
