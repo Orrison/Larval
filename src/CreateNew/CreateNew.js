@@ -5,7 +5,6 @@ import '../../node_modules/bulma/css/bulma.css'
 import '../../node_modules/bulma-tooltip/dist/css/bulma-tooltip.min.css'
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
-import styles from './CreateNew.module.css'
 
 const CreateNew = ({
   deleteButton,
@@ -21,7 +20,15 @@ const CreateNew = ({
   let deleteButtonLoad = null
   if (deleteButton) {
     deleteButtonLoad = (
-      <button type="button" className={`button is-danger is-large ${styles.customSubmit}`} onClick={e => formSubmit(e, true)}>
+      <button
+        type="button"
+        className="button is-danger is-large"
+        onClick={e => formSubmit(e, true)}
+        css={css`
+          margin: 0 auto;
+          display: block;
+        `}
+      >
         Delete
       </button>
     )
@@ -76,21 +83,31 @@ Sites
           </div>
 
           <div className="field">
-            <label className={`checkbox ${styles.checkboxLabel}`}>
-              <input type="checkbox" className={`tooltip ${styles.checkboxes}`} name="backupHost" data-tooltip="Saves backup to your documents folder" />
+            <label
+              className="checkbox"
+            >
+              <input type="checkbox" className="tooltip" name="backupHost" data-tooltip="Saves backup to your documents folder" />
               Backup my hosts file
             </label>
           </div>
           <div className="field">
-            <label className={`checkbox ${styles.checkboxLabel}`}>
-              <input type="checkbox" className={`tooltip ${styles.checkboxes}`} name="backupYaml" data-tooltip="Saves backup to your documents folder" />
+            <label className="checkbox">
+              <input type="checkbox" className="tooltip" name="backupYaml" data-tooltip="Saves backup to your documents folder" />
               Backup my Homestead.yaml
             </label>
           </div>
 
           <div className="field">
             <div className="control">
-              <button type="button" id="create-new-submit" className={`button is-link is-large ${styles.customSubmit}`}>
+              <button
+                type="button"
+                id="create-new-submit"
+                className="button is-link is-large"
+                css={css`
+                  margin: 0 auto;
+                  display: block;
+                `}
+              >
                 {button}
               </button>
             </div>
