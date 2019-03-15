@@ -7,6 +7,7 @@ import '../node_modules/bulma/css/bulma.css'
 import './App.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
 import { getVagrantID } from './Util/VagrantHelpers'
+import { Global, css } from '@emotion/core'
 
 const electron = require('electron')
 
@@ -505,6 +506,16 @@ class App extends Component {
 
     return (
       <div className="App">
+        <Global
+          styles={css`
+            label.checkbox:hover {
+              color: #fff;
+            }
+            input[type="checkbox"] {
+              margin-right: 10px;
+            }
+          `}
+        />
         <div className="columns">
 
           {showHomesteadPath}
