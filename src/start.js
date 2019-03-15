@@ -1,7 +1,7 @@
 const electron = require('electron')
 
-const app = electron.app
-const BrowserWindow = electron.BrowserWindow
+const { app } = electron
+const { BrowserWindow } = electron
 
 const path = require('path')
 const url = require('url')
@@ -10,10 +10,16 @@ const fixPath = require('fix-path')
 let mainWindow
 
 function createWindow() {
-
   fixPath()
 
-  mainWindow = new BrowserWindow({ width: 1000, height: 900, webPreferences: { nodeIntegration: true }, minHeight: 422, minWidth: 400, show: false })
+  mainWindow = new BrowserWindow({
+    width: 1000,
+    height: 900,
+    webPreferences: { nodeIntegration: true },
+    minHeight: 422,
+    minWidth: 400,
+    show: false,
+  })
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
@@ -28,7 +34,7 @@ function createWindow() {
       }),
   )
 
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', () => {
     mainWindow = null
