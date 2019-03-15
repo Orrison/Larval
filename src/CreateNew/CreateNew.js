@@ -1,17 +1,27 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+// eslint-disable-next-line no-unused-vars
 import React from 'react'
 import '../../node_modules/bulma/css/bulma.css'
 import '../../node_modules/bulma-tooltip/dist/css/bulma-tooltip.min.css'
-import styles from './CreateNew.module.css'
-
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
+import styles from './CreateNew.module.css'
 
-const CreateNew = ( props ) => {
-
-  let deleteButton = null
-  if (props.deleteButton) {
-    deleteButton = (
-      <button className={`button is-danger is-large ${styles.customSubmit}`} onClick={(e) => props.formSubmit(e, true)}>
+const CreateNew = ({
+  deleteButton,
+  formSubmit,
+  folderMap,
+  pathClick,
+  folderTo,
+  siteMap,
+  siteTo,
+  button,
+  close,
+}) => {
+  let deleteButtonLoad = null
+  if (deleteButton) {
+    deleteButtonLoad = (
+      <button type="button" className={`button is-danger is-large ${styles.customSubmit}`} onClick={e => formSubmit(e, true)}>
         Delete
       </button>
     )
@@ -19,75 +29,82 @@ const CreateNew = ( props ) => {
 
   return (
     <div className="modal is-active has-text-centered">
-      <div className="modal-background"></div>
+      <div className="modal-background" />
       <div className="modal-content">
-        
-      <form onSubmit={props.formSubmit}>
+        <form onSubmit={formSubmit}>
 
-        <h1 css={css`
+          <h1 css={css`
           text-align: left;
-        `}>Folder</h1>
-        <div className="field">
-          <label className={`label customLabel`}>Map</label>
-          <div className="control">
-            <input name="folderMap" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" defaultValue={props.folderMap} onClick={props.pathClick} />
-          </div>
-        </div>
+        `}
+          >
+Folder
 
-        <div className="field">
-          <label className={`label customLabel`}>To</label>
-          <div className="control">
-            <input name="folderTo" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" defaultValue={!!props.folderTo ? props.folderTo : `/home/vagrant/sites/MAP_FOLDER_NAME_HERE`} onClick={props.pathClick} />
+          </h1>
+          <div className="field">
+            <label className="label customLabel">Map</label>
+            <div className="control">
+              <input name="folderMap" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" defaultValue={folderMap} onClick={pathClick} />
+            </div>
           </div>
-        </div>
 
-        <h1 css={css`
+          <div className="field">
+            <label className="label customLabel">To</label>
+            <div className="control">
+              <input name="folderTo" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" defaultValue={folderTo || '/home/vagrant/sites/MAP_FOLDER_NAME_HERE'} onClick={pathClick} />
+            </div>
+          </div>
+
+          <h1 css={css`
           text-align: left;
-        `}>Sites</h1>
-        <div className="field">
-          <label className={`label customLabel`}>Map</label>
-          <div className="control">
-            <input name="siteMap" className="input is-medium" type="text" placeholder="newsite.test" defaultValue={props.siteMap}></input>
-          </div>
-        </div>
-        
-        <div className="field">
-          <label className={`label customLabel`}>To</label>
-          <div className="control">
-            <input name="siteTo" className="input is-medium" type="text" placeholder="Generally the same as Folder To (Laravel sites append '/public')" defaultValue={props.siteTo} />
-          </div>
-        </div>
+        `}
+          >
+Sites
 
-        <div className="field">
-          <label className={`checkbox ${styles.checkboxLabel}`}>
-            <input type="checkbox" className={`tooltip ${styles.checkboxes}`} name='backupHost' data-tooltip='Saves backup to your documents folder' />
+          </h1>
+          <div className="field">
+            <label className="label customLabel">Map</label>
+            <div className="control">
+              <input name="siteMap" className="input is-medium" type="text" placeholder="newsite.test" defaultValue={siteMap} />
+            </div>
+          </div>
+
+          <div className="field">
+            <label className="label customLabel">To</label>
+            <div className="control">
+              <input name="siteTo" className="input is-medium" type="text" placeholder="Generally the same as Folder To (Laravel sites append '/public')" defaultValue={siteTo} />
+            </div>
+          </div>
+
+          <div className="field">
+            <label className={`checkbox ${styles.checkboxLabel}`}>
+              <input type="checkbox" className={`tooltip ${styles.checkboxes}`} name="backupHost" data-tooltip="Saves backup to your documents folder" />
               Backup my hosts file
-          </label>
+            </label>
           </div>
           <div className="field">
-          <label className={`checkbox ${styles.checkboxLabel}`}>
-            <input type="checkbox" className={`tooltip ${styles.checkboxes}`} name='backupYaml' data-tooltip='Saves backup to your documents folder' />
+            <label className={`checkbox ${styles.checkboxLabel}`}>
+              <input type="checkbox" className={`tooltip ${styles.checkboxes}`} name="backupYaml" data-tooltip="Saves backup to your documents folder" />
               Backup my Homestead.yaml
-          </label>
-        </div>
+            </label>
+          </div>
 
-        <div className="field">
-          <div className="control">
-            <button id="create-new-submit" className={`button is-link is-large ${styles.customSubmit}`}>
-              {props.button}
-            </button>
+          <div className="field">
+            <div className="control">
+              <button type="button" id="create-new-submit" className={`button is-link is-large ${styles.customSubmit}`}>
+                {button}
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="field">
-          <div className="control">
-            {deleteButton}
+          <div className="field">
+            <div className="control">
+              {deleteButtonLoad}
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
       </div>
-      <button className="modal-close is-large" onClick={() => props.close(1)} aria-label="close"></button>
+      <button type="button" className="modal-close is-large" onClick={() => close(1)} aria-label="close" />
     </div>
-  );
+  )
 }
 
-export default CreateNew;
+export default CreateNew
