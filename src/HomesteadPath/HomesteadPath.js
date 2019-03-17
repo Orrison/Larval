@@ -2,20 +2,22 @@ import React from 'react'
 import '../../node_modules/bulma/css/bulma.css'
 import styles from './HomesteadPath.module.css'
 
-const HomesteadPath = ( props ) => {
+const HomesteadPath = ({
+  formSubmit,
+  msg,
+  pathClick,
+}) => (
+  <div className="modal is-active has-text-centered">
+    <div className={`modal-background ${styles.modalBackground}`} />
+    <div className="modal-content">
 
-  return (
-    <div className="modal is-active has-text-centered">
-      <div className={`modal-background ${styles.modalBackground}`}></div>
-      <div className="modal-content">
-        
-      <form onSubmit={props.formSubmit}>
-        
+      <form onSubmit={formSubmit}>
+
         <div className="field">
           <label className={`label ${styles.customLabel}`}>Set the path to your Homestead folder</label>
-          <p>{props.msg}</p>
+          <p>{msg}</p>
           <div className="control">
-            <input name="path" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" onFocus={props.pathClick} required />
+            <input name="path" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" onFocus={pathClick} required />
           </div>
         </div>
 
@@ -26,9 +28,8 @@ const HomesteadPath = ( props ) => {
         </div>
 
       </form>
-      </div>
     </div>
-  );
-}
+  </div>
+)
 
-export default HomesteadPath;
+export default HomesteadPath
