@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import loadable from '@loadable/component'
+import { Global, css } from '@emotion/core'
 import SiteList from './SiteList'
 import SettingsHeader from './SettingsHeader'
 import Vagrant from './Vagrant'
@@ -7,7 +8,6 @@ import '../node_modules/bulma/css/bulma.css'
 import './App.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
 import { getVagrantID } from './Util/VagrantHelpers'
-import { Global, css } from '@emotion/core'
 
 const electron = require('electron')
 
