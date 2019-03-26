@@ -1,5 +1,7 @@
 import React from 'react'
-import '../../node_modules/bulma/css/bulma.css'
+import '../../../node_modules/bulma/css/bulma.css'
+import '../../../node_modules/bulma-tooltip/dist/css/bulma-tooltip.min.css'
+import Modal from '../Modal'
 
 import styles from './HomesteadSettings.module.css'
 
@@ -11,12 +13,8 @@ const HomesteadSettings = ({
   close,
   provider,
 }) => (
-  <div className="modal is-active has-text-centered">
-    <div className="modal-background" />
-    <div className="modal-content">
-
+  <Modal>
       <form onSubmit={formSubmit}>
-
         <div className="field is-grouped">
           <div className="field-label is-medium">
             <label className="label customLabel">IP</label>
@@ -80,11 +78,9 @@ const HomesteadSettings = ({
         <button id="homestead-settings-submit" className={`button is-link is-large ${styles.customSubmit}`} type="button">
             Save
         </button>
-
       </form>
-    </div>
     <button className="modal-close is-large" onClick={close} aria-label="close" type="button" />
-  </div>
+  </Modal>
 )
 
 export default HomesteadSettings

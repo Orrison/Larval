@@ -1,8 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
-import '../../node_modules/bulma/css/bulma.css'
-import '../../node_modules/bulma-tooltip/dist/css/bulma-tooltip.min.css'
+import '../../../node_modules/bulma/css/bulma.css'
+import '../../../node_modules/bulma-tooltip/dist/css/bulma-tooltip.min.css'
+import Modal from '../Modal'
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
 
@@ -35,17 +36,12 @@ const CreateNew = ({
   }
 
   return (
-    <div className="modal is-active has-text-centered">
-      <div className="modal-background" />
-      <div className="modal-content">
+    <Modal>
         <form onSubmit={formSubmit}>
-
           <h1 css={css`
-          text-align: left;
-        `}
-          >
-Folder
-
+            text-align: left;
+          `}>
+            Folder
           </h1>
           <div className="field">
             <label className="label customLabel">Map</label>
@@ -112,9 +108,8 @@ Folder
             </div>
           </div>
         </form>
-      </div>
       <button type="button" className="modal-close is-large" onClick={() => close(1)} aria-label="close" />
-    </div>
+    </Modal>
   )
 }
 

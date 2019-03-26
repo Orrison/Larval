@@ -11,9 +11,9 @@ import { getVagrantID } from './Util/VagrantHelpers'
 
 const electron = require('electron')
 
-const CreateNew = loadable(() => import('./CreateNew'))
-const HomesteadPath = loadable(() => import('./HomesteadPath'))
-const HomesteadSettings = loadable(() => import('./HomesteadSettings'))
+const CreateNew = loadable(() => import('./Modal/CreateNew'))
+const HomesteadPath = loadable(() => import('./Modal/HomesteadPath'))
+const HomesteadSettings = loadable(() => import('./Modal/HomesteadSettings'))
 
 const { remote } = electron
 const fs = require('fs')

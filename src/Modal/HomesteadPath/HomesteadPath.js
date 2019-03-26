@@ -1,5 +1,6 @@
 import React from 'react'
-import '../../node_modules/bulma/css/bulma.css'
+import '../../../node_modules/bulma/css/bulma.css'
+import Modal from '../Modal'
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
 
@@ -8,17 +9,8 @@ const HomesteadPath = ({
   msg,
   pathClick,
 }) => (
-  <div className="modal is-active has-text-centered">
-    <div
-      className="modal-background"
-      css={css`
-        background: #000;
-      `}
-    />
-    <div className="modal-content">
-
+  <Modal>
       <form onSubmit={formSubmit}>
-
         <div className="field">
           <label
             className="label"
@@ -51,10 +43,8 @@ const HomesteadPath = ({
             </button>
           </div>
         </div>
-
       </form>
-    </div>
-  </div>
+  </Modal>
 )
 
 export default HomesteadPath
