@@ -2,8 +2,8 @@ import React from 'react'
 import '../../../node_modules/bulma/css/bulma.css'
 import '../../../node_modules/bulma-tooltip/dist/css/bulma-tooltip.min.css'
 import Modal from '../Modal'
-
-import styles from './HomesteadSettings.module.css'
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core'
 
 const HomesteadSettings = ({
   formSubmit,
@@ -69,13 +69,21 @@ const HomesteadSettings = ({
         </div>
 
         <div className="field">
-          <label className={`checkbox ${styles.checkboxLabel}`}>
-            <input type="checkbox" className={`tooltip ${styles.checkboxes}`} name="backupYaml" data-tooltip="Saves backup to your documents folder" />
+          <label className="checkbox">
+            <input type="checkbox" className="tooltip" name="backupYaml" data-tooltip="Saves backup to your documents folder" />
                 Backup my Homestead.yaml
           </label>
         </div>
 
-        <button id="homestead-settings-submit" className={`button is-link is-large ${styles.customSubmit}`} type="button">
+        <button
+          id="homestead-settings-submit"
+          className="button is-link is-large"
+          type="submit"
+          css={css`
+            margin: 0 auto;
+            display: block;
+          `}
+        >
             Save
         </button>
       </form>
