@@ -1,6 +1,6 @@
 {
 	"test": false,
-	"css": true,
+	"css": false,
 	"index": true,
 	"default": true,
 	"cssType": "module.css",
