@@ -2,6 +2,8 @@ import React from 'react'
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
 const { shell } = require('electron')
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
 
 const SiteOptions = (props) => {
@@ -19,19 +21,19 @@ const SiteOptions = (props) => {
           background: green;
         `}
       >
-        <span>View</span>
+        <FontAwesomeIcon icon={faEye} />
       </div>
       <div onClick={()=>props.edit(props.index)}
         css={css`
           background: orange;
         `}
       >
-        <span>Edit</span>
+        <FontAwesomeIcon icon={faPencilAlt} />
       </div>
       <div css={css`
         background: red;
       `}>
-        Delete
+        <FontAwesomeIcon icon={faTrashAlt} />
       </div>
     </div>
   )
