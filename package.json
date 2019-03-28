@@ -25,7 +25,8 @@
     "react-dev-utils": "^7.0.3",
     "react-dom": "^16.8.3",
     "sudo-prompt": "^8.2.5",
-    "time-stamp": "^2.2.0"
+    "time-stamp": "^2.2.0",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "nf start -p 3000",
