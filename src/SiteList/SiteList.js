@@ -17,9 +17,7 @@ class SiteList extends Component {
   componentDidMount() {}
 
   siteOptionsToggle = (site) => {
-    this.setState({
-      siteOptOpen: [site]
-    })
+    (site === this.state.siteOptOpen) ? this.setState({siteOptOpen: null}) : this.setState({siteOptOpen: site})
   }
 
   render() {
