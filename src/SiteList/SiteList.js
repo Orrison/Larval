@@ -3,9 +3,10 @@ import '../../node_modules/bulma/css/bulma.css'
 import style from './SiteList.module.css'
 import SiteListItem from './SiteListItem'
 import SiteOptions from './SiteOptions'
-
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
+
+const uuidv4 = require('uuid/v4')
 
 class SiteList extends Component {
   constructor(props) {
@@ -33,15 +34,15 @@ class SiteList extends Component {
             }
             
             return (
-              <div>
+              <div
+                key={uuidv4(item.map)}
+              >
                 <SiteListItem
-                  key={index} // eslint-disable-line
                   site={item.map}
                   index={index}
                   click={()=>this.siteOptionsToggle(item.map)}
                 />
                 <SiteOptions
-                  key={index + 1 * 30}
                   site={item.map}
                   status={optionsDisplay}
                   index={index}
