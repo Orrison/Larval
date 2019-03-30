@@ -25,6 +25,7 @@
     "react-dev-utils": "^7.0.3",
     "react-dom": "^16.8.3",
     "sudo-prompt": "^8.2.5",
+    "sweetalert2": "^8.7.1",
     "time-stamp": "^2.2.0",
     "uuid": "^3.3.2"
   },
