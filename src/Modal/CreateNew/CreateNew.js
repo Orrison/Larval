@@ -18,23 +18,6 @@ const CreateNew = ({
   button,
   close,
 }) => {
-  let deleteButtonLoad = null
-  if (deleteButton) {
-    deleteButtonLoad = (
-      <button
-        type="button"
-        className="button is-danger is-large"
-        onClick={e => formSubmit(e, true)}
-        css={css`
-          margin: 0 auto;
-          display: block;
-        `}
-      >
-        Delete
-      </button>
-    )
-  }
-
   return (
     <Modal>
         <form onSubmit={formSubmit}>
@@ -100,11 +83,6 @@ const CreateNew = ({
               >
                 {button}
               </button>
-            </div>
-          </div>
-          <div className="field">
-            <div className="control">
-              {deleteButtonLoad}
             </div>
           </div>
         </form>

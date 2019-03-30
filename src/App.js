@@ -85,9 +85,11 @@ class App extends Component {
     }
   }
 
-  selectSite = (id) => {
+  selectSite = (id, open) => {
     this.setState({ selectedSite: id })
-    this.siteEditToggle()
+    if (open) {
+      this.siteEditToggle()
+    }
   }
 
   // Set Homestead Path code
@@ -132,8 +134,7 @@ class App extends Component {
     }
   }
 
-  submitCreateNew = async (event, del = null) => {
-    event.preventDefault()
+  submitCreateNew = async (del = null) => {
 
     const { selectedSite, homesteadPath, yaml } = this.state
 
@@ -452,14 +453,12 @@ class App extends Component {
     let siteMap = null
     let siteTo = null
     let button = 'Create Site'
-    let deleteButton = false
     if (selectedSite !== null) {
       folderMap = yaml.folders[selectedSite].map
       folderTo = yaml.folders[selectedSite].to
       siteMap = yaml.sites[selectedSite].map
       siteTo = yaml.sites[selectedSite].to
       button = 'Update Site'
-      deleteButton = true
     }
     let showSiteEdit = null
     if (siteEditShow) {
@@ -473,7 +472,6 @@ class App extends Component {
           siteMap={siteMap}
           siteTo={siteTo}
           button={button}
-          deleteButton={deleteButton}
         />
       )
     }
@@ -500,6 +498,7 @@ class App extends Component {
           click={this.siteEditToggle}
           listItemClick={this.selectSite}
           list={yaml.sites}
+          sitedelete={() => this.submitCreateNew(true)}
         />
       )
     }

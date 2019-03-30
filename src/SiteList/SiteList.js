@@ -45,6 +45,7 @@ class SiteList extends Component {
                   status={optionsDisplay}
                   index={index}
                   edit={this.props.listItemClick}
+                  delete={this.props.sitedelete}
                 />
               </div>
             )})}
