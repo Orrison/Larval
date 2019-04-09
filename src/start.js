@@ -1,7 +1,6 @@
 const electron = require('electron')
 
-const { app } = electron
-const { BrowserWindow } = electron
+const { app, Menu, BrowserWindow } = electron
 
 const path = require('path')
 const url = require('url')
@@ -34,7 +33,7 @@ function createWindow() {
       }),
   )
 
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', () => {
     mainWindow = null
@@ -54,3 +53,25 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+var template = [{
+  label: "Larval",
+  submenu: [
+      { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
+      { type: "separator" },
+      { label: "Hide", accelerator: "CmdOrCtrl+W", click: () => { app.hide() }},
+      { label: "Quit", accelerator: "CmdOrCtrl+Q", click: () => { app.quit() }}
+  ]}, {
+  label: "Edit",
+  submenu: [
+      { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+      { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+      { type: "separator" },
+      { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+      { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+      { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+      { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+  ]}
+]
+
+Menu.setApplicationMenu(Menu.buildFromTemplate(template))
