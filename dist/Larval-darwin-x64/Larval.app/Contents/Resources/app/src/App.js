@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
 import loadable from '@loadable/component'
+import { Global, css } from '@emotion/core'
 import SiteList from './SiteList'
-const CreateNew = loadable(() => import('./CreateNew'))
-const HomesteadPath = loadable(() => import('./HomesteadPath'))
-const HomesteadSettings = loadable(() => import('./HomesteadSettings'))
 import SettingsHeader from './SettingsHeader'
 import Vagrant from './Vagrant'
-
 import '../node_modules/bulma/css/bulma.css'
 import './App.css'
-
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
 import { getVagrantID } from './Util/VagrantHelpers'
 
 const electron = require('electron')
+
+const CreateNew = loadable(() => import('./Modal/CreateNew'))
+const HomesteadPath = loadable(() => import('./Modal/HomesteadPath'))
+const HomesteadSettings = loadable(() => import('./Modal/HomesteadSettings'))
+
 const { remote } = electron
 const fs = require('fs')
 const jsYaml = require('js-yaml')
@@ -48,48 +49,47 @@ class App extends Component {
   componentDidMount() {
     fixPath()
 
-    let settingsHomestead = settings.get('homestead_path')
+    const settingsHomestead = settings.get('homestead_path')
 
     if (!settingsHomestead) {
       this.setState({ setHomesteadPathShow: true })
-    } else {
+    } else if (fs.existsSync(`${settingsHomestead}/Homestead.yaml`)) {
+      this.setState({
+        yaml: jsYaml.safeLoad(fs.readFileSync(`${settingsHomestead}/Homestead.yaml`, 'utf8')),
+        homesteadPath: settingsHomestead,
+      }, () => {
+        const { homesteadPath } = this.state
 
-      if (fs.existsSync(`${settingsHomestead}/Homestead.yaml`)) {
-        this.setState({
-          yaml: jsYaml.safeLoad(fs.readFileSync(`${settingsHomestead}/Homestead.yaml`, 'utf8')),
-          homesteadPath: settingsHomestead
-        }, () => {
-          const { homesteadPath } = this.state
-  
-          execute(`cd ${homesteadPath} && vagrant status`,
-            (error, stdout) => {
-              if (error) throw error
-              if (stdout.includes('running')) {
-                this.setState({ vagrantStatus: 'online' })
-                getVagrantID((id) => {
-                  this.setState({vagrantID: id})
-                })
-              } else {
-                this.setState({ vagrantStatus: 'offline' })
-              }
-            })
-        })
-      } else {
-        this.setState({ 
-          setHomesteadPathShow: true,
-          setHomesteadPathMsg: 'The Homestead path provided is either not the Homestead folder or your Homestead.yaml is missing :('
-        })
-      }
+        execute(`cd ${homesteadPath} && vagrant status`,
+          (error, stdout) => {
+            if (error) throw error
+            if (stdout.includes('running')) {
+              this.setState({ vagrantStatus: 'online' })
+              getVagrantID((id) => {
+                this.setState({ vagrantID: id })
+              })
+            } else {
+              this.setState({ vagrantStatus: 'offline' })
+            }
+          })
+      })
+    } else {
+      this.setState({
+        setHomesteadPathShow: true,
+        setHomesteadPathMsg: 'The Homestead path provided is either not the Homestead folder or your Homestead.yaml is missing :(',
+      })
     }
 
-    if (settings.get('should_provision') ===  true) {
+    if (settings.get('should_provision') === true) {
       this.setState({ shouldProvision: true })
     }
   }
 
-  selectSite = (id) => {
+  selectSite = (id, open) => {
     this.setState({ selectedSite: id })
-    this.siteEditToggle()
+    if (open) {
+      this.siteEditToggle()
+    }
   }
 
   // Set Homestead Path code
@@ -114,7 +114,7 @@ class App extends Component {
 
   siteEditToggle = (close = null) => {
     const { siteEditShow } = this.state
-    let stateChng = { siteEditShow: !siteEditShow }
+    const stateChng = { siteEditShow: !siteEditShow }
     if (close != null) {
       stateChng.selectedSite = null
     }
@@ -134,8 +134,7 @@ class App extends Component {
     }
   }
 
-  submitCreateNew = async (event, del = null) => {
-    event.preventDefault()
+  submitCreateNew = async (del = null) => {
 
     const { selectedSite, homesteadPath, yaml } = this.state
 
@@ -255,10 +254,9 @@ class App extends Component {
             } else {
               resolve()
             }
-          }
-        )
+          })
       }))
-      hostsAdd.then( () => {
+      hostsAdd.then(() => {
         if (update === true) {
           hostDelete()
         }
@@ -286,16 +284,16 @@ class App extends Component {
 
   submitHomesteadSettings = (event) => {
     event.preventDefault()
-    
+
     const { homesteadPath } = this.state
 
     const data = new FormData(event.target)
     const doc = jsYaml.safeLoad(fs.readFileSync(`${homesteadPath}/Homestead.yaml`, 'utf8'))
 
-    const ip = data.get('ip');
-    const memory = data.get('memory');
-    const cpus = data.get('cpus');
-    const provider = data.get('provider');
+    const ip = data.get('ip')
+    const memory = data.get('memory')
+    const cpus = data.get('cpus')
+    const provider = data.get('provider')
 
     const backupYaml = data.get('backupYaml')
     const time = timestamp('YYYYMMDDHHmmss')
@@ -326,7 +324,7 @@ class App extends Component {
       }
     })
 
-    this.setState({ 
+    this.setState({
       yaml: doc,
       homesteadSettingsShow: false,
       shouldProvision: true,
@@ -337,16 +335,16 @@ class App extends Component {
   // END HomesteadSettings
 
   vagrantConsoleAdd = (line) => {
-    const curConsole = this.state.vagrantConsole
+    const { vagrantConsole: curConsole } = this.state
 
-    let lineBuffer = line.toString()
-    let lines = lineBuffer.split("\n")
-    for (let i = 0; i <= lines.length; i++) {
-        let newLine = lines[i]
-        if (newLine != null) {
-          curConsole.push(`${newLine}`)
-        }
-    }
+    const lineBuffer = line.toString()
+    const lines = lineBuffer.split('\n')
+
+    lines.forEach((newLine) => {
+      if (newLine != null) {
+        curConsole.push(`${newLine}`)
+      }
+    })
     this.setState({ vagrantConsole: curConsole })
     const scroll = document.getElementById('vagrantConsole')
     scroll.scrollTop = scroll.scrollHeight
@@ -372,7 +370,7 @@ class App extends Component {
         this.vagrantConsoleAdd('---- Vagrant is now up ----')
         this.setState({ vagrantStatus: 'online' })
         getVagrantID((id) => {
-          this.setState({vagrantID: id})
+          this.setState({ vagrantID: id })
         })
       })
     } else if (vagrantStatus === 'online') {
@@ -417,7 +415,7 @@ class App extends Component {
     consoleCommand.on('close', (code) => {
       this.vagrantConsoleAdd('---- Provision Process Completed ----')
 
-      this.setState({ 
+      this.setState({
         vagrantStatus: 'online',
         shouldProvision: false,
       })
@@ -426,7 +424,6 @@ class App extends Component {
   }
 
   render() {
-
     const {
       setHomesteadPathShow,
       selectedSite,
@@ -437,6 +434,7 @@ class App extends Component {
       vagrantStatus,
       vagrantID,
       shouldProvision,
+      setHomesteadPathMsg,
     } = this.state
 
     let showHomesteadPath = null
@@ -445,7 +443,7 @@ class App extends Component {
         <HomesteadPath
           formSubmit={this.submitHomesteadPath}
           pathClick={this.fileSelect}
-          msg={this.state.setHomesteadPathMsg}
+          msg={setHomesteadPathMsg}
         />
       )
     }
@@ -455,14 +453,12 @@ class App extends Component {
     let siteMap = null
     let siteTo = null
     let button = 'Create Site'
-    let deleteButton = false
     if (selectedSite !== null) {
       folderMap = yaml.folders[selectedSite].map
       folderTo = yaml.folders[selectedSite].to
       siteMap = yaml.sites[selectedSite].map
       siteTo = yaml.sites[selectedSite].to
       button = 'Update Site'
-      deleteButton = true
     }
     let showSiteEdit = null
     if (siteEditShow) {
@@ -476,7 +472,6 @@ class App extends Component {
           siteMap={siteMap}
           siteTo={siteTo}
           button={button}
-          deleteButton={deleteButton}
         />
       )
     }
@@ -499,16 +494,27 @@ class App extends Component {
     if (yaml != null) {
       siteList = (
         <SiteList
-          text={this.state.yaml.ip}
+          text={yaml.ip}
           click={this.siteEditToggle}
           listItemClick={this.selectSite}
-          list={this.state.yaml.sites}
+          list={yaml.sites}
+          sitedelete={() => this.submitCreateNew(true)}
         />
       )
     }
 
     return (
       <div className="App">
+        <Global
+          styles={css`
+            label.checkbox:hover {
+              color: #fff;
+            }
+            input[type="checkbox"] {
+              margin-right: 10px;
+            }
+          `}
+        />
         <div className="columns">
 
           {showHomesteadPath}

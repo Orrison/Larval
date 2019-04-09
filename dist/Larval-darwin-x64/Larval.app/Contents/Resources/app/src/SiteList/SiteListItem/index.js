@@ -1,1 +1,1 @@
-export { default } from './SiteListItem'
+export { default } from './SiteListItem.js';

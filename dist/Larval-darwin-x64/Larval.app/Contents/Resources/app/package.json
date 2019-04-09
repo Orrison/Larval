@@ -12,10 +12,11 @@
     "@loadable/component": "^5.6.1",
     "bulma": "^0.7.4",
     "bulma-tooltip": "^2.0.2",
+    "electron": "^4.0.8",
     "electron-settings": "^3.2.0",
     "electron-updater": "^4.0.6",
     "fix-path": "^2.1.0",
-    "js-yaml": "^3.12.2",
+    "js-yaml": "^3.13.0",
     "line-by-line": "^0.1.6",
     "prop-types": "^15.7.2",
     "random-uuid-v4": "0.0.8",
@@ -24,7 +25,9 @@
     "react-dev-utils": "^7.0.3",
     "react-dom": "^16.8.3",
     "sudo-prompt": "^8.2.5",
-    "time-stamp": "^2.2.0"
+    "sweetalert2": "^8.7.1",
+    "time-stamp": "^2.2.0",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "nf start -p 3000",
@@ -61,8 +64,7 @@
     "css-loader": "1.0.0",
     "dotenv": "6.0.0",
     "dotenv-expand": "4.2.0",
-    "electron": "^4.0.6",
-    "electron-builder": "^20.38.5",
+    "electron-builder": "^20.39.0",
     "electron-installer-dmg": "^2.0.0",
     "electron-packager": "^13.1.0",
     "eslint": "5.12.0",

@@ -1,7 +1,6 @@
 const electron = require('electron')
 
-const app = electron.app
-const BrowserWindow = electron.BrowserWindow
+const { app, Menu, BrowserWindow } = electron
 
 const path = require('path')
 const url = require('url')
@@ -10,10 +9,16 @@ const fixPath = require('fix-path')
 let mainWindow
 
 function createWindow() {
-
   fixPath()
 
-  mainWindow = new BrowserWindow({ width: 1000, height: 900, webPreferences: { nodeIntegration: true }, minHeight: 422, minWidth: 400, show: false })
+  mainWindow = new BrowserWindow({
+    width: 1000,
+    height: 900,
+    webPreferences: { nodeIntegration: true },
+    minHeight: 422,
+    minWidth: 400,
+    show: false,
+  })
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
@@ -48,3 +53,25 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+var template = [{
+  label: "Larval",
+  submenu: [
+      { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
+      { type: "separator" },
+      { label: "Hide", accelerator: "CmdOrCtrl+W", click: () => { app.hide() }},
+      { label: "Quit", accelerator: "CmdOrCtrl+Q", click: () => { app.quit() }}
+  ]}, {
+  label: "Edit",
+  submenu: [
+      { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+      { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+      { type: "separator" },
+      { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+      { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+      { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+      { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+  ]}
+]
+
+Menu.setApplicationMenu(Menu.buildFromTemplate(template))
