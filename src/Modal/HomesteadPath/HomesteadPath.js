@@ -6,7 +6,6 @@ import { css, jsx } from '@emotion/core'
 
 const HomesteadPath = ({
   formSubmit,
-  msg,
   pathClick,
 }) => (
   <Modal>
@@ -21,7 +20,7 @@ const HomesteadPath = ({
           >
             Set the path to your Homestead folder
           </label>
-          <p>{msg}</p>
+          <p>The Homestead path provided is either not the Homestead folder or your Homestead.yaml is missing :(</p>
           <div className="control">
             <input name="path" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" onFocus={pathClick} required />
           </div>

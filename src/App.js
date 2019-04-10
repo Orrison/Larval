@@ -34,7 +34,6 @@ class App extends Component {
     yaml: null,
     homesteadPath: null,
     setHomesteadPathShow: false,
-    setHomesteadPathMsg: '',
     homesteadSettingsShow: false,
     siteEditShow: false,
     selectedSite: null,
@@ -74,7 +73,6 @@ class App extends Component {
     } else {
       this.setState({
         setHomesteadPathShow: true,
-        setHomesteadPathMsg: 'The Homestead path provided is either not the Homestead folder or your Homestead.yaml is missing :(',
       })
     }
 
@@ -432,7 +430,6 @@ class App extends Component {
       vagrantStatus,
       vagrantID,
       shouldProvision,
-      setHomesteadPathMsg,
     } = this.state
 
     let showHomesteadPath = null
@@ -441,7 +438,6 @@ class App extends Component {
         <HomesteadPath
           formSubmit={this.submitHomesteadPath}
           pathClick={this.fileSelect}
-          msg={setHomesteadPathMsg}
         />
       )
     }
