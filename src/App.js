@@ -5,7 +5,6 @@ import SiteList from './SiteList'
 import SettingsHeader from './SettingsHeader'
 import Vagrant from './Vagrant'
 import '../node_modules/bulma/css/bulma.css'
-import './App.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
 import { getVagrantID } from './Util/VagrantHelpers'
 
@@ -507,11 +506,25 @@ class App extends Component {
       <div className="App">
         <Global
           styles={css`
-            label.checkbox:hover {
+            .App {
+              text-align: center;
               color: #fff;
             }
+            label.checkbox:hover { color: #fff; }
             input[type="checkbox"] {
               margin-right: 10px;
+            }
+            .columns { margin: 0; }
+            .column { padding: 0; }
+            h1 {
+              font-size: 28px;
+              font-weight: 800;
+              align-self: center;
+              margin: 0 auto;
+            }
+            label.customLabel {
+              color: #fff;
+              font-size: 26px;
             }
           `}
         />
