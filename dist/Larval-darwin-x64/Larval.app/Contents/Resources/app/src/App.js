@@ -5,17 +5,15 @@ import SiteList from './SiteList'
 import SettingsHeader from './SettingsHeader'
 import Vagrant from './Vagrant'
 import '../node_modules/bulma/css/bulma.css'
-import './App.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
 import { getVagrantID } from './Util/VagrantHelpers'
 
-const electron = require('electron')
+const { remote } = require('electron')
 
 const CreateNew = loadable(() => import('./Modal/CreateNew'))
 const HomesteadPath = loadable(() => import('./Modal/HomesteadPath'))
 const HomesteadSettings = loadable(() => import('./Modal/HomesteadSettings'))
 
-const { remote } = electron
 const fs = require('fs')
 const jsYaml = require('js-yaml')
 
@@ -36,7 +34,6 @@ class App extends Component {
     yaml: null,
     homesteadPath: null,
     setHomesteadPathShow: false,
-    setHomesteadPathMsg: '',
     homesteadSettingsShow: false,
     siteEditShow: false,
     selectedSite: null,
@@ -76,7 +73,6 @@ class App extends Component {
     } else {
       this.setState({
         setHomesteadPathShow: true,
-        setHomesteadPathMsg: 'The Homestead path provided is either not the Homestead folder or your Homestead.yaml is missing :(',
       })
     }
 
@@ -398,7 +394,7 @@ class App extends Component {
   }
 
   vagrantProvision = () => {
-    const { vagrantConsole, homesteadPath } = this.state
+    const { homesteadPath } = this.state
 
     this.setState({ vagrantStatus: 'processing' })
 
@@ -434,7 +430,6 @@ class App extends Component {
       vagrantStatus,
       vagrantID,
       shouldProvision,
-      setHomesteadPathMsg,
     } = this.state
 
     let showHomesteadPath = null
@@ -443,7 +438,6 @@ class App extends Component {
         <HomesteadPath
           formSubmit={this.submitHomesteadPath}
           pathClick={this.fileSelect}
-          msg={setHomesteadPathMsg}
         />
       )
     }
@@ -507,11 +501,25 @@ class App extends Component {
       <div className="App">
         <Global
           styles={css`
-            label.checkbox:hover {
+            .App {
+              text-align: center;
               color: #fff;
             }
+            label.checkbox:hover { color: #fff; }
             input[type="checkbox"] {
               margin-right: 10px;
+            }
+            .columns { margin: 0; }
+            .column { padding: 0; }
+            h1 {
+              font-size: 28px;
+              font-weight: 800;
+              align-self: center;
+              margin: 0 auto;
+            }
+            label.customLabel {
+              color: #fff;
+              font-size: 26px;
             }
           `}
         />
