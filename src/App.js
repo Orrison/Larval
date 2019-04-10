@@ -394,7 +394,7 @@ class App extends Component {
   }
 
   vagrantProvision = () => {
-    const { vagrantConsole, homesteadPath } = this.state
+    const { homesteadPath } = this.state
 
     this.setState({ vagrantStatus: 'processing' })
 
