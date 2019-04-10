@@ -8,13 +8,12 @@ import '../node_modules/bulma/css/bulma.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
 import { getVagrantID } from './Util/VagrantHelpers'
 
-const electron = require('electron')
+const { remote } = require('electron')
 
 const CreateNew = loadable(() => import('./Modal/CreateNew'))
 const HomesteadPath = loadable(() => import('./Modal/HomesteadPath'))
 const HomesteadSettings = loadable(() => import('./Modal/HomesteadSettings'))
 
-const { remote } = electron
 const fs = require('fs')
 const jsYaml = require('js-yaml')
 
