@@ -8,9 +8,11 @@ Larval is in it's Alpha stages and though extensively tested it is not fully rec
 
 The app is currently only available for MacOS, the DMG and App file may both be found in the dist folder.
 
-Please feel free to notate any issues or reccomendations within a respective Github issue.
+Please feel free to notate any issues or recommendations within a respective Github issue.
 
 #### `Larvel Homestead is required to use this application and upon startup you need will be asked to select the path to your Homestead folder`
+
+Larval currently is setup to manage Homestead in a "Single Box" environment. Support for Per Project installations coming soon.
 
 ### Why is my password asked for when editing a site?
 You are required to enter your password in order to enact the changes to your hosts file. The password prompt is OS level, no information of your user or password is passed into or stored within Larval.
