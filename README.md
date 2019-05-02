@@ -4,7 +4,7 @@
 
 Larval is a Graphical User Interface (GUI) for managing sites, settings, and status within Laravel Homestead. With it you can view, create, and delete sites in your Homestead environment. As well as change Homestead settings, bring vagrant up/down, ssh into vagrant, and provision.
 
-Larval is in it's Alpha stages and though extensively tested it is not fully recommended for production use. Though the app does have options to back them up before changes it is recommended you make a backup of your hosts and Homestead.yaml file.
+Larval is in it's Alpha stages and though extensively tested it is not fully recommended for production use. Though the app does have options to back them up before changes it is recommended you manually make a backup of your hosts and Homestead.yaml file. Larval and it's contributors will not be held liable for any lost data.
 
 The app is currently only available for MacOS, the DMG and App file may both be found in the dist folder.
 
