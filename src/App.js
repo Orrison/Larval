@@ -47,14 +47,17 @@ class App extends Component {
   componentDidMount() {
     fixPath()
 
-    const settingsHomestead = settings.get('homestead_path')
+    const settingsHomestead = settings.get('homestead_boxes')
 
     if (!settingsHomestead) {
-      this.setState({ setHomesteadPathShow: true })
-    } else if (fs.existsSync(`${settingsHomestead}/Homestead.yaml`)) {
+      this.setState({ 
+        setHomesteadPathShow: true,
+        boxes: new Object()
+      })
+    } else if (fs.existsSync(`${settingsHomestead[Object.keys(settingsHomestead)[0]]}/Homestead.yaml`)) {
       this.setState({
-        yaml: jsYaml.safeLoad(fs.readFileSync(`${settingsHomestead}/Homestead.yaml`, 'utf8')),
-        homesteadPath: settingsHomestead,
+        yaml: jsYaml.safeLoad(fs.readFileSync(`${settingsHomestead[Object.keys(settingsHomestead)[0]]}/Homestead.yaml`, 'utf8')),
+        homesteadPath: settingsHomestead[Object.keys(settingsHomestead)[0]],
       }, () => {
         const { homesteadPath } = this.state
 
@@ -94,14 +97,21 @@ class App extends Component {
   submitHomesteadPath = (event) => {
     const { setHomesteadPathShow } = this.state
     const data = new FormData(event.target)
+
+    let name = data.get('name')
     let path = data.get('path')
     path = path.replace(/\/$/, '')
+    let boxsCopy = {...this.state.boxes}
+    boxsCopy[name] = path
 
-    settings.set('homestead_path', path)
-    this.setState({ homesteadPath: path })
+    settings.set('homestead_boxes', boxsCopy)
 
     const currsetHomesteadPathShow = setHomesteadPathShow
-    this.setState({ setHomesteadPathShow: !currsetHomesteadPathShow })
+    this.setState({
+      homesteadPath: path,
+      boxes: boxsCopy,
+      setHomesteadPathShow: !currsetHomesteadPathShow
+    })
     this.componentDidMount()
   }
 
