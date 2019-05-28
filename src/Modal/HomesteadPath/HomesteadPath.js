@@ -22,6 +22,7 @@ const HomesteadPath = ({
           </label>
           <p>The Homestead path provided is either not the Homestead folder or your Homestead.yaml is missing :(</p>
           <div className="control">
+            <input name="name" className="input is-medium" type="text" placeholder="My Vagrant Box" required />
             <input name="path" className="input is-medium" type="text" placeholder="/user/joeshmoe/websites/" onFocus={pathClick} required />
           </div>
         </div>
