@@ -522,6 +522,9 @@ class App extends Component {
               color: #fff;
               font-size: 26px;
             }
+            .is-one-third {
+              background: #202020;
+            }
           `}
         />
         <div className="columns">
