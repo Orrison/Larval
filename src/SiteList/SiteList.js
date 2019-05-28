@@ -22,7 +22,7 @@ class SiteList extends Component {
 
   render() {
     return (
-      <div className={`column is-one-third ${style.wrapper}`}>
+      <div className={`${style.wrapper}`}>
         <div className={`${style.list}`}>
           {this.props.list.map((item, index) => {
             

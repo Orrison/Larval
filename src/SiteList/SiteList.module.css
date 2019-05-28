@@ -1,13 +1,13 @@
 .wrapper {
     background-color: #202020;
-    height: 100vh;
+    height: 50vh;
     position: relative;
     padding: 0;
     font-size: 20px;
 }
 .wrapper > .list {
     overflow-y: scroll;
-    height: 90vh;
+    height: 40vh;
 }
 
  /* width */

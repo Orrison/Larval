@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import loadable from '@loadable/component'
 import { Global, css } from '@emotion/core'
 import SiteList from './SiteList'
+import BoxList from './BoxList'
 import SettingsHeader from './SettingsHeader'
 import Vagrant from './Vagrant'
 import '../node_modules/bulma/css/bulma.css'
@@ -528,8 +529,11 @@ class App extends Component {
           {showHomesteadPath}
           {showHomsteadSettings}
           {showSiteEdit}
-
-          {siteList}
+          
+          <div className="column is-one-third">
+            <BoxList/>
+            {siteList}
+          </div>
 
           <div className="column is-two-third">
             <SettingsHeader
