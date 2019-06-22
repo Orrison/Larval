@@ -47,17 +47,17 @@ class App extends Component {
   componentDidMount() {
     fixPath()
 
-    const settingsHomestead = settings.get('homestead_boxes')
+    const homesteadBoxes = settings.get('homestead_boxes')
 
-    if (!settingsHomestead) {
+    if (!homesteadBoxes) {
       this.setState({ 
         setHomesteadPathShow: true,
         boxes: new Object()
       })
-    } else if (fs.existsSync(`${settingsHomestead[Object.keys(settingsHomestead)[0]]}/Homestead.yaml`)) {
+    } else if (fs.existsSync(`${homesteadBoxes[Object.keys(homesteadBoxes)[0]]}/Homestead.yaml`)) {
       this.setState({
-        yaml: jsYaml.safeLoad(fs.readFileSync(`${settingsHomestead[Object.keys(settingsHomestead)[0]]}/Homestead.yaml`, 'utf8')),
-        homesteadPath: settingsHomestead[Object.keys(settingsHomestead)[0]],
+        yaml: jsYaml.safeLoad(fs.readFileSync(`${homesteadBoxes[Object.keys(homesteadBoxes)[0]]}/Homestead.yaml`, 'utf8')),
+        homesteadPath: homesteadBoxes[Object.keys(homesteadBoxes)[0]],
       }, () => {
         const { homesteadPath } = this.state
 
