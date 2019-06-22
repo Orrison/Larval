@@ -3,13 +3,16 @@ import BoxListItem from './BoxListItem'
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
 
-class BoxList extends Component {
-  // constructor(props){
-    // super(props)
-    // this.state = {}
-  // }
+const uuidv4 = require('uuid/v4')
 
-  // componentDidMount(){}
+class BoxList extends Component {
+  constructor(props){
+    super(props)
+    this.state = {}
+  }
+
+  componentDidMount(){
+  }
   // componentWillUnmount(){}
 
   // componentWillUpdate(){}
@@ -23,9 +26,21 @@ class BoxList extends Component {
           position: relative;
           padding: 0;
           font-size: 20px;
+
+          h3 {
+            padding-top: 20px;
+          }
         `}
       >
-        <BoxListItem/>
+        <h3>Homestead Boxes:</h3>
+        {this.props.boxes.map((item, index) => {
+          return (
+            <BoxListItem
+              key={uuidv4(item.path)}
+              name={item.name}
+            />
+            )
+          })}
       </div>
     )
   }

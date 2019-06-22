@@ -23,7 +23,7 @@ const BoxListItem = (props) => {
         }
       `}
     >
-      <p>Test</p>
+      <p>{props.name}</p>
     </div>
   )
 }

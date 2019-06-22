@@ -47,17 +47,20 @@ class App extends Component {
   componentDidMount() {
     fixPath()
 
+    // settings.delete('homestead_boxes')
+    // throw new Error("Stop");
+
     const homesteadBoxes = settings.get('homestead_boxes')
 
     if (!homesteadBoxes) {
       this.setState({ 
         setHomesteadPathShow: true,
-        boxes: new Object()
       })
-    } else if (fs.existsSync(`${homesteadBoxes[Object.keys(homesteadBoxes)[0]]}/Homestead.yaml`)) {
+    } else if (fs.existsSync(`${homesteadBoxes[0].path}/Homestead.yaml`)) {
       this.setState({
-        yaml: jsYaml.safeLoad(fs.readFileSync(`${homesteadBoxes[Object.keys(homesteadBoxes)[0]]}/Homestead.yaml`, 'utf8')),
-        homesteadPath: homesteadBoxes[Object.keys(homesteadBoxes)[0]],
+        yaml: jsYaml.safeLoad(fs.readFileSync(`${homesteadBoxes[0].path}/Homestead.yaml`, 'utf8')),
+        homesteadPath: homesteadBoxes[0].path,
+        boxes: homesteadBoxes,
       }, () => {
         const { homesteadPath } = this.state
 
@@ -100,16 +103,20 @@ class App extends Component {
 
     let name = data.get('name')
     let path = data.get('path')
+    let newBox = {
+      name,
+      path,
+    }
     path = path.replace(/\/$/, '')
-    let boxsCopy = {...this.state.boxes}
-    boxsCopy[name] = path
+    let boxes = new Array()
+    boxes.push(newBox)
 
-    settings.set('homestead_boxes', boxsCopy)
+    settings.set('homestead_boxes', boxes)
 
     const currsetHomesteadPathShow = setHomesteadPathShow
     this.setState({
       homesteadPath: path,
-      boxes: boxsCopy,
+      boxes,
       setHomesteadPathShow: !currsetHomesteadPathShow
     })
     this.componentDidMount()
@@ -441,6 +448,7 @@ class App extends Component {
       vagrantStatus,
       vagrantID,
       shouldProvision,
+      boxes,
     } = this.state
 
     let showHomesteadPath = null
@@ -508,6 +516,15 @@ class App extends Component {
       )
     }
 
+    let boxList = null
+    if (boxes != null) {
+      boxList = (
+        <BoxList
+          boxes={boxes}
+        />
+      )
+    }
+
     return (
       <div className="App">
         <Global
@@ -544,7 +561,7 @@ class App extends Component {
           {showSiteEdit}
           
           <div className="column is-one-third">
-            <BoxList/>
+            {boxList}
             {siteList}
           </div>
 
