@@ -97,9 +97,19 @@ class App extends Component {
 
   // Set Homestead Path code
 
+  openBoxAdd = () => {
+    this.setState({setHomesteadPathShow: true})
+  }
+
   submitHomesteadPath = (event) => {
-    const { setHomesteadPathShow } = this.state
+    const { 
+      setHomesteadPathShow,
+    } = this.state
     const data = new FormData(event.target)
+
+    let boxesCopy = (this.state.boxes == null) ? new Array() : [...this.state.boxes]
+
+    console.log(boxesCopy)
 
     let name = data.get('name')
     let path = data.get('path')
@@ -108,15 +118,14 @@ class App extends Component {
       path,
     }
     path = path.replace(/\/$/, '')
-    let boxes = new Array()
-    boxes.push(newBox)
+    boxesCopy.push(newBox)
 
-    settings.set('homestead_boxes', boxes)
+    settings.set('homestead_boxes', boxesCopy)
 
     const currsetHomesteadPathShow = setHomesteadPathShow
     this.setState({
       homesteadPath: path,
-      boxes,
+      boxes: boxesCopy,
       setHomesteadPathShow: !currsetHomesteadPathShow
     })
     this.componentDidMount()
@@ -521,6 +530,7 @@ class App extends Component {
       boxList = (
         <BoxList
           boxes={boxes}
+          addClick={this.openBoxAdd}
         />
       )
     }
