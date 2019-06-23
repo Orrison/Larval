@@ -47,13 +47,18 @@ class BoxList extends Component {
         `}
       >
         <FontAwesomeIcon icon={faPlusSquare} title="Add new homesteadbox" className='add' onClick={this.props.addClick} />
-
         <h3>Homestead Boxes:</h3>
         {this.props.boxes.map((item, index) => {
+
+          var isCurrent = (this.props.curBoxId == index) ? true : false
+
           return (
             <BoxListItem
               key={uuidv4(item.path)}
+              isCurrent={isCurrent}
+              id={index}
               name={item.name}
+              click={()=>this.props.boxclick(index)}
             />
             )
           })}

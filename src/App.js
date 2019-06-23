@@ -81,7 +81,8 @@ class App extends Component {
       this.setState({
         yaml: jsYaml.safeLoad(fs.readFileSync(`${homesteadBoxes[boxID].path}/Homestead.yaml`, 'utf8')),
         homesteadPath: homesteadBoxes[boxID].path,
-        boxes: homesteadBoxes,
+        vagrantStatus: 'processing',
+        boxID,
       }, () => {
         const { homesteadPath } = this.state
 
@@ -475,6 +476,7 @@ class App extends Component {
       vagrantID,
       shouldProvision,
       boxes,
+      boxID,
     } = this.state
 
     let showHomesteadPath = null
@@ -546,7 +548,9 @@ class App extends Component {
     if (boxes != null) {
       boxList = (
         <BoxList
+          curBoxId={boxID}
           boxes={boxes}
+          boxclick={this.yamlAndPathLoad}
           addClick={this.openBoxAdd}
         />
       )
