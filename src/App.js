@@ -52,14 +52,35 @@ class App extends Component {
 
     const homesteadBoxes = settings.get('homestead_boxes')
 
+    this.setState({
+      boxes: homesteadBoxes,
+    }, () => {
+      this.yamlAndPathLoad(0, true)
+    })
+  }
+
+  selectSite = (id, open) => {
+    this.setState({ selectedSite: id })
+    if (open) {
+      this.siteEditToggle()
+    }
+  }
+
+  /**
+   * Get the requested homestead path and load yaml
+   * @param  {Number} boxID The array key of the box you would like to load
+   */
+  yamlAndPathLoad = (boxID) => {
+    const homesteadBoxes = [...this.state.boxes]
+
     if (!homesteadBoxes) {
       this.setState({ 
         setHomesteadPathShow: true,
       })
-    } else if (fs.existsSync(`${homesteadBoxes[0].path}/Homestead.yaml`)) {
+    } else if (fs.existsSync(`${homesteadBoxes[boxID].path}/Homestead.yaml`)) {
       this.setState({
-        yaml: jsYaml.safeLoad(fs.readFileSync(`${homesteadBoxes[0].path}/Homestead.yaml`, 'utf8')),
-        homesteadPath: homesteadBoxes[0].path,
+        yaml: jsYaml.safeLoad(fs.readFileSync(`${homesteadBoxes[boxID].path}/Homestead.yaml`, 'utf8')),
+        homesteadPath: homesteadBoxes[boxID].path,
         boxes: homesteadBoxes,
       }, () => {
         const { homesteadPath } = this.state
@@ -87,15 +108,6 @@ class App extends Component {
       this.setState({ shouldProvision: true })
     }
   }
-
-  selectSite = (id, open) => {
-    this.setState({ selectedSite: id })
-    if (open) {
-      this.siteEditToggle()
-    }
-  }
-
-  // Set Homestead Path code
 
   openBoxAdd = () => {
     this.setState({setHomesteadPathShow: true})
@@ -129,6 +141,11 @@ class App extends Component {
       setHomesteadPathShow: !currsetHomesteadPathShow
     })
     this.componentDidMount()
+  }
+
+  // Switch between homestead boxes
+  boxSwitch = (boxId) => {
+
   }
 
   // END Set Homestead Path code
