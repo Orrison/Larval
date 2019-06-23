@@ -144,9 +144,19 @@ class App extends Component {
     this.componentDidMount()
   }
 
-  // Switch between homestead boxes
-  boxSwitch = (boxId) => {
+  boxDelete = () => {
+    let boxes = [...this.state.boxes]
+    
+    boxes.splice(this.state.boxID, 1);
 
+    settings.set('homestead_boxes', boxes)
+
+    this.setState({
+      boxes: boxes,
+      boxID: 0,
+    }, () => {
+      this.yamlAndPathLoad(0)
+    })
   }
 
   // END Set Homestead Path code
@@ -552,6 +562,7 @@ class App extends Component {
           boxes={boxes}
           boxclick={this.yamlAndPathLoad}
           addClick={this.openBoxAdd}
+          deleteClick={this.boxDelete}
         />
       )
     }

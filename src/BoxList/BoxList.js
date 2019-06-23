@@ -3,7 +3,7 @@ import BoxListItem from './BoxListItem'
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusSquare } from '@fortawesome/free-solid-svg-icons'
+import { faPlusSquare, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
 const uuidv4 = require('uuid/v4')
 
@@ -44,9 +44,21 @@ class BoxList extends Component {
           .add:hover {
             color: #f5b976;
           }
+
+          .delete {
+            color: #fff;
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            cursor: pointer;
+          }
+          .delete:hover {
+            color: #af2518;
+          }
         `}
       >
         <FontAwesomeIcon icon={faPlusSquare} title="Add new homesteadbox" className='add' onClick={this.props.addClick} />
+        <FontAwesomeIcon icon={faTrashAlt} title="Delete selected homesteadbox" className='delete' onClick={this.props.deleteClick} />
         <h3>Homestead Boxes:</h3>
         {this.props.boxes.map((item, index) => {
 
