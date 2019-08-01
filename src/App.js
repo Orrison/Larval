@@ -53,11 +53,19 @@ class App extends Component {
 
     const homesteadBoxes = settings.get('homestead_boxes')
 
-    this.setState({
-      boxes: homesteadBoxes,
-    }, () => {
-      this.yamlAndPathLoad(0, true)
-    })
+    console.log(homesteadBoxes)
+
+    if (homesteadBoxes == undefined) {
+      this.setState({
+        setHomesteadPathShow: true,
+      })
+    } else {
+      this.setState({
+        boxes: homesteadBoxes,
+      }, () => {
+        this.yamlAndPathLoad(0, true)
+      })
+    }
   }
 
   selectSite = (id, open) => {
