@@ -53,8 +53,6 @@ class App extends Component {
 
     const homesteadBoxes = settings.get('homestead_boxes')
 
-    console.log(homesteadBoxes)
-
     if (homesteadBoxes == undefined) {
       this.setState({
         setHomesteadPathShow: true,
@@ -130,8 +128,6 @@ class App extends Component {
     const data = new FormData(event.target)
 
     let boxesCopy = (this.state.boxes == null) ? new Array() : [...this.state.boxes]
-
-    console.log(boxesCopy)
 
     let name = data.get('name')
     let path = data.get('path')
