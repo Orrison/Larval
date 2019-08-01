@@ -137,12 +137,13 @@ class App extends Component {
     }
     path = path.replace(/\/$/, '')
     
-    let duplicate = null;
+    // Check for duplicate named/pathed boxes
+    let duplicateErr = null;
     boxesCopy.forEach((box) => {
       if (box.name === name) {
-        duplicate = 'name'
+        duplicateErr = 'name'
       } else if (box.path === path) {
-        duplicate = 'path'
+        duplicateErr = 'path'
       }
     })
 
@@ -150,15 +151,15 @@ class App extends Component {
     let newState = {
       setHomesteadPathShow: !currsetHomesteadPathShow
     }
-    if (!duplicate) {
+    if (!duplicateErr) {
       boxesCopy.push(newBox)
       settings.set('homestead_boxes', boxesCopy)
       newState.homesteadPath = path
       newState.boxes = boxesCopy
     } else {
       Swal.fire({
-        title: `Duplicate ${duplicate} detected`,
-        text: `You tried to add a box with the same ${duplicate} as an existing box`,
+        title: `DuplicateErr ${duplicateErr} detected`,
+        text: `You tried to add a box with the same ${duplicateErr} as an existing box`,
         type: 'warning',
         showCancelButton: false,
         confirmButtonColor: '#3085d6',
