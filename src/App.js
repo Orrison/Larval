@@ -8,6 +8,7 @@ import Vagrant from './Vagrant'
 import '../node_modules/bulma/css/bulma.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
 import { getVagrantID } from './Util/VagrantHelpers'
+import Swal from 'sweetalert2'
 
 const { remote } = require('electron')
 
@@ -131,17 +132,37 @@ class App extends Component {
       path,
     }
     path = path.replace(/\/$/, '')
-    boxesCopy.push(newBox)
-
-    settings.set('homestead_boxes', boxesCopy)
+    
+    let duplicate = null;
+    boxesCopy.forEach((box) => {
+      if (box.name === name) {
+        duplicate = 'name'
+      } else if (box.path === path) {
+        duplicate = 'path'
+      }
+    })
 
     const currsetHomesteadPathShow = setHomesteadPathShow
-    this.setState({
-      homesteadPath: path,
-      boxes: boxesCopy,
+    let newState = {
       setHomesteadPathShow: !currsetHomesteadPathShow
-    })
-    this.componentDidMount()
+    }
+    if (!duplicate) {
+      boxesCopy.push(newBox)
+      settings.set('homestead_boxes', boxesCopy)
+      newState.homesteadPath = path
+      newState.boxes = boxesCopy
+    } else {
+      Swal.fire({
+        title: 'Duplicate entry detected',
+        text: `You tried to add a box with the same ${duplicate} as an existing box`,
+        type: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Okay'
+      })
+    }
+
+    this.setState(newState)
   }
 
   boxDelete = () => {
