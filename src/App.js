@@ -161,7 +161,7 @@ class App extends Component {
       newState.boxes = boxesCopy
     } else {
       Swal.fire({
-        title: 'Duplicate entry detected',
+        title: `Duplicate ${duplicate} detected`,
         text: `You tried to add a box with the same ${duplicate} as an existing box`,
         type: 'warning',
         showCancelButton: false,
