@@ -138,33 +138,54 @@ class App extends Component {
     path = path.replace(/\/$/, '')
     
     // Check for duplicate named/pathed boxes
-    let duplicateErr = null;
+    let error = null;
     boxesCopy.forEach((box) => {
       if (box.name === name) {
-        duplicateErr = 'name'
+        error = {
+          type: 'duplicate',
+          details: 'name',
+        }
       } else if (box.path === path) {
-        duplicateErr = 'path'
+        error = {
+          type: 'duplicate',
+          details: 'path',
+        }
       }
     })
+
+    let yamlExists = fs.existsSync(`${path}/Homestead.yaml`)
+    
+    if (!yamlExists) {
+      error = {
+        type: 'NOYAML',
+      }
+    }
 
     const currsetHomesteadPathShow = setHomesteadPathShow
     let newState = {
       setHomesteadPathShow: !currsetHomesteadPathShow
     }
-    if (!duplicateErr) {
+    if (!error) {
       boxesCopy.push(newBox)
       settings.set('homestead_boxes', boxesCopy)
       newState.homesteadPath = path
       newState.boxes = boxesCopy
     } else {
-      Swal.fire({
-        title: `DuplicateErr ${duplicateErr} detected`,
-        text: `You tried to add a box with the same ${duplicateErr} as an existing box`,
+      let swalInfo = {
         type: 'warning',
         showCancelButton: false,
         confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Okay'
-      })
+        confirmButtonText: 'Okay',
+      }
+      if (error.type == 'duplicate') {
+        swalInfo.title = `Duplicate ${error.details} detected`
+        swalInfo.text = `You tried to add a box with the same ${error.details} as an existing box`
+      } else if (error.type == 'NOYAML') {
+        swalInfo.title = `No homestead.yaml detected`
+        swalInfo.text = `Please install homestead in this directory before adding`
+      }
+
+      Swal.fire(swalInfo)
     }
 
     this.setState(newState)
