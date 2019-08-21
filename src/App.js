@@ -112,9 +112,21 @@ class App extends Component {
       })
     }
 
-    if (settings.get('should_provision') === true) {
-      this.setState({ shouldProvision: true })
+    let provSetting = settings.get('should_provision')
+    let should_prov = null;
+    
+    if (provSetting) {
+      let should_provision = provSetting.includes(boxID);
+
+      if (should_provision) {
+        should_prov = true;
+      } else {
+        should_prov = false;
+      }
+    } else {
+      should_prov = false;
     }
+    this.setState({ shouldProvision: should_prov })
   }
 
   openBoxAdd = () => {
@@ -234,7 +246,12 @@ class App extends Component {
 
   submitCreateNew = async (del = null) => {
 
-    const { selectedSite, homesteadPath, yaml } = this.state
+    const {
+      selectedSite,
+      homesteadPath,
+      yaml,
+      boxID,
+    } = this.state
 
     const data = new FormData(event.target)
     const doc = jsYaml.safeLoad(fs.readFileSync(`${homesteadPath}/Homestead.yaml`, 'utf8'))
@@ -250,9 +267,6 @@ class App extends Component {
     const options = {
       name: 'Larval',
     }
-    // if (path !== null) {
-    //   directory = path.substr(path.lastIndexOf('/') + 1)
-    // }
 
     let update = null
     if (selectedSite !== null && del !== true && yaml.sites[selectedSite].map !== siteMap) {
@@ -367,7 +381,22 @@ class App extends Component {
       shouldProvision: true,
       yaml: doc,
     })
-    settings.set('should_provision', true)
+
+    let provSetting = settings.get('should_provision')
+    let should_prov = null;
+    
+    if (provSetting) {
+      let should_provision = provSetting.includes(boxID);
+
+      if (should_provision) {
+        should_prov = true;
+      } else {
+        should_prov = false;
+      }
+    } else {
+      should_prov = false;
+    }
+    this.setState({ shouldProvision: should_prov })
   }
 
   // END Create New code
@@ -383,7 +412,10 @@ class App extends Component {
   submitHomesteadSettings = (event) => {
     event.preventDefault()
 
-    const { homesteadPath } = this.state
+    const {
+      homesteadPath,
+      boxID,
+    } = this.state
 
     const data = new FormData(event.target)
     const doc = jsYaml.safeLoad(fs.readFileSync(`${homesteadPath}/Homestead.yaml`, 'utf8'))
@@ -427,7 +459,14 @@ class App extends Component {
       homesteadSettingsShow: false,
       shouldProvision: true,
     })
-    settings.set('should_provision', true)
+
+    let shouldProvision = settings.get('should_provision')
+    if (shouldProvision) {
+      shouldProvision.push(boxID)
+    } else {
+      shouldProvision = [boxID]
+    }
+    settings.set('should_provision', shouldProvision)
   }
 
   // END HomesteadSettings
@@ -496,7 +535,10 @@ class App extends Component {
   }
 
   vagrantProvision = () => {
-    const { homesteadPath } = this.state
+    const {
+      homesteadPath,
+      boxID,
+     } = this.state
 
     this.setState({ vagrantStatus: 'processing' })
 
@@ -517,7 +559,12 @@ class App extends Component {
         vagrantStatus: 'online',
         shouldProvision: false,
       })
-      settings.set('should_provision', false)
+
+      let shouldProvision = settings.get('should_provision')
+      if (shouldProvision) {
+        const filtShouldProvision = shouldProvision.filter(box => box != boxID);
+        settings.set('should_provision', filtShouldProvision)
+      }
     })
   }
 
