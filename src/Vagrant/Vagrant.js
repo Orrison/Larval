@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import '../../node_modules/bulma/css/bulma.css'
-import styles from './Vagrant.module.css'
 import { vagrantSSH } from '../Util/VagrantHelpers'
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core'
 
 const uuid = require('random-uuid-v4')
 
@@ -51,12 +52,28 @@ const Vagrant = (props) => {
   }
 
   return (
-    <div className={`${styles.Vagrant}`}>
+    <div css={css`
+      height: 85vh;
+      background: #000;
+      
+      button {
+        width: 120px;
+      }
+    `}>
       <button className={`button is-pulled-left is-large ${classes}`} onClick={clickToggle} type="button">{text}</button>
       <button className="button is-pulled-left is-large is-text" onClick={clickClear} type="button">Clear</button>
       <button className={`button is-pulled-right is-large ${provButtClass}`} onClick={clickProv} type="button">Provison</button>
       {sshButton}
-      <div id="vagrantConsole" className={`${styles.console}`}>
+      <div id="vagrantConsole" css={css`
+        background: #000;
+        overflow-y: scroll;
+        clear: both;
+        height: 75vh;
+
+        p {
+          color: #fff;
+        }
+      `}>
           {consoleContent}
       </div>
     </div>
