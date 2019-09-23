@@ -235,7 +235,7 @@ class App extends Component {
     event.preventDefault()
 
     if (!event.target.value) {
-      const path = dialog.showOpenDialog({
+      const path = dialog.showOpenDialogSync({
         properties: ['openDirectory'],
       })
       if (path !== undefined) {
