@@ -1,1 +1,0 @@
-export { default } from './{{= it.component.name}}.js';
