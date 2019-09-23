@@ -6,13 +6,16 @@ Larval is a Graphical User Interface (GUI) for managing sites, settings, and sta
 
 Larval is in it's Alpha stages and though extensively tested it is not fully recommended for production use. Though the app does have options to back them up before changes it is recommended you manually make a backup of your hosts and Homestead.yaml file. Larval and it's contributors will not be held liable for any lost data.
 
-The app is currently only available for MacOS, the DMG and App file may both be found in the dist folder.
+The app is currently only available for MacOS, the DMG and App file may be generated via npm command
+```
+npm run package-mac
+```
+
+Or the DMG can be download [here](https://larval.s3-us-west-1.amazonaws.com/Larval.dmg)
 
 Please feel free to notate any issues or recommendations within a respective Github issue.
 
 #### `Larvel Homestead is required to use this application and upon startup you need will be asked to select the path to your Homestead folder`
-
-Larval currently is setup to manage Homestead in a "Single Box" environment. Support for Per Project installations coming soon.
 
 ### Why is my password asked for when editing a site?
 You are required to enter your password in order to enact the changes to your hosts file. The password prompt is OS level, no information of your user or password is passed into or stored within Larval.
