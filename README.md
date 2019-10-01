@@ -15,7 +15,7 @@ Or the DMG can be download [here](https://larval.s3-us-west-1.amazonaws.com/Larv
 
 Please feel free to notate any issues or recommendations within a respective Github issue.
 
-#### `Larvel Homestead is required to use this application and upon startup you need will be asked to select the path to your Homestead folder`
+#### `Laravel Homestead is required to use this application and upon startup you need will be asked to select the path to your Homestead folder`
 
 ### Why is my password asked for when editing a site?
 You are required to enter your password in order to enact the changes to your hosts file. The password prompt is OS level, no information of your user or password is passed into or stored within Larval.
