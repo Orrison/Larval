@@ -62,7 +62,7 @@ const Vagrant = (props) => {
     `}>
       <button className={`button is-pulled-left is-large ${classes}`} onClick={clickToggle} type="button">{text}</button>
       <button className="button is-pulled-left is-large is-text" onClick={clickClear} type="button">Clear</button>
-      <button className={`button is-pulled-right is-large ${provButtClass}`} onClick={clickProv} type="button">Provison</button>
+      <button className={`button is-pulled-right is-large ${provButtClass}`} onClick={clickProv} type="button">Provision</button>
       {sshButton}
       <div id="vagrantConsole" css={css`
         background: #000;

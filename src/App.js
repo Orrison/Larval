@@ -375,13 +375,6 @@ class App extends Component {
       })
     }
 
-    this.setState({
-      siteEditShow: false,
-      selectedSite: null,
-      shouldProvision: true,
-      yaml: doc,
-    })
-
     let provSetting = settings.get('should_provision')
     let should_prov = null;
     
@@ -396,7 +389,13 @@ class App extends Component {
     } else {
       should_prov = false;
     }
-    this.setState({ shouldProvision: should_prov })
+
+    this.setState({
+      siteEditShow: false,
+      selectedSite: null,
+      yaml: doc,
+      shouldProvision: should_prov
+    })
   }
 
   // END Create New code
