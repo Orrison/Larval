@@ -30,6 +30,8 @@ const sudo = require('sudo-prompt')
 const timestamp = require('time-stamp')
 
 const settings = require('electron-settings')
+const convertRequire = require('ansi-to-html')
+const Convert = new convertRequire()
 
 class App extends Component {
   state = {
@@ -479,7 +481,7 @@ class App extends Component {
 
     lines.forEach((newLine) => {
       if (newLine != null) {
-        curConsole.push(`${newLine}`)
+        curConsole.push(`${Convert.toHtml(newLine)}`)
       }
     })
     this.setState({ vagrantConsole: curConsole })
@@ -493,7 +495,7 @@ class App extends Component {
     if (vagrantStatus === 'offline') {
       this.setState({ vagrantStatus: 'processing' })
 
-      const vagrantUp = execute(`cd ${homesteadPath} && vagrant up`)
+      const vagrantUp = execute(`cd ${homesteadPath} && vagrant up --color`)
 
       vagrantUp.stdout.on('data', (data) => {
         this.vagrantConsoleAdd(data)
@@ -504,7 +506,7 @@ class App extends Component {
       })
 
       vagrantUp.on('close', (code) => {
-        this.vagrantConsoleAdd('---- Vagrant is now up ----')
+        this.vagrantConsoleAdd('<b><span style="color: rgb(0, 170, 0);">---- Vagrant is now up ----</span></b>')
         this.setState({ vagrantStatus: 'online' })
         getVagrantID((id) => {
           this.setState({ vagrantID: id })
@@ -513,7 +515,7 @@ class App extends Component {
     } else if (vagrantStatus === 'online') {
       this.setState({ vagrantStatus: 'processing' })
 
-      const vagrantHalt = execute(`cd ${homesteadPath} && vagrant halt`)
+      const vagrantHalt = execute(`cd ${homesteadPath} && vagrant halt --color`)
 
       vagrantHalt.stdout.on('data', (data) => {
         this.vagrantConsoleAdd(data)
@@ -524,7 +526,7 @@ class App extends Component {
       })
 
       vagrantHalt.on('close', (code) => {
-        this.vagrantConsoleAdd('---- Vagrant is now down ----')
+        this.vagrantConsoleAdd('<b><span style="color: rgb(0, 170, 0);">---- Vagrant is now down ----</span></b>')
         this.setState({ vagrantStatus: 'offline' })
       })
     }
@@ -542,7 +544,7 @@ class App extends Component {
 
     this.setState({ vagrantStatus: 'processing' })
 
-    const consoleCommand = execute(`cd ${homesteadPath} && vagrant reload --provision`)
+    const consoleCommand = execute(`cd ${homesteadPath} && vagrant reload --provision --color`)
 
     consoleCommand.stdout.on('data', (data) => {
       this.vagrantConsoleAdd(data)
