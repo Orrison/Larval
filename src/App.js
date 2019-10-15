@@ -30,6 +30,8 @@ const sudo = require('sudo-prompt')
 const timestamp = require('time-stamp')
 
 const settings = require('electron-settings')
+const convertRequire = require('ansi-to-html')
+const Convert = new convertRequire()
 
 class App extends Component {
   state = {
