@@ -481,7 +481,7 @@ class App extends Component {
 
     lines.forEach((newLine) => {
       if (newLine != null) {
-        curConsole.push(`${newLine}`)
+        curConsole.push(`${Convert.toHtml(newLine)}`)
       }
     })
     this.setState({ vagrantConsole: curConsole })
