@@ -495,7 +495,7 @@ class App extends Component {
     if (vagrantStatus === 'offline') {
       this.setState({ vagrantStatus: 'processing' })
 
-      const vagrantUp = execute(`cd ${homesteadPath} && vagrant up`)
+      const vagrantUp = execute(`cd ${homesteadPath} && vagrant up --color`)
 
       vagrantUp.stdout.on('data', (data) => {
         this.vagrantConsoleAdd(data)
@@ -515,7 +515,7 @@ class App extends Component {
     } else if (vagrantStatus === 'online') {
       this.setState({ vagrantStatus: 'processing' })
 
-      const vagrantHalt = execute(`cd ${homesteadPath} && vagrant halt`)
+      const vagrantHalt = execute(`cd ${homesteadPath} && vagrant halt --color`)
 
       vagrantHalt.stdout.on('data', (data) => {
         this.vagrantConsoleAdd(data)
@@ -544,7 +544,7 @@ class App extends Component {
 
     this.setState({ vagrantStatus: 'processing' })
 
-    const consoleCommand = execute(`cd ${homesteadPath} && vagrant reload --provision`)
+    const consoleCommand = execute(`cd ${homesteadPath} && vagrant reload --provision --color`)
 
     consoleCommand.stdout.on('data', (data) => {
       this.vagrantConsoleAdd(data)
