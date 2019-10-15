@@ -4,6 +4,7 @@ import '../../node_modules/bulma/css/bulma.css'
 import { vagrantSSH } from '../Util/VagrantHelpers'
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
+import parse from 'html-react-parser'
 
 const uuid = require('random-uuid-v4')
 
@@ -42,7 +43,7 @@ const Vagrant = (props) => {
     provButtClass = 'is-primary'
   }
 
-  const consoleContent = vConsole.map(item => <p key={uuid()}>{`${item}`}</p>)
+  const consoleContent = vConsole.map(item => <p key={uuid()}>{parse(item)}</p>)
 
   let sshButton = null
   if (vagrantId != null) {
