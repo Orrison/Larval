@@ -506,7 +506,7 @@ class App extends Component {
       })
 
       vagrantUp.on('close', (code) => {
-        this.vagrantConsoleAdd('---- Vagrant is now up ----')
+        this.vagrantConsoleAdd('<b><span style="color: rgb(0, 170, 0);">---- Vagrant is now up ----</span></b>')
         this.setState({ vagrantStatus: 'online' })
         getVagrantID((id) => {
           this.setState({ vagrantID: id })
@@ -526,7 +526,7 @@ class App extends Component {
       })
 
       vagrantHalt.on('close', (code) => {
-        this.vagrantConsoleAdd('---- Vagrant is now down ----')
+        this.vagrantConsoleAdd('<b><span style="color: rgb(0, 170, 0);">---- Vagrant is now down ----</span></b>')
         this.setState({ vagrantStatus: 'offline' })
       })
     }
