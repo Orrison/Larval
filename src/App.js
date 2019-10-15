@@ -375,21 +375,6 @@ class App extends Component {
       })
     }
 
-    // let provSetting = settings.get('should_provision')
-    // let should_prov = null;
-    //
-    // if (provSetting) {
-    //   let should_provision = provSetting.includes(boxID);
-    //
-    //   if (should_provision) {
-    //     should_prov = true;
-    //   } else {
-    //     should_prov = false;
-    //   }
-    // } else {
-    //   should_prov = false;
-    // }
-
     this.setState({
       siteEditShow: false,
       selectedSite: null,
