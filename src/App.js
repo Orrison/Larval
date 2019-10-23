@@ -9,6 +9,9 @@ import '../node_modules/bulma/css/bulma.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
 import { getVagrantID } from './Util/VagrantHelpers'
 import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const SwalReact = withReactContent(Swal)
 
 const { remote } = require('electron')
 
@@ -132,19 +135,36 @@ class App extends Component {
   }
 
   openBoxAdd = () => {
-    this.setState({setHomesteadPathShow: true})
+    // this.setState({setHomesteadPathShow: true})
+    SwalReact.fire({
+      title: 'Set the path to your Homestead file',
+      html: (
+        <div>
+          <p></p>
+          <label>Box Name: </label>
+          <input id="box-name" className="swal2-input" required></input>
+          <label>Box Path:</label>
+          <input id="box-path" className="swal2-input" onClick={this.fileSelect}></input>
+        </div>
+      ),
+      focusConfirm: false,
+      confirmButtonText: 'Add Box',
+      preConfirm: () => {
+        return {
+          name: document.getElementById('box-name').value,
+          path: document.getElementById('box-path').value
+        }
+      }
+    }).then((ret) => {
+      this.submitHomesteadPath(ret.value)
+    })
   }
 
-  submitHomesteadPath = (event) => {
-    const { 
-      setHomesteadPathShow,
-    } = this.state
-    const data = new FormData(event.target)
-
+  submitHomesteadPath = (values) => {
     let boxesCopy = (this.state.boxes == null) ? new Array() : [...this.state.boxes]
 
-    let name = data.get('name')
-    let path = data.get('path')
+    let name = values.name
+    let path = values.path
     let newBox = {
       name,
       path,
@@ -175,10 +195,7 @@ class App extends Component {
       }
     }
 
-    const currsetHomesteadPathShow = setHomesteadPathShow
-    let newState = {
-      setHomesteadPathShow: !currsetHomesteadPathShow
-    }
+    let newState = {}
     if (!error) {
       boxesCopy.push(newBox)
       settings.set('homestead_boxes', boxesCopy)
