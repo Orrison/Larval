@@ -380,25 +380,17 @@ class App extends Component {
     this.setState({
       siteEditShow: false,
       selectedSite: null,
-      shouldProvision: true,
       yaml: doc,
+      shouldProvision: true,
     })
 
-    let provSetting = settings.get('should_provision')
-    let should_prov = null;
-    
-    if (provSetting) {
-      let should_provision = provSetting.includes(boxID);
-
-      if (should_provision) {
-        should_prov = true;
-      } else {
-        should_prov = false;
-      }
+    let shouldProvision = settings.get('should_provision')
+    if (shouldProvision) {
+      shouldProvision.push(boxID)
     } else {
-      should_prov = false;
+      shouldProvision = [boxID]
     }
-    this.setState({ shouldProvision: should_prov })
+    settings.set('should_provision', shouldProvision)
   }
 
   // END Create New code
