@@ -9,6 +9,9 @@ import '../node_modules/bulma/css/bulma.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
 import { getVagrantID } from './Util/VagrantHelpers'
 import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const SwalReact = withReactContent(Swal)
 
 const { remote } = require('electron')
 
@@ -132,19 +135,49 @@ class App extends Component {
   }
 
   openBoxAdd = () => {
-    this.setState({setHomesteadPathShow: true})
+    // this.setState({setHomesteadPathShow: true})
+    SwalReact.fire({
+      title: 'Set the path to your Homestead file',
+      html: (
+        <div>
+          <p></p>
+          <label>Box Name: </label>
+          <input id="box-name" className="swal2-input" required></input>
+          <label>Box Path:</label>
+          <input id="box-path" className="swal2-input" onClick={this.fileSelect}></input>
+        </div>
+      ),
+      focusConfirm: false,
+      confirmButtonText: 'Add Box',
+      preConfirm: () => {
+        return {
+          name: document.getElementById('box-name').value,
+          path: document.getElementById('box-path').value
+        }
+      }
+    }).then((ret) => {
+      if (typeof ret.value !== 'undefined') {
+        if (ret.value.name != '' && ret.value.path != '') {
+          this.submitHomesteadPath(ret.value)
+        } else {
+          SwalReact.fire({
+            type: 'warning',
+            showCancelButton: false,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Okay',
+            title: 'Box not added',
+            text: 'Name and/or path cannot be blank'
+          })
+        }
+      }
+    })
   }
 
-  submitHomesteadPath = (event) => {
-    const { 
-      setHomesteadPathShow,
-    } = this.state
-    const data = new FormData(event.target)
-
+  submitHomesteadPath = (values) => {
     let boxesCopy = (this.state.boxes == null) ? new Array() : [...this.state.boxes]
 
-    let name = data.get('name')
-    let path = data.get('path')
+    let name = values.name
+    let path = values.path
     let newBox = {
       name,
       path,
@@ -175,10 +208,7 @@ class App extends Component {
       }
     }
 
-    const currsetHomesteadPathShow = setHomesteadPathShow
-    let newState = {
-      setHomesteadPathShow: !currsetHomesteadPathShow
-    }
+    let newState = {}
     if (!error) {
       boxesCopy.push(newBox)
       settings.set('homestead_boxes', boxesCopy)
@@ -206,17 +236,28 @@ class App extends Component {
   }
 
   boxDelete = () => {
-    let boxes = [...this.state.boxes]
-    
-    boxes.splice(this.state.boxID, 1);
-
-    settings.set('homestead_boxes', boxes)
-
-    this.setState({
-      boxes: boxes,
-      boxID: 0,
-    }, () => {
-      this.yamlAndPathLoad(0)
+    SwalReact.fire({
+      type: 'warning',
+      title: 'Are you sure you want to delete this box?',
+      text: this.state.boxes[this.state.boxID].name,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      confirmButtonColor: '#d11a2a',
+      preConfirm: () => {
+        let boxes = [...this.state.boxes]
+          
+        boxes.splice(this.state.boxID, 1);
+          
+        settings.set('homestead_boxes', boxes)
+          
+        this.setState({
+          boxes: boxes,
+          boxID: 0,
+        }, () => {
+          this.yamlAndPathLoad(0)
+        })
+      }
     })
   }
 
