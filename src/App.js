@@ -287,7 +287,47 @@ class App extends Component {
     }
   }
 
-  submitCreateNew = async (del = null) => {
+  hostDelete = async () => {
+    const {
+      selectedSite,
+      yaml,
+    } = this.state
+
+    const options = {
+      name: 'Larval',
+    }
+    const lr = new Linebyline('/etc/hosts')
+
+    lr.on('error', (err) => {
+      console.log(`Hosts Delete Linebyline Error: ${err}`)
+    })
+
+    const site = yaml.sites[selectedSite].map
+    let hostsToString = ''
+    const hostsLbl = new Promise(((resolve, reject) => {
+      let i = 1
+      lr.on('line', (line) => {
+        if (line !== `${yaml.ip} ${site}`) {
+          if (i !== 1) {
+            hostsToString += '\n'
+          }
+          hostsToString += line
+        }
+        i += 1
+      })
+      lr.on('end', () => {
+        resolve(hostsToString)
+      })
+    }))
+    hostsLbl.then((hosts) => {
+      sudo.exec(`echo '${hosts}' > /etc/hosts`, options,
+        (error) => {
+          if (error) throw error
+        })
+    })
+  }
+
+  submitCreateNew = async () => {
 
     const {
       selectedSite,
@@ -312,7 +352,7 @@ class App extends Component {
     }
 
     let update = null
-    if (selectedSite !== null && del !== true && yaml.sites[selectedSite].map !== siteMap) {
+    if (selectedSite !== null && yaml.sites[selectedSite].map !== siteMap) {
       update = true
     }
 
@@ -329,9 +369,6 @@ class App extends Component {
 
       doc.folders.push(newFolder)
       doc.sites.push(newSite)
-    } else if (del === true) {
-      doc.folders.splice(selectedSite, 1)
-      doc.sites.splice(selectedSite, 1)
     } else {
       doc.folders[selectedSite].map = folderMap
       doc.folders[selectedSite].to = folderTo
@@ -355,71 +392,73 @@ class App extends Component {
       }
     })
 
-    const hostDelete = () => {
-      const lr = new Linebyline('/etc/hosts')
-
-      lr.on('error', (err) => {
-        console.log(`Hosts Delete Linebyline Error: ${err}`)
-      })
-
-      const site = yaml.sites[selectedSite].map
-      let hostsToString = ''
-      const hostsLbl = new Promise(((resolve, reject) => {
-        let i = 1
-        lr.on('line', (line) => {
-          if (line !== `${yaml.ip} ${site}`) {
-            if (i !== 1) {
-              hostsToString += '\n'
-            }
-            hostsToString += line
-          }
-          i += 1
-        })
-        lr.on('end', () => {
-          resolve(hostsToString)
-        })
-      }))
-      hostsLbl.then((hosts) => {
-        sudo.exec(`echo '${hosts}' > /etc/hosts`, options,
-          (error) => {
-            if (error) throw error
-          })
-      })
-    }
-
-    if (del === true) {
-      hostDelete()
+    let $command = ''
+    if (backupHost) {
+      $command = `cp /etc/hosts ${app.getPath('documents')}/hosts.${time}.larval.bak && `
     } else {
-      let $command = ''
-      if (backupHost) {
-        $command = `cp /etc/hosts ${app.getPath('documents')}/hosts.${time}.larval.bak && `
-      } else {
-        $command = ''
-      }
-
-      if (yaml != null) {
-        $command += `echo "${yaml.ip} ${siteMap}" >> /etc/hosts`
-      }
-
-      const hostsAdd = new Promise(((resolve, reject) => {
-        sudo.exec($command, options,
-          (error) => {
-            if (error) {
-              throw error
-            } else {
-              resolve()
-            }
-          })
-      }))
-      hostsAdd.then(() => {
-        if (update === true) {
-          hostDelete()
-        }
-      })
+      $command = ''
     }
+    if (yaml != null) {
+      $command += `echo "${yaml.ip} ${siteMap}" >> /etc/hosts`
+    }
+    const hostsAdd = new Promise(((resolve, reject) => {
+      sudo.exec($command, options,
+        (error) => {
+          if (error) {
+            throw error
+          } else {
+            resolve()
+          }
+        })
+    }))
+    hostsAdd.then(() => {
+      if (update === true) {
+        this.hostDelete()
+      }
+    })
 
     this.setState({
       siteEditShow: false,
+      selectedSite: null,
+      yaml: doc,
+      shouldProvision: true,
+    })
+
+    let shouldProvision = settings.get('should_provision')
+    if (shouldProvision) {
+      shouldProvision.push(boxID)
+    } else {
+      shouldProvision = [boxID]
+    }
+    settings.set('should_provision', shouldProvision)
+  }
+
+  siteDelete = async () => {
+    const {
+      selectedSite,
+      homesteadPath,
+      boxID,
+    } = this.state
+
+    const doc = jsYaml.safeLoad(fs.readFileSync(`${homesteadPath}/Homestead.yaml`, 'utf8'))
+
+    doc.folders.splice(selectedSite, 1)
+    doc.sites.splice(selectedSite, 1)
+
+    fs.writeFile(`${homesteadPath}/Homestead.yaml`, jsYaml.safeDump(doc, {
+      styles: {
+        '!!null': 'canonical', // dump null as ~
+      },
+      sortKeys: false, // sort object keys
+    }), (err) => {
+      if (err) {
+        console.log(`An error ocurred creating the file ${err.message}`)
+      }
+    })
+
+    this.hostDelete()
+
+    this.setState({
       selectedSite: null,
       yaml: doc,
       shouldProvision: true,
@@ -678,7 +717,7 @@ class App extends Component {
           click={this.siteEditToggle}
           listItemClick={this.selectSite}
           list={yaml.sites}
-          sitedelete={() => this.submitCreateNew(true)}
+          sitedelete={this.siteDelete}
         />
       )
     }
