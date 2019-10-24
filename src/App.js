@@ -156,7 +156,20 @@ class App extends Component {
         }
       }
     }).then((ret) => {
-      this.submitHomesteadPath(ret.value)
+      if (typeof ret.value !== 'undefined') {
+        if (ret.value.name != '' && ret.value.path != '') {
+          this.submitHomesteadPath(ret.value)
+        } else {
+          Swal.fire({
+            type: 'warning',
+            showCancelButton: false,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Okay',
+            title: 'Box not added',
+            text: 'Name and/or path cannot be blank'
+          })
+        }
+      }
     })
   }
 
