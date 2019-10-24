@@ -160,7 +160,7 @@ class App extends Component {
         if (ret.value.name != '' && ret.value.path != '') {
           this.submitHomesteadPath(ret.value)
         } else {
-          Swal.fire({
+          SwalReact.fire({
             type: 'warning',
             showCancelButton: false,
             confirmButtonColor: '#3085d6',
@@ -236,17 +236,28 @@ class App extends Component {
   }
 
   boxDelete = () => {
-    let boxes = [...this.state.boxes]
-    
-    boxes.splice(this.state.boxID, 1);
-
-    settings.set('homestead_boxes', boxes)
-
-    this.setState({
-      boxes: boxes,
-      boxID: 0,
-    }, () => {
-      this.yamlAndPathLoad(0)
+    SwalReact.fire({
+      type: 'warning',
+      title: 'Are you sure you want to delete this box?',
+      text: this.state.boxes[this.state.boxID].name,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      confirmButtonColor: '#d11a2a',
+      preConfirm: () => {
+        let boxes = [...this.state.boxes]
+          
+        boxes.splice(this.state.boxID, 1);
+          
+        settings.set('homestead_boxes', boxes)
+          
+        this.setState({
+          boxes: boxes,
+          boxID: 0,
+        }, () => {
+          this.yamlAndPathLoad(0)
+        })
+      }
     })
   }
 
