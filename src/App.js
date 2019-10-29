@@ -287,24 +287,21 @@ class App extends Component {
     }
   }
 
-  hostDelete = async () => {
-    const {
-      selectedSite,
-      yaml,
-    } = this.state
+  hostDelete = () => {
+    return new Promise(((resolve, reject) => {
+      const {
+        selectedSite,
+        yaml,
+      } = this.state
 
-    const options = {
-      name: 'Larval',
-    }
-    const lr = new Linebyline('/etc/hosts')
+      const lr = new Linebyline('/etc/hosts')
 
-    lr.on('error', (err) => {
-      console.log(`Hosts Delete Linebyline Error: ${err}`)
-    })
+      lr.on('error', (err) => {
+        console.log(`Hosts Delete Linebyline Error: ${err}`)
+      })
 
-    const site = yaml.sites[selectedSite].map
-    let hostsToString = ''
-    const hostsLbl = new Promise(((resolve, reject) => {
+      const site = yaml.sites[selectedSite].map
+      let hostsToString = ''
       let i = 1
       lr.on('line', (line) => {
         if (line !== `${yaml.ip} ${site}`) {
@@ -316,18 +313,13 @@ class App extends Component {
         i += 1
       })
       lr.on('end', () => {
-        resolve(hostsToString)
+        resolve(`echo '${hostsToString}' > /etc/hosts`)
       })
     }))
-    hostsLbl.then((hosts) => {
-      sudo.exec(`echo '${hosts}' > /etc/hosts`, options,
-        (error) => {
-          if (error) throw error
-        })
-    })
   }
 
-  submitCreateNew = async () => {
+  submitCreateNew = async (event) => {
+    event.preventDefault()
 
     const {
       selectedSite,
@@ -356,25 +348,21 @@ class App extends Component {
       update = true
     }
 
-    if (selectedSite === null) {
-      const newFolder = {
-        map: folderMap,
-        to: folderTo,
-      }
-
-      const newSite = {
-        map: siteMap,
-        to: siteTo,
-      }
-
-      doc.folders.push(newFolder)
-      doc.sites.push(newSite)
-    } else {
+    if (update) {
       doc.folders[selectedSite].map = folderMap
       doc.folders[selectedSite].to = folderTo
 
       doc.sites[selectedSite].map = siteMap
       doc.sites[selectedSite].to = siteTo
+    } else {
+      doc.folders.push({
+        map: folderMap,
+        to: folderTo,
+      })
+      doc.sites.push({
+        map: siteMap,
+        to: siteTo,
+      })
     }
 
     if (backupYaml) {
@@ -395,27 +383,18 @@ class App extends Component {
     let $command = ''
     if (backupHost) {
       $command = `cp /etc/hosts ${app.getPath('documents')}/hosts.${time}.larval.bak && `
-    } else {
-      $command = ''
     }
-    if (yaml != null) {
-      $command += `echo "${yaml.ip} ${siteMap}" >> /etc/hosts`
+    if (update) {
+      $command += await this.hostDelete() + ' && '
     }
-    const hostsAdd = new Promise(((resolve, reject) => {
-      sudo.exec($command, options,
-        (error) => {
-          if (error) {
-            throw error
-          } else {
-            resolve()
-          }
-        })
-    }))
-    hostsAdd.then(() => {
-      if (update === true) {
-        this.hostDelete()
-      }
-    })
+    $command += `echo "${yaml.ip} ${siteMap}" >> /etc/hosts`
+
+    sudo.exec($command, options,
+      (error) => {
+        if (error) {
+          throw error
+        }
+      })
 
     this.setState({
       siteEditShow: false,
