@@ -4,6 +4,8 @@ import SiteListItem from './SiteListItem'
 import SiteOptions from './SiteOptions'
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlusSquare } from '@fortawesome/free-solid-svg-icons'
 
 const uuidv4 = require('uuid/v4')
 
@@ -30,9 +32,10 @@ class SiteList extends Component {
 
         .list {
             overflow-y: scroll;
-            height: 40vh;
+            height: 46vh;
             background-color: transparent;
             margin-bottom: 0;
+            position: relative;
 
             &::-webkit-scrollbar {
               width: 10px;
@@ -79,47 +82,17 @@ class SiteList extends Component {
                 />
               </div>
             )})}
-        </div>
-        <div onClick={this.props.click} onKeyDown={this.props.click} role="menuitem" tabIndex="0" css={css`
-          position: relative;
-          left: 0;
-          text-align: center;
-          width: 100%;
-          height: 10vh;
-          display: flex;
-          background: #5fc7bd;
-
-          &:hover {
+          <FontAwesomeIcon icon={faPlusSquare} title="Add new site" className='add' onClick={this.props.click} css={css`
+            color: #fff;
+            position: fixed;
+            bottom: 8px;
+            left: 8px;
+            z-index: 1;
             cursor: pointer;
-          }
-
-          &:after {
-            content: '';
-            display: block;
-            border-width: 2px;
-            border-style: solid;
-            border-image: linear-gradient(135deg, #f5b976 21%,#af2518 82%);
-            border-image-slice: 1;
-            width: 0;
-            position: absolute;
-            left: -5px;
-            bottom: 0;
-            -webkit-transition: 1s ease-in-out;
-            transition: 1s ease-in-out;
-          }
-
-          &:hover:after { 
-            width: 100%;
-            left: 0;
-          }
-
-          p {
-            align-self: center;
-            margin: 0 auto;
-            font-weight: 800;
-          }
-        `}>
-          <p>Create New</p>
+            &:hover {
+              color: #f5b976;
+            }
+          `} />
         </div>
       </div>
     )
