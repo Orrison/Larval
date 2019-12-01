@@ -29,14 +29,16 @@ export const vagrantSSH = (id) => {
 
 export const boxScan = () => {
     const find = spawn('find', ['/Users', '-name', 'Homestead.yaml'])
+
+    let rawData = []
     
     find.stdout.on('data', (data) => {
-    //   console.log(data.toString())
-      let split = data.toString().split(/\r?\n/)
-      console.log(split)
+        rawData = rawData.concat(data.toString().split(/\r?\n/))
     })
 
     find.on('exit', function (code, signal) {
-        console.log('child process exited with ' + `code ${code} and signal ${signal}`)
+        const pattern = /.*\/vendor.*\/resources\/Homestead.yaml/gm
+        const result = rawData.filter(val => !pattern.test(val))
+        console.log(result)
     });
 }
