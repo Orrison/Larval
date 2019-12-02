@@ -41,7 +41,7 @@ export const boxScan = () => {
 
     find.on('exit', function (code, signal) {
         const pattern = /.*\/vendor.*\/resources\/Homestead.yaml/gm
-        const homesteadBoxes = settings.get('homestead_boxes')
+        let homesteadBoxes = settings.get('homestead_boxes')
         // Remove known default yaml files, then remove blanks, then remove items already in our homestead_boxes
         const result = rawData.filter(val => !pattern.test(val)).filter(Boolean)
         for( var i=result.length - 1; i>=0; i--){
@@ -67,12 +67,20 @@ const boxScanSwal = resultsArr => {
         confirmButtonText: 'Save',
         cancelButtonText: 'Don\'t Save',
         preConfirm: (input) => {
-            console.log(input, resultsArr[0])
+            let homesteadBoxes = settings.get('homestead_boxes')
+            let newBox = {
+                name: input,
+                path: resultsArr[0].replace('/Homestead.yaml', ''),
+            }
+            homesteadBoxes.push(newBox)
+            settings.set('homestead_boxes', homesteadBoxes)
         },
       }).then(res => {
         resultsArr.shift()
         if (resultsArr.length > 0) {
             boxScanSwal(resultsArr)
+        } else {
+            location.reload()
         }
       })
 }
