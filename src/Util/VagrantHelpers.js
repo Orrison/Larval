@@ -1,4 +1,5 @@
 const { exec, spawn } = require('child_process')
+import Swal from 'sweetalert2'
 
 export const getVagrantID = (callback) => {
   exec('vagrant global-status --prune',
@@ -38,7 +39,28 @@ export const boxScan = () => {
 
     find.on('exit', function (code, signal) {
         const pattern = /.*\/vendor.*\/resources\/Homestead.yaml/gm
-        const result = rawData.filter(val => !pattern.test(val))
-        console.log(result)
-    });
+        const result = rawData.filter(val => !pattern.test(val)).filter(Boolean)
+        if (Array.isArray(result) && result.length > 0) { boxScanSwal(result) }
+    })
+
+}
+
+const boxScanSwal = resultsArr => {
+    Swal.fire({
+        title: 'Homestead.yaml found at the following path',
+        html: `<p>${resultsArr[0]}</p><p>What would you like to name this box?</p>`,
+        input: 'text',
+        inputAttributes: {
+          autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        preConfirm: (input) => {
+            console.log(input, resultsArr[0])
+        },
+      }).then(res => {
+        resultsArr.shift()
+        if (resultsArr.length > 0) {
+            boxScanSwal(resultsArr)
+        }
+      })
 }
