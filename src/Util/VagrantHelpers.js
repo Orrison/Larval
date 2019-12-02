@@ -53,7 +53,6 @@ export const boxScan = () => {
         }
         if (Array.isArray(result) && result.length > 0) { boxScanSwal(result) }
     })
-
 }
 
 const boxScanSwal = resultsArr => {
