@@ -1,6 +1,8 @@
 const { exec, spawn } = require('child_process')
 import Swal from 'sweetalert2'
 
+const settings = require('electron-settings')
+
 export const getVagrantID = (callback) => {
   exec('vagrant global-status --prune',
     (error, stdout, stderr) => {
@@ -39,7 +41,16 @@ export const boxScan = () => {
 
     find.on('exit', function (code, signal) {
         const pattern = /.*\/vendor.*\/resources\/Homestead.yaml/gm
+        const homesteadBoxes = settings.get('homestead_boxes')
+        // Remove known default yaml files, then remove blanks, then remove items already in our homestead_boxes
         const result = rawData.filter(val => !pattern.test(val)).filter(Boolean)
+        for( var i=result.length - 1; i>=0; i--){
+            for( var j=0; j<homesteadBoxes.length; j++){
+                if(result[i] && (result[i] === homesteadBoxes[j].path + '/Homestead.yaml' )){
+                   result.splice(i, 1)
+                }
+            }
+        }
         if (Array.isArray(result) && result.length > 0) { boxScanSwal(result) }
     })
 
@@ -54,6 +65,8 @@ const boxScanSwal = resultsArr => {
           autocapitalize: 'off'
         },
         showCancelButton: true,
+        confirmButtonText: 'Save',
+        cancelButtonText: 'Don\'t Save',
         preConfirm: (input) => {
             console.log(input, resultsArr[0])
         },
