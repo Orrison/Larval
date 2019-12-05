@@ -40,7 +40,6 @@ class App extends Component {
   state = {
     yaml: null,
     homesteadPath: null,
-    setHomesteadPathShow: false,
     homesteadSettingsShow: false,
     siteEditShow: false,
     selectedSite: null,
@@ -59,9 +58,7 @@ class App extends Component {
     const homesteadBoxes = settings.get('homestead_boxes')
 
     if (homesteadBoxes == undefined) {
-      this.setState({
-        setHomesteadPathShow: true,
-      })
+      this.openBoxAdd()
     } else {
       this.setState({
         boxes: homesteadBoxes,
@@ -86,9 +83,7 @@ class App extends Component {
     const homesteadBoxes = [...this.state.boxes]
 
     if (!homesteadBoxes) {
-      this.setState({ 
-        setHomesteadPathShow: true,
-      })
+      this.openBoxAdd()
     } else if (fs.existsSync(`${homesteadBoxes[boxID].path}/Homestead.yaml`)) {
       this.setState({
         yaml: jsYaml.safeLoad(fs.readFileSync(`${homesteadBoxes[boxID].path}/Homestead.yaml`, 'utf8')),
@@ -112,9 +107,7 @@ class App extends Component {
           })
       })
     } else {
-      this.setState({
-        setHomesteadPathShow: true,
-      })
+      this.openBoxAdd()
     }
 
     let provSetting = settings.get('should_provision')
