@@ -30,7 +30,7 @@ export const vagrantSSH = (id) => {
   }
 }
 
-export const boxScan = () => {
+export const boxScan = cb => {
     Swal.fire({
         title: 'Scan in progress',
         html: 'Scanning for any unsaved Homestead.yaml files...<br><br>This may take a minute',
@@ -60,7 +60,7 @@ export const boxScan = () => {
             }
         }
         if (Array.isArray(result) && result.length > 0) { 
-            boxScanSwal(result)
+            boxScanSwal(result, cb)
         } else {
             Swal.fire({
                 title: 'No unsaved Homestead.yaml files found',
@@ -70,7 +70,7 @@ export const boxScan = () => {
     })
 }
 
-const boxScanSwal = resultsArr => {
+const boxScanSwal = (resultsArr, cb) => {
     Swal.fire({
         title: 'Homestead.yaml found at the following path',
         html: `<p>${resultsArr[0]}</p><p>What would you like to name this box?</p>`,
@@ -94,9 +94,9 @@ const boxScanSwal = resultsArr => {
       }).then(res => {
         resultsArr.shift()
         if (resultsArr.length > 0) {
-            boxScanSwal(resultsArr)
+            boxScanSwal(resultsArr, cb)
         } else {
-            location.reload()
+            cb()
         }
       })
 }

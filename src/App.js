@@ -309,6 +309,12 @@ class App extends Component {
     }))
   }
 
+  hostsReload = () => {
+    this.setState({
+        boxes: settings.get('homestead_boxes'),
+    })
+  }
+
   submitCreateNew = async (event) => {
     event.preventDefault()
 
@@ -690,6 +696,7 @@ class App extends Component {
           boxclick={this.yamlAndPathLoad}
           addClick={this.openBoxAdd}
           deleteClick={this.boxDelete}
+          hostsReload={this.hostsReload}
         />
       )
     }

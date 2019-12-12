@@ -67,7 +67,7 @@ class BoxList extends Component {
       >
         <FontAwesomeIcon icon={faPlusSquare} title="Add new homesteadbox" className='add' onClick={this.props.addClick} />
         <FontAwesomeIcon icon={faTrashAlt} title="Delete selected homesteadbox" className='delete' onClick={this.props.deleteClick} />
-        <FontAwesomeIcon icon={faSearch} title="Box Scan" className='scan' onClick={boxScan} />
+        <FontAwesomeIcon icon={faSearch} title="Box Scan" className='scan' onClick={() => boxScan(this.props.hostsReload)} />
         <h3>Homestead Boxes:</h3>
         {this.props.boxes.map((item, index) => {
 
