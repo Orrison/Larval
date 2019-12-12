@@ -31,6 +31,14 @@ export const vagrantSSH = (id) => {
 }
 
 export const boxScan = () => {
+    Swal.fire({
+        title: 'Scan in progress',
+        html: 'Scanning for any unsaved Homestead.yaml files...<br><br>This may take a minute',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          Swal.showLoading()
+        }
+    })
     const find = spawn('find', ['/Users', '-name', 'Homestead.yaml'])
 
     let rawData = []
@@ -51,7 +59,14 @@ export const boxScan = () => {
                 }
             }
         }
-        if (Array.isArray(result) && result.length > 0) { boxScanSwal(result) }
+        if (Array.isArray(result) && result.length > 0) { 
+            boxScanSwal(result)
+        } else {
+            Swal.fire({
+                title: 'No unsaved Homestead.yaml files found',
+                icon: 'success',
+            })
+        }
     })
 }
 
@@ -66,6 +81,7 @@ const boxScanSwal = resultsArr => {
         showCancelButton: true,
         confirmButtonText: 'Save',
         cancelButtonText: 'Don\'t Save',
+        allowOutsideClick: false,
         preConfirm: (input) => {
             let homesteadBoxes = settings.get('homestead_boxes')
             let newBox = {
