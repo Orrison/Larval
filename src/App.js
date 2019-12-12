@@ -16,7 +16,6 @@ const SwalReact = withReactContent(Swal)
 const { remote } = require('electron')
 
 const CreateNew = loadable(() => import('./Modal/CreateNew'))
-const HomesteadPath = loadable(() => import('./Modal/HomesteadPath'))
 const HomesteadSettings = loadable(() => import('./Modal/HomesteadSettings'))
 
 const fs = require('fs')
@@ -128,7 +127,6 @@ class App extends Component {
   }
 
   openBoxAdd = () => {
-    // this.setState({setHomesteadPathShow: true})
     SwalReact.fire({
       title: 'Set the path to your Homestead file',
       html: (
@@ -616,7 +614,6 @@ class App extends Component {
 
   render() {
     const {
-      setHomesteadPathShow,
       selectedSite,
       yaml,
       siteEditShow,
@@ -628,16 +625,6 @@ class App extends Component {
       boxes,
       boxID,
     } = this.state
-
-    let showHomesteadPath = null
-    if (setHomesteadPathShow) {
-      showHomesteadPath = (
-        <HomesteadPath
-          formSubmit={this.submitHomesteadPath}
-          pathClick={this.fileSelect}
-        />
-      )
-    }
 
     let folderMap = null
     let folderTo = null
@@ -738,7 +725,6 @@ class App extends Component {
         />
         <div className="columns">
 
-          {showHomesteadPath}
           {showHomsteadSettings}
           {showSiteEdit}
           
