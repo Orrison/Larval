@@ -1,13 +1,14 @@
 import React from 'react'
 import '../../../node_modules/bulma/css/bulma.css'
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core'
+import { css, jsx, keyframes } from '@emotion/core'
 
 
 const BoxListItem = (props) => {
 
   const base = css`
     padding: 10px 0;
+    position: relative;
       &:hover {
         color: #fff;
         cursor: pointer;
@@ -20,6 +21,20 @@ const BoxListItem = (props) => {
       &:first-of-type {
         margin-top: 10px;
       }
+  `
+
+  const changeColor = keyframes`
+    0% {
+        background-color: yellow;
+    }
+
+    50% {
+        background-color: red;
+    }
+
+    100% {
+        background-color: green;
+    }
   `
 
   const selected = (props.isCurrent) ? css`
@@ -35,7 +50,21 @@ const BoxListItem = (props) => {
       onClick={()=>props.click(props.index)}
       css={[base, selected]}
     >
-      <p>{props.name}</p>
+        <div css={css`
+            width: 11px;
+            height: 11px;
+            background-color: white;
+            position: absolute;
+            border-radius: 50%;
+            top: 20px;
+            left: 20px;
+            animation-name: ${changeColor};
+            animation-iteration-count: infinite;
+            animation-duration: 1s;
+            animation-direction: alternate;
+            background-color: yellow;
+        `}></div>
+        <p>{props.name}</p>
     </div>
   )
 }

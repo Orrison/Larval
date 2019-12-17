@@ -7,7 +7,7 @@ import SettingsHeader from './SettingsHeader'
 import Vagrant from './Vagrant'
 import '../node_modules/bulma/css/bulma.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
-import { getVagrantID } from './Util/VagrantHelpers'
+import { getVagrantID, getIdFromPath } from './Util/VagrantHelpers'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
@@ -55,6 +55,14 @@ class App extends Component {
     // throw new Error("Stop");
 
     const homesteadBoxes = settings.get('homestead_boxes')
+
+    console.log(homesteadBoxes)
+
+    homesteadBoxes.forEach(box => {
+        getIdFromPath(box.path, (id) => {
+            console.log(id)
+        })
+    })
 
     if (homesteadBoxes == undefined) {
       this.openBoxAdd()

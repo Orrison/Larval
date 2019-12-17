@@ -24,6 +24,25 @@ export const getVagrantID = (callback) => {
     })
 }
 
+export const getIdFromPath = (path, callback) => {
+    exec('vagrant global-status',
+      (error, stdout, stderr) => {
+        if (error) console.log(error)
+        // const vGlobalID = stdout.match("/\-\n([\s\S]*?)(?=\s)/g")
+  
+        /* eslint-disable-next-line */
+        path = path.split('/').join('\\/')
+        console.log(path)
+        // var regex = new RegExp("/(?<=\n)(\w*)(?=\s)(?=.*" + path + ")/", 'm');
+        // const pattern = "/(?<=\n)(\w*)(?=\s)(?=.*\/Users\/kevinu\/Homestead)/" // es-lint-disable
+        var regex = new RegExp(`(?<=\\n)(\\w*)(?=\\s)(?=.*${path})`); 
+        let m
+
+        m = regex.exec(stdout)
+        callback(m[0])
+      })
+  }
+
 export const vagrantSSH = (id) => {
   if (window.process.platform === 'darwin') {
     exec(`osascript -e 'tell application "Terminal" to activate' -e 'tell application "Terminal" to do script "vagrant ssh ${id}"'`)
