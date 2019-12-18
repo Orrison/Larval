@@ -56,14 +56,6 @@ class App extends Component {
 
     const homesteadBoxes = settings.get('homestead_boxes')
 
-    console.log(homesteadBoxes)
-
-    homesteadBoxes.forEach(box => {
-        getIdFromPath(box.path, (id) => {
-            console.log(id)
-        })
-    })
-
     if (homesteadBoxes == undefined) {
       this.openBoxAdd()
     } else {

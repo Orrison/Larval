@@ -79,6 +79,7 @@ class BoxList extends Component {
               isCurrent={isCurrent}
               id={index}
               name={item.name}
+              path={item.path}
               click={()=>this.props.boxclick(index)}
             />
             )
