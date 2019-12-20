@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import '../../../node_modules/bulma/css/bulma.css'
 /** @jsx jsx */
 import { css, jsx, keyframes } from '@emotion/core'
@@ -7,25 +7,6 @@ const { exec } = require('child_process')
 
 
 const BoxListItem = (props) => {
-    const [status, setStatus] = useState('pending')
-
-    useEffect(() => {
-        getIdFromPath(props.path, id => {
-            if (id) {
-                exec(`vagrant status ${id}`,
-                (error, stdout) => {
-                  if (error) throw error
-                  if (stdout.includes('running')) {
-                    setStatus('online')
-                  } else {
-                    setStatus('offline')
-                  }
-                })
-            } else {
-                setStatus('offline')
-            }
-        })
-    })
 
     const changeColor = keyframes`
         0% {
@@ -57,12 +38,12 @@ const BoxListItem = (props) => {
 
     let statusCss = null
 
-    if (status == 'online') {
+    if (props.status == 'online') {
         statusCss = css`
             background-color: green; 
             animation-name: none;
         `
-    } else if (status == 'offline') {
+    } else if (props.status == 'offline') {
         statusCss = css`
             background-color: red; 
             animation-name: none;

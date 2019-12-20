@@ -81,6 +81,7 @@ class BoxList extends Component {
               name={item.name}
               path={item.path}
               click={()=>this.props.boxclick(index)}
+              status={item.status}
             />
             )
           })}

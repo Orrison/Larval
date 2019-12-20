@@ -59,11 +59,41 @@ class App extends Component {
     if (homesteadBoxes == undefined) {
       this.openBoxAdd()
     } else {
-      this.setState({
-        boxes: homesteadBoxes,
-      }, () => {
-        this.yamlAndPathLoad(0, true)
-      })
+        let cb = () => {
+            this.setState({
+              boxes: homesteadBoxes,
+            }, () => {
+              this.yamlAndPathLoad(0, true)
+            })
+        }
+
+
+        let count = 0
+        homesteadBoxes.forEach((box, i, arr) => {
+            getIdFromPath(box.path, id => {
+                if (id) {
+                    execute(`vagrant status ${id}`,
+                    (error, stdout) => {
+                      if (error) throw error
+                      if (stdout.includes('running')) {
+                        arr[i]['status'] = 'online'
+                      } else {
+                        arr[i]['status'] = 'offline'
+                      }
+                      count++
+                      if (count === arr.length) {
+                        cb()
+                      }
+                    })
+                } else {
+                    arr[i]['status'] = 'offline'
+                    count++
+                    if (count === arr.length) {
+                      cb()
+                    }
+                }
+            })
+        })
     }
   }
 
