@@ -59,40 +59,43 @@ class App extends Component {
     if (homesteadBoxes == undefined) {
       this.openBoxAdd()
     } else {
-        let cb = () => {
+        this.setState({
+          boxes: homesteadBoxes,
+        }, () => {
+          this.yamlAndPathLoad(0, true)
+
+          let cb = newBoxes => {
             this.setState({
-              boxes: homesteadBoxes,
-            }, () => {
-              this.yamlAndPathLoad(0, true)
+                boxes: newBoxes
             })
-        }
-
-
-        let count = 0
-        homesteadBoxes.forEach((box, i, arr) => {
-            getIdFromPath(box.path, id => {
-                if (id) {
-                    execute(`vagrant status ${id}`,
-                    (error, stdout) => {
-                      if (error) throw error
-                      if (stdout.includes('running')) {
-                        arr[i]['status'] = 'online'
-                      } else {
-                        arr[i]['status'] = 'offline'
-                      }
+          }
+          let boxesCopy = [...this.state.boxes]
+          let count = 0
+          boxesCopy.forEach((box, i, arr) => {
+              getIdFromPath(box.path, id => {
+                  if (id) {
+                      execute(`vagrant status ${id}`,
+                      (error, stdout) => {
+                        if (error) throw error
+                        if (stdout.includes('running')) {
+                          arr[i]['status'] = 'online'
+                        } else {
+                          arr[i]['status'] = 'offline'
+                        }
+                        count++
+                        if (count === arr.length) {
+                          cb(arr)
+                        }
+                      })
+                  } else {
+                      arr[i]['status'] = 'offline'
                       count++
                       if (count === arr.length) {
-                        cb()
+                        cb(arr)
                       }
-                    })
-                } else {
-                    arr[i]['status'] = 'offline'
-                    count++
-                    if (count === arr.length) {
-                      cb()
-                    }
-                }
-            })
+                  }
+              })
+          })
         })
     }
   }

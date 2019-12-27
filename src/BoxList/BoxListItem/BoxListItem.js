@@ -2,8 +2,6 @@ import React from 'react'
 import '../../../node_modules/bulma/css/bulma.css'
 /** @jsx jsx */
 import { css, jsx, keyframes } from '@emotion/core'
-import { getIdFromPath } from '../../Util/VagrantHelpers'
-const { exec } = require('child_process')
 
 
 const BoxListItem = (props) => {
