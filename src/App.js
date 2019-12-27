@@ -244,10 +244,27 @@ class App extends Component {
 
     let newState = {}
     if (!error) {
-      boxesCopy.push(newBox)
-      settings.set('homestead_boxes', boxesCopy)
-      newState.homesteadPath = path
-      newState.boxes = boxesCopy
+        const vagrantUp = execute(`cd ${path} && vagrant status`)
+
+        vagrantUp.stdout.on('data', (data) => {
+            if (data.includes('running')) {
+              newBox.status = 'online'
+            } else {
+              newBox.status = 'offline'
+            }
+        })
+
+        vagrantUp.stderr.on('data', (data) => {
+            throw data
+        })
+
+        vagrantUp.on('close', (code) => {
+            boxesCopy.push(newBox)
+            settings.set('homestead_boxes', boxesCopy)
+            newState.homesteadPath = path
+            newState.boxes = boxesCopy
+            this.setState(newState)
+        })
     } else {
       let swalInfo = {
         type: 'warning',
@@ -265,8 +282,6 @@ class App extends Component {
 
       Swal.fire(swalInfo)
     }
-
-    this.setState(newState)
   }
 
   boxDelete = () => {
