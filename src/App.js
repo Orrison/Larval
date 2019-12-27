@@ -117,10 +117,12 @@ class App extends Component {
     if (!homesteadBoxes) {
       this.openBoxAdd()
     } else if (fs.existsSync(`${homesteadBoxes[boxID].path}/Homestead.yaml`)) {
+      homesteadBoxes[boxID].status = 'pending'
       this.setState({
         yaml: jsYaml.safeLoad(fs.readFileSync(`${homesteadBoxes[boxID].path}/Homestead.yaml`, 'utf8')),
         homesteadPath: homesteadBoxes[boxID].path,
         vagrantStatus: 'processing',
+        boxes: homesteadBoxes,
         boxID,
       }, () => {
         const { homesteadPath } = this.state
@@ -129,12 +131,20 @@ class App extends Component {
           (error, stdout) => {
             if (error) throw error
             if (stdout.includes('running')) {
-              this.setState({ vagrantStatus: 'online' })
+              homesteadBoxes[boxID].status = 'online'
+              this.setState({
+                vagrantStatus: 'online',
+                boxes: homesteadBoxes
+              })
               getVagrantID((id) => {
                 this.setState({ vagrantID: id })
               })
             } else {
-              this.setState({ vagrantStatus: 'offline' })
+              homesteadBoxes[boxID].status = 'offline'
+              this.setState({
+                vagrantStatus: 'offline',
+                boxes: homesteadBoxes
+              })
             }
           })
       })
