@@ -79,8 +79,11 @@ const boxScanSwal = (resultsArr, cb) => {
                 name: input,
                 path: resultsArr[0].replace('/Homestead.yaml', ''),
             }
-            homesteadBoxes.push(newBox)
-            settings.set('homestead_boxes', homesteadBoxes)
+            getIdFromPath(newBox.path, id => {
+                newBox.id = id
+                homesteadBoxes.push(newBox)
+                settings.set('homestead_boxes', homesteadBoxes)
+            })
         },
       }).then(res => {
         resultsArr.shift()

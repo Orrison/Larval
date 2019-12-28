@@ -56,6 +56,8 @@ class App extends Component {
 
     const homesteadBoxes = settings.get('homestead_boxes')
 
+    console.log(homesteadBoxes)
+
     if (homesteadBoxes == undefined) {
       this.openBoxAdd()
     } else {
@@ -229,11 +231,16 @@ class App extends Component {
         })
 
         vagrantUp.on('close', (code) => {
-            boxesCopy.push(newBox)
-            settings.set('homestead_boxes', boxesCopy)
-            newState.homesteadPath = path
-            newState.boxes = boxesCopy
-            this.setState(newState)
+            getIdFromPath(path, id => {
+                if (id) {
+                    newBox.id = id
+                    boxesCopy.push(newBox)
+                    settings.set('homestead_boxes', boxesCopy)
+                    newState.homesteadPath = path
+                    newState.boxes = boxesCopy
+                    this.setState(newState)
+                }
+            })
         })
     } else {
       let swalInfo = {
@@ -350,13 +357,16 @@ class App extends Component {
         newBoxes.forEach((box, i, arr) => {
             getIdFromPath(box.path, id => {
                 if (id) {
+                    if (box.id === undefined) {
+                        arr[i].id = id
+                    }
                     execute(`vagrant status ${id}`,
                     (error, stdout) => {
                       if (error) throw error
                       if (stdout.includes('running')) {
-                        arr[i]['status'] = 'online'
+                        arr[i].status = 'online'
                       } else {
-                        arr[i]['status'] = 'offline'
+                        arr[i].status = 'offline'
                       }
                       count++
                       if (count === arr.length) {
@@ -364,7 +374,7 @@ class App extends Component {
                       }
                     })
                 } else {
-                    arr[i]['status'] = 'offline'
+                    arr[i].status = 'offline'
                     count++
                     if (count === arr.length) {
                       cb(arr)
