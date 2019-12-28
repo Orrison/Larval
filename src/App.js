@@ -112,7 +112,8 @@ class App extends Component {
               homesteadBoxes[boxID].status = 'offline'
               this.setState({
                 vagrantStatus: 'offline',
-                boxes: homesteadBoxes
+                boxes: homesteadBoxes,
+                vagrantID: null
               })
             }
           })
@@ -644,7 +645,8 @@ class App extends Component {
         boxesCopy[index].status = 'offline'
         this.setState({
             vagrantStatus: 'offline',
-            boxes: boxesCopy
+            boxes: boxesCopy,
+            vagrantID: null
         })
       })
     }
