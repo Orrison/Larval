@@ -64,38 +64,7 @@ class App extends Component {
         }, () => {
           this.yamlAndPathLoad(0, true)
 
-          let cb = newBoxes => {
-            this.setState({
-                boxes: newBoxes
-            })
-          }
-          let boxesCopy = [...this.state.boxes]
-          let count = 0
-          boxesCopy.forEach((box, i, arr) => {
-              getIdFromPath(box.path, id => {
-                  if (id) {
-                      execute(`vagrant status ${id}`,
-                      (error, stdout) => {
-                        if (error) throw error
-                        if (stdout.includes('running')) {
-                          arr[i]['status'] = 'online'
-                        } else {
-                          arr[i]['status'] = 'offline'
-                        }
-                        count++
-                        if (count === arr.length) {
-                          cb(arr)
-                        }
-                      })
-                  } else {
-                      arr[i]['status'] = 'offline'
-                      count++
-                      if (count === arr.length) {
-                        cb(arr)
-                      }
-                  }
-              })
-          })
+          this.hostsReload([...this.state.boxes])
         })
     }
   }
@@ -367,9 +336,41 @@ class App extends Component {
     }))
   }
 
-  hostsReload = () => {
+  hostsReload = newBoxes => {
     this.setState({
-        boxes: settings.get('homestead_boxes'),
+        boxes: newBoxes
+    }, () => {
+        let cb = boxes => {
+          this.setState({
+              boxes
+          })
+        }
+        let count = 0
+        newBoxes.forEach((box, i, arr) => {
+            getIdFromPath(box.path, id => {
+                if (id) {
+                    execute(`vagrant status ${id}`,
+                    (error, stdout) => {
+                      if (error) throw error
+                      if (stdout.includes('running')) {
+                        arr[i]['status'] = 'online'
+                      } else {
+                        arr[i]['status'] = 'offline'
+                      }
+                      count++
+                      if (count === arr.length) {
+                        cb(arr)
+                      }
+                    })
+                } else {
+                    arr[i]['status'] = 'offline'
+                    count++
+                    if (count === arr.length) {
+                      cb(arr)
+                    }
+                }
+            })
+        })
     })
   }
 

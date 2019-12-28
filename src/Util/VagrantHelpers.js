@@ -108,7 +108,7 @@ const boxScanSwal = (resultsArr, cb) => {
         if (resultsArr.length > 0) {
             boxScanSwal(resultsArr, cb)
         } else {
-            cb()
+            cb(settings.get('homestead_boxes'))
         }
       })
 }
