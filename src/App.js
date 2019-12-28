@@ -597,7 +597,8 @@ class App extends Component {
   }
 
   vagrantToggle = () => {
-    const { vagrantStatus, homesteadPath } = this.state
+    const { vagrantStatus, homesteadPath, boxes } = this.state
+    let boxesCopy = [...boxes]
 
     if (vagrantStatus === 'offline') {
       this.setState({ vagrantStatus: 'processing' })
@@ -614,7 +615,12 @@ class App extends Component {
 
       vagrantUp.on('close', (code) => {
         this.vagrantConsoleAdd('<b><span style="color: rgb(0, 170, 0);">---- Vagrant is now up ----</span></b>')
-        this.setState({ vagrantStatus: 'online' })
+        let index = boxesCopy.findIndex(({path}) => { return path === homesteadPath })
+        boxesCopy[index].status = 'online'
+        this.setState({
+            vagrantStatus: 'online',
+            boxes: boxesCopy
+        })
         getVagrantID((id) => {
           this.setState({ vagrantID: id })
         })
@@ -634,7 +640,12 @@ class App extends Component {
 
       vagrantHalt.on('close', (code) => {
         this.vagrantConsoleAdd('<b><span style="color: rgb(0, 170, 0);">---- Vagrant is now down ----</span></b>')
-        this.setState({ vagrantStatus: 'offline' })
+        let index = boxesCopy.findIndex(({path}) => { return path === homesteadPath })
+        boxesCopy[index].status = 'offline'
+        this.setState({
+            vagrantStatus: 'offline',
+            boxes: boxesCopy
+        })
       })
     }
   }
