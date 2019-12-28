@@ -3,27 +3,6 @@ import Swal from 'sweetalert2'
 
 const settings = require('electron-settings')
 
-export const getVagrantID = (callback) => {
-  exec('vagrant global-status --prune',
-    (error, stdout, stderr) => {
-      if (error) throw error
-      // const vGlobalID = stdout.match("/\-\n([\s\S]*?)(?=\s)/g")
-
-      /* eslint-disable-next-line */
-      const regex = /\-\n([\s\S]*?)(?=\s)/gm // es-lint-disable
-      let m
-
-      /* eslint-disable-next-line */
-      while ((m = regex.exec(stdout)) !== null) {
-        // This is necessary to avoid infinite loops with zero-width matches
-        if (m.index === regex.lastIndex) {
-          regex.lastIndex++ // eslint-disable-line
-        }
-        callback(m[1])
-      }
-    })
-}
-
 export const getIdFromPath = (path, callback) => {
     exec('vagrant global-status',
       (error, stdout, stderr) => {

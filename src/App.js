@@ -7,7 +7,7 @@ import SettingsHeader from './SettingsHeader'
 import Vagrant from './Vagrant'
 import '../node_modules/bulma/css/bulma.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
-import { getVagrantID, getIdFromPath } from './Util/VagrantHelpers'
+import { getIdFromPath } from './Util/VagrantHelpers'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
@@ -105,7 +105,7 @@ class App extends Component {
                 vagrantStatus: 'online',
                 boxes: homesteadBoxes
               })
-              getVagrantID((id) => {
+              getIdFromPath(homesteadPath, id => {
                 this.setState({ vagrantID: id })
               })
             } else {
@@ -621,7 +621,7 @@ class App extends Component {
             vagrantStatus: 'online',
             boxes: boxesCopy
         })
-        getVagrantID((id) => {
+        getIdFromPath(homesteadPath, id => {
           this.setState({ vagrantID: id })
         })
       })
