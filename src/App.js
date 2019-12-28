@@ -353,11 +353,8 @@ class App extends Component {
         }
         let count = 0
         newBoxes.forEach((box, i, arr) => {
-            getIdFromPath(box.path, id => {
+            let getStatus = id => {
                 if (id) {
-                    if (box.id === undefined) {
-                        arr[i].id = id
-                    }
                     execute(`vagrant status ${id}`,
                     (error, stdout) => {
                       if (error) throw error
@@ -378,7 +375,14 @@ class App extends Component {
                       cb(arr)
                     }
                 }
-            })
+            }
+            if (box.id === undefined) {
+                getIdFromPath(box.path, id => {
+                    getStatus(id)
+                })
+            } else {
+                getStatus(box.id)
+            }
         })
     })
   }
