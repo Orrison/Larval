@@ -7,7 +7,7 @@ import SettingsHeader from './SettingsHeader'
 import Vagrant from './Vagrant'
 import '../node_modules/bulma/css/bulma.css'
 import { homesteadYamlBackup } from './Util/HostsYamlHelpers'
-import { getVagrantID, getIdFromPath, homesteadYamlBackup } from './Util/VagrantHelpers'
+import { getVagrantID, getIdFromPath } from './Util/VagrantHelpers'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
