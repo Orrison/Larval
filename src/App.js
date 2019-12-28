@@ -107,9 +107,7 @@ class App extends Component {
                 vagrantStatus: 'online',
                 boxes: homesteadBoxes
               })
-              getIdFromPath(homesteadPath, id => {
-                this.setState({ vagrantID: id })
-              })
+              this.setState({ vagrantID: homesteadBoxes[boxID].id })
             } else {
               homesteadBoxes[boxID].status = 'offline'
               this.setState({
