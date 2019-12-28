@@ -54,9 +54,16 @@ class App extends Component {
     // settings.delete('homestead_boxes')
     // throw new Error("Stop");
 
-    const homesteadBoxes = settings.get('homestead_boxes')
+    let homesteadBoxes = [...settings.get('homestead_boxes')]
 
-    console.log(homesteadBoxes)
+    let count = 0
+    homesteadBoxes.forEach((box, i, arr) => {
+      delete arr[i].status
+      count++
+      if (count === arr.length) {
+        homesteadBoxes = arr
+      }
+    })
 
     if (homesteadBoxes == undefined) {
       this.openBoxAdd()
@@ -348,13 +355,15 @@ class App extends Component {
     }, () => {
         let cb = boxes => {
           this.setState({
-              boxes
+            boxes
           })
+          settings.set('homestead_boxes', boxes)
         }
         let count = 0
         newBoxes.forEach((box, i, arr) => {
             let getStatus = id => {
                 if (id) {
+                    arr[i].id = id
                     execute(`vagrant status ${id}`,
                     (error, stdout) => {
                       if (error) throw error
@@ -632,10 +641,8 @@ class App extends Component {
         boxesCopy[index].status = 'online'
         this.setState({
             vagrantStatus: 'online',
-            boxes: boxesCopy
-        })
-        getIdFromPath(homesteadPath, id => {
-          this.setState({ vagrantID: id })
+            boxes: boxesCopy,
+            vagrantID: boxesCopy[index].id
         })
       })
     } else if (vagrantStatus === 'online') {
