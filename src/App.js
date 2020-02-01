@@ -54,20 +54,22 @@ class App extends Component {
     // settings.delete('homestead_boxes')
     // throw new Error("Stop");
 
-    let homesteadBoxes = [...settings.get('homestead_boxes')]
-
-    let count = 0
-    homesteadBoxes.forEach((box, i, arr) => {
-      delete arr[i].status
-      count++
-      if (count === arr.length) {
-        homesteadBoxes = arr
-      }
-    })
+    let homesteadBoxes = settings.get('homestead_boxes')
 
     if (homesteadBoxes == undefined) {
       this.openBoxAdd()
     } else {
+        let homesteadBoxes = [...homesteadBoxes]
+
+        let count = 0
+        homesteadBoxes.forEach((box, i, arr) => {
+          delete arr[i].status
+          count++
+          if (count === arr.length) {
+            homesteadBoxes = arr
+          }
+        })
+
         this.setState({
           boxes: homesteadBoxes,
         }, () => {
