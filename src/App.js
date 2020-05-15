@@ -59,10 +59,10 @@ class App extends Component {
     if (homesteadBoxes == undefined) {
       this.openBoxAdd()
     } else {
-        let homesteadBoxes = [...homesteadBoxes]
+        let setBoxes = [...homesteadBoxes]
 
         let count = 0
-        homesteadBoxes.forEach((box, i, arr) => {
+        setBoxes.forEach((box, i, arr) => {
           delete arr[i].status
           count++
           if (count === arr.length) {
@@ -71,7 +71,7 @@ class App extends Component {
         })
 
         this.setState({
-          boxes: homesteadBoxes,
+          boxes: setBoxes,
         }, () => {
           this.yamlAndPathLoad(0, true)
 
