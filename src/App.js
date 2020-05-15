@@ -94,7 +94,7 @@ class App extends Component {
   yamlAndPathLoad = (boxID) => {
     const homesteadBoxes = [...this.state.boxes]
 
-    if (!homesteadBoxes) {
+    if (!homesteadBoxes || homesteadBoxes.length == 0) {
       this.openBoxAdd()
     } else if (fs.existsSync(`${homesteadBoxes[boxID].path}/Homestead.yaml`)) {
       homesteadBoxes[boxID].status = 'pending'
