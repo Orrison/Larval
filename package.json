@@ -13,7 +13,7 @@
     "ansi-to-html": "^0.6.12",
     "bulma": "^0.7.5",
     "bulma-tooltip": "^2.0.2",
-    "electron": "^7.2.4",
+    "electron": "^9.4.0",
     "electron-settings": "^3.2.0",
     "electron-updater": "^4.1.2",
     "fix-path": "^2.1.0",
